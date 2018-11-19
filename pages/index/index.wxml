@@ -1,0 +1,16 @@
+<swiper class='swiper' indicator-dots indicator-color='#ebebeb' indicator-active-color='#f7c900' circular previous-margin='65rpx' next-margin='65rpx' bindchange='swiper'>
+  <swiper-item wx:for='{{list}}' wx:key='index'>
+    <navigator class='item {{index==currentIndex?"active":""}}'>
+      <image src='/images/test/01.jpg'></image>
+      <view class='title'>"为所爱，做心衣"</view>
+    </navigator>
+  </swiper-item>
+</swiper>
+
+<view class='btn-box'>
+  <navigator class='btn' url='/pages/index/design/design'>开始设计</navigator>
+</view>
+
+<view class='service'>
+  <image src='/images/icon/icon_service.png'></image>
+</view>

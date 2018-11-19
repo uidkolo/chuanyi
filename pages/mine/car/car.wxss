@@ -1,0 +1,122 @@
+page{
+  background: #F5F5F5;
+}
+.total{
+  background: #F8DB16;
+  height: 180rpx;
+  padding: 0 30rpx;
+  color: #1A1A1A;
+  font-size: 28rpx;
+  line-height: 80rpx;
+}
+.list{
+  padding: 0 30rpx;
+  margin-top: -100rpx;
+}
+.list .item{
+  background: #fff;
+  padding: 30rpx;
+  border-radius: 8rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.list .item+.item{
+  margin-top: 30rpx;
+}
+.list .item .img{
+  width: 140rpx;
+  height: 140rpx;
+  flex-shrink: 0;
+  margin: 0 10rpx;
+}
+.list .item .icon{
+  width: 22rpx;
+  height: 26rpx;
+  flex-shrink: 0;
+  margin-left: 20rpx;
+  position: relative;
+  top: 4rpx;
+}
+.list .item .right{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.list .item .right .top{
+  display: flex;
+  justify-content: space-between;
+  font-size: 26rpx;
+  color: #4D4D4D;
+}
+.list .item .right .info{
+  display: flex;
+  align-items: center;
+  font-size: 24rpx;
+  color: #B3B3B3;
+}
+.list .item .right .bottom{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.list .item .right .bottom .price{
+  font-size: 36rpx;
+  color: #D6000F;
+}
+.list .item .right .bottom .num{
+  display: flex;
+  align-items: center;
+  font-size: 40rpx;
+  color: #1a1a1a;
+}
+.list .item .right .bottom .num .value{
+  background: #f5f5f5;
+  height:50rpx;
+  width: 80rpx;
+  font-size: 26rpx;
+  margin: 0 20rpx;
+  line-height: 50rpx;
+  text-align: center;
+}
+
+.count-box{
+  height: 130rpx;
+}
+.count{
+  height: 130rpx;
+  background: #fff;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30rpx;
+}
+.count .left{
+  display: flex;
+  align-items: center;
+  font-size: 28rpx;
+  color: #666;
+}
+.count .left .price{
+  margin-left: 20rpx;
+  color: #1A1A1A;
+  display: flex;
+  align-items: center;
+}
+.count .left .price .num{
+  color: #D6000F;
+  font-size: 48rpx;
+}
+.count .right{
+  color: #1a1a1a;
+  font-size: 28rpx;
+  background: #F7C900;
+  text-align: center;
+  line-height: 90rpx;
+  height: 90rpx;
+  width: 180rpx;
+  border-radius: 6rpx;
+}

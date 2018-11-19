@@ -1,0 +1,3 @@
+<view class='icon active' bindtap='changeValue'>
+  <image src='/images/mine/check.png'></image>
+</view>

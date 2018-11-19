@@ -1,0 +1,92 @@
+<view class='total'>
+  <text>共3件宝贝</text>
+</view>
+<view class='list'>
+  <radio-group>
+    <view class='item'>
+      <radio color='#F8DB16'></radio>
+      <image class='img' src='/images/test/01.jpg'></image>
+      <view class='right'>
+        <view class='top'>
+          <view>夏季男士短袖t恤纯棉大男装圆领宽松韩体恤上衣...</view>
+          <image class='icon' src='/images/icon/icon_delete.png'></image>
+        </view>
+        <view class='info'>
+          <text>99%纯棉</text>
+          <text>L码</text>
+          <text>个性定制</text>
+        </view>
+        <view class='bottom'>
+          <text class='price'>￥99.00</text>
+          <view class='num'>
+            <text class='reduce'>-</text>
+            <text class='value'>2</text>
+            <view class='add'>+</view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class='item'>
+      <radio color='#F8DB16'></radio>
+      <image class='img' src='/images/test/01.jpg'></image>
+      <view class='right'>
+        <view class='top'>
+          <view>夏季男士短袖t恤纯棉大男装圆领宽松韩体恤上衣...</view>
+          <image class='icon' src='/images/icon/icon_delete.png'></image>
+        </view>
+        <view class='info'>
+          <text>99%纯棉</text>
+          <text>L码</text>
+          <text>个性定制</text>
+        </view>
+        <view class='bottom'>
+          <text class='price'>￥99.00</text>
+          <view class='num'>
+            <text class='reduce'>-</text>
+            <text class='value'>2</text>
+            <view class='add'>+</view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class='item'>
+      <radio color='#F8DB16'></radio>
+      <image class='img' src='/images/test/01.jpg'></image>
+      <view class='right'>
+        <view class='top'>
+          <view>夏季男士短袖t恤纯棉大男装圆领宽松韩体恤上衣...</view>
+          <image class='icon' src='/images/icon/icon_delete.png'></image>
+        </view>
+        <view class='info'>
+          <text>99%纯棉</text>
+          <text>L码</text>
+          <text>个性定制</text>
+        </view>
+        <view class='bottom'>
+          <text class='price'>￥99.00</text>
+          <view class='num'>
+            <text class='reduce'>-</text>
+            <text class='value'>2</text>
+            <view class='add'>+</view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </radio-group>
+</view>
+
+<view class='count-box'>
+  <view class='count'>
+  <radio-group>
+      <view class='left'>
+        <radio color='#F8DB16'></radio>
+        <label>全选</label>
+        <view class='price'>
+          <text>合计：</text>
+          <text class='num'>￥287.00</text>
+        </view>
+      </view>
+    </radio-group>
+    <view class='right'>结算</view>
+  </view>
+</view>

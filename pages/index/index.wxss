@@ -1,0 +1,72 @@
+page{
+  background: #f5f5f5;
+}
+.swiper{
+  height: 920rpx;
+  margin: 50rpx auto 0;
+}
+swiper-item{
+  width: 640rpx;
+}
+swiper-item.active{
+  z-index: 2;
+}
+.swiper .item{
+  margin: 0 auto;
+  width: 600rpx;
+  height: 860rpx;
+  background: #fff;
+  border-radius: 8rpx;
+  box-shadow: 0 10rpx 20rpx 0 rgba(128,128,128,0.2);
+  padding-top: 30rpx;
+  transition: all 1s;
+  transform: scale(0.9,0.9);
+}
+.swiper .item.active{
+  transform: scale(1,1);
+}
+.swiper .item image{
+  width: 540rpx;
+  display: block;
+  height: 700rpx;
+  margin: 0 auto;
+}
+.swiper .item .title{
+  font-size: 24rpx;
+  color: #999999;
+  margin-top: 40rpx;
+  text-align: center;
+  padding: 0 30rpx;
+}
+
+.btn-box{
+  padding: 30rpx 0;
+}
+.btn-box .btn{
+  height: 92rpx;
+  width: 680rpx;
+  background: #f7c900;
+  color: #1a1a1a;
+  font-size: 36rpx;
+  line-height: 92rpx;
+  text-align: center;
+  border-radius: 8rpx;
+  margin: 0 auto;
+}
+
+.service{
+  width: 90rpx;
+  height: 90rpx;
+  border-radius: 90rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(248,219,22,0.7);
+  position: fixed;
+  right: 30rpx;
+  bottom: 216rpx;
+}
+.service image{
+  width: 44rpx;
+  height: 44rpx;
+}

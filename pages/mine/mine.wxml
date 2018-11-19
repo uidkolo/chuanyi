@@ -1,0 +1,92 @@
+<view class='top'>
+  <view class='left'>
+    <image class='avatar' src='/images/test/fodder.png'></image>
+    <view class='info'>
+      <text class='name'>断了的弦</text>
+      <view class='id'>
+        <text class='content'>ID：868866</text>
+        <text class='copy'>复制</text>
+      </view>
+    </view>
+  </view>
+  <view class='right'>
+    <text class='btn'>绑定手机号</text>
+  </view>
+</view>
+
+<view class='news'>
+  <image class='icon' src='/images/mine/news.png'></image>
+  <text class='content'>春节放假通知，2月1日~2月15日的订单延后发货</text>
+</view>
+
+<view class='order'>
+  <navigator class='more' url='/pages/mine/order/order'>
+    <text class='title'>我的订单</text>
+    <image class='icon' src='/images/mine/more.png'></image>
+  </navigator>
+  <view class='box'>
+    <navigator class='item' url='/pages/mine/order/order?index=1'>
+      <image class='icon' src='/images/mine/order_01.png'></image>
+      <text>待付款</text>
+    </navigator>
+    <navigator class='item' url='/pages/mine/order/order?index=2'>
+      <image class='icon' src='/images/mine/order_02.png'></image>
+      <text>待发货</text>
+    </navigator>
+    <navigator class='item' url='/pages/mine/order/order?index=3'>
+      <image class='icon' src='/images/mine/order_03.png'></image>
+      <text>待收货</text>
+    </navigator>
+    <navigator class='item' url='/pages/mine/order/order?index=4'>
+      <image class='icon' src='/images/mine/order_04.png'></image>
+      <text>待评价</text>
+    </navigator>
+    <navigator class='item'>
+      <image class='icon' src='/images/mine/order_05.png'></image>
+      <text>退款/售后</text>
+    </navigator>
+  </view>
+</view>
+
+<navigator class='ad'>
+  <image src='/images/mine/ad.png'></image>
+</navigator>
+
+<view class='link'>
+  <navigator class='item'>
+    <image class='icon' src='/images/mine/link_01.png'></image>
+    <text>我的钱包</text>
+  </navigator>
+  <navigator class='item'>
+    <image class='icon' src='/images/mine/link_02.png'></image>
+    <text>买家秀</text>
+  </navigator>
+  <navigator class='item'>
+    <image class='icon' src='/images/mine/link_03.png'></image>
+    <text>我的定制</text>
+  </navigator>
+  <navigator class='item' url='/pages/mine/car/car'>
+    <image class='icon' src='/images/mine/link_04.png'></image>
+    <text>购物车</text>
+  </navigator>
+  <navigator class='item'>
+    <image class='icon' src='/images/mine/link_05.png'></image>
+    <text>收藏夹</text>
+  </navigator>
+  <navigator class='item'>
+    <image class='icon' src='/images/mine/link_06.png'></image>
+    <text>我的权益</text>
+  </navigator>
+  <navigator class='item' url='/pages/mine/add/add'>
+    <image class='icon' src='/images/mine/link_07.png'></image>
+    <text>地址管理</text>
+  </navigator>
+  <navigator class='item'>
+    <image class='icon' src='/images/mine/link_08.png'></image>
+    <text>我要合作</text>
+  </navigator>
+  <navigator class='item'>
+    <image class='icon' src='/images/mine/link_09.png'></image>
+    <text>关注我们</text>
+  </navigator>
+</view>

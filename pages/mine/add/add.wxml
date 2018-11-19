@@ -1,0 +1,74 @@
+<view class='list'>
+  <radio-group>
+    <view class='item'>
+      <view class='top'>
+        <text class='name'>刘大龙</text>
+        <text class='phone'>158****1254</text>
+      </view>
+      <view class='add'>福建省厦门市湖里区立案前街道菜汤社1好</view>
+      <view class='bottom'>
+        <view class='radio'>
+          <radio color='#F8DB16'></radio>
+          <text>默认地址</text>
+        </view>
+        <view class='btns'>
+          <text>编辑</text>
+          <text>删除</text>
+        </view>
+      </view>
+    </view>
+    <view class='item'>
+      <view class='top'>
+        <text class='name'>刘大龙</text>
+        <text class='phone'>158****1254</text>
+      </view>
+      <view class='add'>福建省厦门市湖里区立案前街道菜汤社1好</view>
+      <view class='bottom'>
+        <view class='radio'>
+          <radio color='#F8DB16'></radio>
+          <text>默认地址</text>
+        </view>
+        <view class='btns'>
+          <text>编辑</text>
+          <text>删除</text>
+        </view>
+      </view>
+    </view>
+    <view class='item'>
+      <view class='top'>
+        <text class='name'>刘大龙</text>
+        <text class='phone'>158****1254</text>
+      </view>
+      <view class='add'>福建省厦门市湖里区立案前街道菜汤社1好</view>
+      <view class='bottom'>
+        <view class='radio'>
+          <radio color='#F8DB16'></radio>
+          <text>默认地址</text>
+        </view>
+        <view class='btns'>
+          <text>编辑</text>
+          <text>删除</text>
+        </view>
+      </view>
+    </view>
+    <view class='item'>
+      <view class='top'>
+        <text class='name'>刘大龙</text>
+        <text class='phone'>158****1254</text>
+      </view>
+      <view class='add'>福建省厦门市湖里区立案前街道菜汤社1好</view>
+      <view class='bottom'>
+        <view class='radio'>
+          <radio color='#F8DB16'></radio>
+          <text>默认地址</text>
+        </view>
+        <view class='btns'>
+          <text>编辑</text>
+          <text>删除</text>
+        </view>
+      </view>
+    </view>
+  </radio-group>
+</view>
+
+<view class='btn'>添加新地址</view>

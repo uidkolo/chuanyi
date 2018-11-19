@@ -1,0 +1,147 @@
+page{
+  background: #f5f5f5;
+  padding-bottom: 40rpx;
+}
+
+.top{
+  background: #f8db15;
+  display: flex;
+  padding: 30rpx;
+  padding-bottom: 63rpx;
+  align-items: center;
+  justify-content: space-between;
+}
+.top .left{
+  display: flex;
+  align-items: center
+}
+.top .avatar{
+  width: 128rpx;
+  height: 128rpx;
+  border-radius: 128rpx;
+  margin-right: 30rpx;
+}
+.top .name{
+  color: #1A1A1A;
+  font-size: 32rpx;
+  font-weight: 600;
+}
+.top .id{
+  color: #fff;
+  font-size: 26rpx;
+  margin-top: 20rpx;
+}
+.top .id .copy{
+  display: inline-block;
+  font-size: 20rpx;
+  background: #dfc514;
+  width: 60rpx;
+  height: 30rpx;
+  text-align: center;
+  margin-left: 20rpx;
+  border-radius: 4rpx;
+}
+.top .right{
+  height: 128rpx;
+  display: flex;
+  align-items: flex-end;
+  margin-bottom: 20rpx;
+}
+.top .right .btn{
+  width: 180rpx;
+  height: 54rpx;
+  line-height: 54rpx;
+  border: 1rpx solid #fff;
+  font-size: 26rpx;
+  color: #fff;
+  text-align: center;
+  border-radius: 27rpx;
+}
+
+.news{
+  height: 66rpx;
+  border-radius: 33rpx;
+  background: #fff;
+  margin: 0 30rpx;
+  margin-top: -33rpx;
+  display: flex;
+  align-items: center;
+  color: #808080;
+  font-size: 24rpx;
+}
+.news .icon{
+  width: 28rpx;
+  height: 24rpx;
+  margin: 0 20rpx 0 30rpx;
+}
+
+.order{
+  background: #fff;
+  border-radius: 8rpx;
+  margin: 30rpx 30rpx 0;
+}
+.order .more{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 78rpx;
+  padding: 0 30rpx;
+  color: #1A1A1A;
+  font-size: 30rpx;
+  border-bottom: 1rpx solid #dcdcdc;
+}
+.order .more .icon{
+  width: 14rpx;
+  height: 24rpx;
+}
+.order .box{
+  display: flex;
+  align-items: center;
+  padding: 30rpx;
+  justify-content: space-between;
+}
+.order .box .item{
+  font-size: 24rpx;
+  color: #666;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 20%;
+}
+.order .box .icon{
+  width: 50rpx;
+  height: 50rpx;
+  margin-bottom: 10rpx;
+}
+
+.ad{
+  display: block;
+  margin: 30rpx;
+}
+.ad image{
+  height: 150rpx;
+  width: 100%;
+  border-radius: 8rpx;
+}
+
+.link{
+  background: #fff;
+  border-radius: 8rpx;
+  display: flex;
+  padding: 0 30rpx 30rpx;
+  margin: 30rpx 30rpx 0;
+  flex-wrap: wrap;
+}
+.link .item{
+  width: 25%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 24rpx;
+  color: #666;
+  margin-top: 30rpx;
+}
+.link .item .icon{
+  width: 80rpx;
+  height: 80rpx;
+}

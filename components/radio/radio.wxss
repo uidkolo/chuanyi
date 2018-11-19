@@ -1,0 +1,22 @@
+.radio{
+  display: flex;
+  align-items: center;
+}
+.icon{
+  height: 36rpx;
+  width: 36rpx;
+  border-radius: 36rpx;
+  border: 1rpx solid #999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10rpx;
+}
+.icon.active{
+  background: #F7C900;
+  border: 1rpx solid #F7C900;
+}
+.icon image{
+  height: 30rpx;
+  width: 30rpx;
+}

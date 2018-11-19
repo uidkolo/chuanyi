@@ -1,0 +1,12 @@
+view, navigator{
+  box-sizing: border-box
+}
+image{
+  display: block
+}
+.end{
+  color: #999;
+  text-align: center;
+  padding: 30rpx 0;
+  font-size: 24rpx;
+}
