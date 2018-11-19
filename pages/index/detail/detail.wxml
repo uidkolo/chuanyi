@@ -1,0 +1,59 @@
+<view class='header'>
+  <view class='center'>
+    <view class='canvas'>
+      <image src='/images/test/template.png'></image>
+    </view>
+    <view class='shadow'>
+      <image src='/images/design/shadow.png'></image>
+    </view>
+  </view>
+</view>
+
+<view class='info'>
+  <view class='top'>
+    <view class='price'>
+      <view class='pri'>
+        <text>￥</text>99-199
+      </view>
+      <text>选择面料、尺寸</text>
+    </view>
+    <view class='title'>2018夏季新款男士休闲版潮流修身T恤</view>
+  </view>
+  <view class='size'>
+    <text class='label'>尺码：</text>
+    <picker>
+      <view class='picker'>
+        <text class='value'>选择规格</text>
+        <image class='icon' src='/images/detail/icon_picker.png'></image>
+      </view>
+    </picker> 
+  </view>
+  <view class='btns'>
+    <text class='btn'>衣服详情</text>
+    <text class='btn'>衣服参数</text>
+    <text class='btn'>购买须知</text>
+  </view>
+</view>
+
+<view class='bottom-box'>
+  <view class='bottom'>
+    <view class='left'>
+      <view class='item'>
+        <image src='/images/detail/icon_index.png'></image>
+        <text>主页</text>
+      </view>
+      <view class='item'>
+        <image src='/images/detail/icon_service.png'></image>
+        <text>客服</text>
+      </view>
+      <view class='item'>
+        <image src='/images/detail/icon_car.png'></image>
+        <text>购物车</text>
+      </view>
+    </view>
+    <view class='right'>
+      <view class='add'>加入购物车</view>
+      <view class='confirm'>提交定制</view>
+    </view>
+  </view>
+</view>

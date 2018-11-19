@@ -69,6 +69,6 @@
     </scroll-view>
   </view>
 
-  <view  class='btn'>完成设计</view>
+  <view class='btn' bindtap='confirm'>完成设计</view>
 </view>
 

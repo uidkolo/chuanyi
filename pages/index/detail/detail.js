@@ -14,12 +14,7 @@ Page({
   onLoad: function (options) {
 
   },
-  // 完成设计
-  confirm(){
-    wx.navigateTo({
-      url: '/pages/index/detail/detail'
-    })
-  },
+
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
