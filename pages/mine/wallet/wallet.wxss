@@ -1,0 +1,131 @@
+page{
+  background: #f5f5f5;
+}
+.tab-box{
+  height: 80rpx;
+}
+.tab{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 0 30rpx;
+  background: #fff;
+  height: 80rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  font-size: 28rpx;
+  color: #4D4D4D;
+}
+.tab .item{
+  width: 60rpx;
+  white-space: nowrap;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 76rpx;
+  border-bottom: 4rpx solid #FFF;
+} 
+.tab .item.active{
+  color: #FF8400;
+  border-bottom: 4rpx solid #FF8400;
+}
+
+.tip{
+  margin: 30rpx 30rpx 0;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  color: #E5BF00;
+  font-size: 24rpx;
+  padding: 20rpx;
+}
+.tip image{
+  width: 24rpx;
+  height: 24rpx;
+  margin-right: 20rpx;
+}
+
+.list{
+  padding: 0 30rpx;
+}
+.list .item{
+  background: #fff;
+  display: flex;
+  height: 200rpx;
+  margin-top: 30rpx;
+}
+.list .item .left{
+  width: 276rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 24rpx;
+  color: #fff;
+}
+.list .item .left .num{
+  font-size: 80rpx;
+  font-weight: bold;
+}
+.list .item .left.new{
+  background: linear-gradient(to right, #F7B500,#F7C900);
+}
+.list .item .left.used{
+  background: #BFBFBF;
+}
+.list .item .right{
+  flex-grow: 1;
+  padding: 20rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.list .item .right .top .name{
+  font-size: 30rpx;
+  color: #333;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+}
+.list .item .right .top .name .label{
+  display: inline-block;
+  font-size: 20rpx;
+  font-weight: normal;
+  width: 70rpx;
+  height: 30rpx;
+  border-radius: 30rpx;
+  line-height: 30rpx;
+  text-align: center;
+  background: #F8DB16;
+  margin-right: 10rpx;
+}
+.list .item .right .top .date{
+  color: #999;
+  font-size: 24rpx;
+  margin-top: 20rpx;
+}
+.list .item .right .bottom{
+  border-top: 1rpx dotted #dcdcdc;
+  padding-top: 10rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.list .item .right .bottom .from{
+  color: #999;
+  font-size: 20rpx;
+  display: flex;
+  align-items: center;
+}
+.list .item .right .bottom .from image{
+  width: 20rpx;
+  height: 20rpx;
+  margin-right: 5rpx;
+}
+.list .item .right .bottom .btn{
+  color: #4D4D4D;
+  font-size: 24rpx;
+}

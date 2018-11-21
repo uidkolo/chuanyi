@@ -1,0 +1,153 @@
+<view class='tab-box'>
+  <view class='tab'>
+    <text class='item active'>未使用(12)</text>
+    <text class='item'>使用记录(9)</text>
+    <text class='item'>已过期(25)</text>
+  </view>
+</view>
+
+<view class='tip'>
+  <image src='/images/mine/icon_tip.png'></image>
+  <text>提示：1串币=1元，且串币不能叠加使用</text>
+</view>
+<view class='list'>
+  <view class='item'>
+    <view class='left new'>
+      <text class='num'>5</text>
+      <text class='content'>特价商品除外</text>
+    </view>
+    <view class='right'>
+      <view class='top'>
+        <view class='name'>
+          <text class='label'>串币</text>
+          <text>瓜分串币</text>
+        </view>
+        <view class='date'>有效期：2018.12.02 13:00:00</view>
+      </view>
+      <view class='bottom'>
+        <view class='from'>
+          <image src='/images/mine/icon_share.png'></image>
+          <text>来自大龙分享</text>
+        </view>
+        <text class='btn'>转赠</text>
+      </view>
+    </view>
+  </view>
+  <view class='item'>
+    <view class='left new'>
+      <text class='num'>5</text>
+      <text class='content'>特价商品除外</text>
+    </view>
+    <view class='right'>
+      <view class='top'>
+        <view class='name'>
+          <text class='label'>串币</text>
+          <text>邀请串币</text>
+        </view>
+        <view class='date'>有效期：2018.12.02 13:00:00</view>
+      </view>
+      <view class='bottom'>
+        <view class='from'>
+          <image src='/images/mine/icon_share.png'></image>
+          <text>来自大龙分享</text>
+        </view>
+        <text class='btn'>转赠</text>
+      </view>
+    </view>
+  </view>
+  <view class='item'>
+    <view class='left new'>
+      <text class='num'>5</text>
+      <text class='content'>特价商品除外</text>
+    </view>
+    <view class='right'>
+      <view class='top'>
+        <view class='name'>
+          <text class='label'>串币</text>
+          <text>新人串币</text>
+        </view>
+        <view class='date'>有效期：2018.12.02 13:00:00</view>
+      </view>
+      <view class='bottom'>
+        <view class='from'>
+          <image src='/images/mine/icon_share.png'></image>
+          <text>来自大龙分享</text>
+        </view>
+        <text class='btn'>转赠</text>
+      </view>
+    </view>
+  </view>
+</view>
+
+
+<view class='list'>
+  <view class='item'>
+    <view class='left used'>
+      <text class='num'>5</text>
+      <text class='content'>特价商品除外</text>
+    </view>
+    <view class='right'>
+      <view class='top'>
+        <view class='name'>
+          <text class='label'>串币</text>
+          <text>瓜分串币</text>
+        </view>
+        <view class='date'>有效期：2018.12.02 13:00:00</view>
+      </view>
+      <view class='bottom'>
+        <view class='from'>
+          <image src='/images/mine/icon_share.png'></image>
+          <text>来自大龙分享</text>
+        </view>
+        <text class='btn'>转赠</text>
+      </view>
+    </view>
+  </view>
+  <view class='item'>
+    <view class='left used'>
+      <text class='num'>5</text>
+      <text class='content'>特价商品除外</text>
+    </view>
+    <view class='right'>
+      <view class='top'>
+        <view class='name'>
+          <text class='label'>串币</text>
+          <text>邀请串币</text>
+        </view>
+        <view class='date'>有效期：2018.12.02 13:00:00</view>
+      </view>
+      <view class='bottom'>
+        <view class='from'>
+          <image src='/images/mine/icon_share.png'></image>
+          <text>来自大龙分享</text>
+        </view>
+        <text class='btn'>转赠</text>
+      </view>
+    </view>
+  </view>
+  <view class='item'>
+    <view class='left used'>
+      <text class='num'>5</text>
+      <text class='content'>特价商品除外</text>
+    </view>
+    <view class='right'>
+      <view class='top'>
+        <view class='name'>
+          <text class='label'>串币</text>
+          <text>新人串币</text>
+        </view>
+        <view class='date'>有效期：2018.12.02 13:00:00</view>
+      </view>
+      <view class='bottom'>
+        <view class='from'>
+          <image src='/images/mine/icon_share.png'></image>
+          <text>来自大龙分享</text>
+        </view>
+        <text class='btn'>转赠</text>
+      </view>
+    </view>
+  </view>
+</view>
+
+
+

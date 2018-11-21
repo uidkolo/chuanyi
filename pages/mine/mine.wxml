@@ -53,7 +53,7 @@
 </navigator>
 
 <view class='link'>
-  <navigator class='item'>
+  <navigator class='item' url='/pages/mine/wallet/wallet'>
     <image class='icon' src='/images/mine/link_01.png'></image>
     <text>我的钱包</text>
   </navigator>

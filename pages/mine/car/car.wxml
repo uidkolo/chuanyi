@@ -19,9 +19,9 @@
         <view class='bottom'>
           <text class='price'>￥99.00</text>
           <view class='num'>
-            <text class='reduce'>-</text>
+            <image src='/images/icon/icon_reduce.png'></image>
             <text class='value'>2</text>
-            <view class='add'>+</view>
+            <image src='/images/icon/icon_add.png'></image>
           </view>
         </view>
       </view>
@@ -42,9 +42,9 @@
         <view class='bottom'>
           <text class='price'>￥99.00</text>
           <view class='num'>
-            <text class='reduce'>-</text>
+            <image src='/images/icon/icon_reduce.png'></image>
             <text class='value'>2</text>
-            <view class='add'>+</view>
+            <image src='/images/icon/icon_add.png'></image>
           </view>
         </view>
       </view>
@@ -65,9 +65,9 @@
         <view class='bottom'>
           <text class='price'>￥99.00</text>
           <view class='num'>
-            <text class='reduce'>-</text>
+            <image src='/images/icon/icon_reduce.png'></image>
             <text class='value'>2</text>
-            <view class='add'>+</view>
+            <image src='/images/icon/icon_add.png'></image>
           </view>
         </view>
       </view>
