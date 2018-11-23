@@ -1,0 +1,25 @@
+<view class='top'>
+  <view class='info'>
+    <image class='icon' src='/images/pay/icon_success.png'></image>
+    <view class='right'>
+      <view>
+        <text class='label'>支付方式：</text>
+        <text>微信支付</text>
+      </view>
+      <view>
+        <text class='label'>支付金额：</text>
+        <text>￥287.00</text>
+      </view>
+    </view>
+  </view>
+  <view class='btn-box'>
+    <text class='btn'>完成</text>
+    <text class='btn'>查看订单</text>
+  </view>
+</view>
+
+<view class='bottom'>
+  <image class='title' src='/images/pay/red_title.png'></image>
+  <image class='red' src='/images/pay/red.png'></image>
+  <view class='btn'>立即分享到微信群</view>
+</view>

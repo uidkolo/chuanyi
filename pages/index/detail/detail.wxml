@@ -51,7 +51,7 @@
     </view>
     <view class='right'>
       <view class='add'>加入购物车</view>
-      <view class='confirm'>提交定制</view>
+      <view class='confirm' bindtap='confirm'>提交定制</view>
     </view>
   </view>
 </view>

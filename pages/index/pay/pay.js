@@ -1,4 +1,4 @@
-// pages/index/design/design.js
+// pages/index/pay/pay.js
 Page({
 
   /**
@@ -14,10 +14,10 @@ Page({
   onLoad: function(options) {
 
   },
-  // 提交定制
-  confirm() {
+  // 支付
+  pay() {
     wx.navigateTo({
-      url: '/pages/index/pay/pay',
+      url: '/pages/index/pay/success/success',
     })
   },
   /**
