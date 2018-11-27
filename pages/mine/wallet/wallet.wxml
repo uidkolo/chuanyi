@@ -149,5 +149,7 @@
   </view>
 </view>
 
-
+<view class='end'>
+  <text>--END--</text>
+</view>
 

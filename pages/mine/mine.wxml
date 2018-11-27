@@ -69,7 +69,7 @@
     <image class='icon' src='/images/mine/link_04.png'></image>
     <text>购物车</text>
   </navigator>
-  <navigator class='item'>
+  <navigator class='item' url='/pages/mine/favorite/favorite'>
     <image class='icon' src='/images/mine/link_05.png'></image>
     <text>收藏夹</text>
   </navigator>

@@ -1,5 +1,6 @@
 {
   "pages": [
+    
     "pages/index/index",
     "pages/team/team",
     "pages/works/works",
@@ -11,7 +12,10 @@
     "pages/mine/car/car",
     "pages/mine/wallet/wallet",
     "pages/index/pay/pay",
-    "pages/index/pay/success/success"
+    "pages/index/pay/success/success",
+    "pages/mine/favorite/favorite",
+    "pages/index/detail/size/size"
+    
   ],
   "window": {
     "backgroundColor": "#f5f5f5",
