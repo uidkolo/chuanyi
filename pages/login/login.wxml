@@ -1,0 +1,10 @@
+<view class='title'>登录</view>
+<button open-type='getUserInfo' class='login' bindgetuserinfo='bindGetUserInfo'>
+  <image src='/images/icon/icon_wechat.png'></image>
+  <text>微信登录</text>
+</button>
+
+<view class='agree'>
+  <checkbox checked></checkbox>
+  <text>同意《串衣网络服务协议》 及 《串衣隐私保护申明》 </text>
+</view>

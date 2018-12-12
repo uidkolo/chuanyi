@@ -1,8 +1,8 @@
 <view class='top'>
   <view class='left'>
-    <image class='avatar' src='/images/test/fodder.png'></image>
+    <image class='avatar' src='{{avatar}}'></image>
     <view class='info'>
-      <text class='name'>断了的弦</text>
+      <text class='name'>{{nickname}}</text>
       <view class='id'>
         <text class='content'>ID：868866</text>
         <text class='copy'>复制</text>

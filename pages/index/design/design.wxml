@@ -1,47 +1,43 @@
 <view class='top'>
   <view class='left'>
-    <view class='item'><text>女</text><text>装</text></view>
-    <view class='item active'><text>男</text><text>装</text></view>
-    <view class='item'><text>童</text><text>装</text></view>
+    <view class='item {{type==1?"active":""}}' bindtap='tabType' data-type='1'><text>男</text><text>装</text></view>
+    <view class='item {{type==2?"active":""}}' bindtap='tabType' data-type='2'><text>女</text><text>装</text></view>
+    <view class='item {{type==3?"active":""}}' bindtap='tabType' data-type='3'><text>童</text><text>装</text></view>
   </view>
   <view class='center'>
-    <view class='canvas'>
-      <image src='/images/test/template.png'></image>
+    <!-- <canvas canvas-id='canvas'></canvas> -->
+    <view class='canvas-box'>
+      <view class='canvas-border'>
+        <canvas class='canvas' canvas-id='canvas'></canvas>
+      </view>
+      <image class='img' src='{{colors[currentColorIndex][currentDirection]}}'></image>
     </view>
     <view class='shadow'>
       <image src='/images/design/shadow.png'></image>
     </view>
   </view>
   <view class='right'>
-    <text class='item red'></text>
-    <text class='item white'></text>
-    <text class='item black'></text>
-    <text class='item blue'></text>
+    <text class='item' wx:for='{{colors}}' wx:key='index' style='background:{{item.color}}' bindtap='tabColor' data-index='{{index}}'></text>
   </view>
 </view>
 
 <view class='direction'>
-  <text class='item front active'>正面</text>
-  <text class='item back'>反面</text>
+  <text class='item front {{currentDirection=="front_thumb"?"active":""}}' bindtap='tabDirection' data-label='0'>正面</text>
+  <text class='item back {{currentDirection=="back_thumb"?"active":""}}'  bindtap='tabDirection' data-label='1'>反面</text>
 </view>
 
 <view class='style'>
   <scroll-view scroll-x>
-    <image class='item' src='/images/test/template.png'></image>
-    <image class='item' src='/images/test/template.png'></image>
-    <image class='item' src='/images/test/template.png'></image>
-    <image class='item' src='/images/test/template.png'></image>
+    <image class='item' wx:for='{{clothes}}' wx:key='index' src='{{item.thumb}}'></image>
   </scroll-view>
 </view>
 
 <view class='fodder'>
-  <view class='select'>
-    <picker>
-      <view class='item check-fodder'>
-        <text>选择素材</text>
-        <image class='icon' src='/images/icon/icon_picker.png'></image>
-      </view>
-    </picker>
+  <view class='select' wx:if='{{!selectFodder}}'>
+    <view class='item' bindtap='showSelectFodder'>
+      <image class='icon' src='/images/icon/icon_fodder.png'></image>
+      <text>素材</text>
+    </view>
     <view class='item'>
       <image class='icon' src='/images/icon/icon_photo.png'></image>
       <text>相册</text>
@@ -52,21 +48,27 @@
     </view>
   </view>
 
-  <view class='fodder-box'>
-    <scroll-view scroll-x>
-      <image class='item' src='/images/test/fodder.png'></image>
-      <image class='item' src='/images/test/fodder.png'></image>
-      <image class='item' src='/images/test/fodder.png'></image>
-      <image class='item' src='/images/test/fodder.png'></image>
-      <image class='item' src='/images/test/fodder.png'></image>
-      <image class='item' src='/images/test/fodder.png'></image>
-      <image class='item' src='/images/test/fodder.png'></image>
-      <image class='item' src='/images/test/fodder.png'></image>
-      <image class='item' src='/images/test/fodder.png'></image>
-      <image class='item' src='/images/test/fodder.png'></image>
-      <image class='item' src='/images/test/fodder.png'></image>
-      <image class='item' src='/images/test/fodder.png'></image>
-    </scroll-view>
+  <view class='fodder-box' wx:if='{{selectFodder}}'>
+    <view class='fodder-header'>
+      <picker range='{{fodderTypes}}' range-key='name' bindchange='selectFodder'>
+        <view class='item'>
+          <text>{{fodderTypeName}}</text>
+          <image class='icon' src='/images/icon/icon_picker.png'></image>
+        </view>
+      </picker>
+      <view class='item' bindtap='nextPage'>
+        <image class='icon' src='/images/icon/icon_fresh.png'></image>
+        <text>换一批</text>
+      </view>
+      <view class='item' bindtap='backSelectFodder'>
+        <image class='icon' src='/images/icon/icon_back.png'></image>
+        <text>返回</text>
+      </view>
+      
+    </view>
+    <view class='list'>
+      <image class='item' wx:for='{{fodders}}' wx:key='index' src='{{item.thumb}}' bindtap='pickerFodder' data-index='{{index}}'></image>
+    </view>
   </view>
 
   <view class='btn' bindtap='confirm'>完成设计</view>

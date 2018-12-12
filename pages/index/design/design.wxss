@@ -32,7 +32,12 @@
   justify-content: space-between;
   align-items: center;
 }
-.top .center .canvas image{
+.top .center .canvas-box{
+  position: relative;
+  width: 450rpx;
+  height: 620rpx;
+}
+.top .center .canvas-box .img{
   width: 450rpx;
   height: 530rpx;
 }
@@ -40,6 +45,22 @@
   width: 450rpx;
   height: 60rpx;
 }
+
+.top .center .canvas-box .canvas-border{
+  width: 180rpx;
+  height: 240rpx;
+  position: absolute;
+  top: 140rpx;
+  left: 135rpx;
+}
+.top .center .canvas-box:hover .canvas-border{
+  border: 1px solid #a5a5a5;
+}
+.top .center .canvas-box .canvas{
+  width: 180rpx;
+  height: 240rpx;
+}
+
 
 .top .right .item{
   display: block;
@@ -103,14 +124,13 @@
 }
 
 .fodder{
-  margin-top: 20rpx;
   padding-bottom: 30rpx;
 }
 .fodder .select{
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 40rpx;
+  padding: 40rpx;
 }
 .fodder .select .item{
   height: 56rpx;
@@ -133,22 +153,48 @@
   margin-right: 0;
 }
 .fodder .fodder-box{
-  padding: 40rpx 0;
-  white-space: nowrap;
-  text-align: center;
+  padding: 40rpx;
 }
-.fodder .fodder-box .item{
-  width: 110rpx;
-  height: 110rpx;
-  display: inline-block;
-  margin:  0 20rpx;
+.fodder .fodder-box .fodder-header{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.fodder .fodder-box .fodder-header .item{
+  height: 56rpx;
+  width: 160rpx;
+  border-radius: 10rpx;
+  color: #333333;
+  font-size: 26rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border: 1px solid #dcdcdc;
+  line-height: 1;
 }
-.fodder .fodder-box .item:first-child{
-  margin-left: 40rpx;
+.fodder .fodder-box .fodder-header .item .icon{
+  width: 30rpx;
+  height: 30rpx;
+  margin-right: 10rpx;
 }
-.fodder .fodder-box .item:last-child{
-  margin-right: 40rpx;
+.fodder .fodder-box .fodder-header .item:first-child .icon{
+  margin-right: 0;
+}
+.fodder .fodder-box .list{
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 30rpx;
+}
+.fodder .fodder-box .list .item{
+  width: 106rpx;
+  height: 106rpx;
+  margin-right:  30rpx;
+  display: block;
+  border: 1px solid #dcdcdc;
+  margin-bottom: 30rpx;
+}
+.fodder .fodder-box .item:nth-child(5n){
+  margin-right: 0;
 }
 
 .fodder .btn{
@@ -160,5 +206,5 @@
   line-height: 92rpx;
   text-align: center;
   border-radius: 8rpx;
-  margin: 0 auto;
+  margin: 20rpx auto 0;
 }
