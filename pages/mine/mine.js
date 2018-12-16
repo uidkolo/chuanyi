@@ -5,7 +5,8 @@ Page({
    * 页面的初始数据
    */
   data: {
-
+    nickname: wx.getStorageSync('userInfo').nick_name,
+    avatar: wx.getStorageSync('userInfo').avatar,
   },
 
   /**
