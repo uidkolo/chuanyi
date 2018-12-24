@@ -1,0 +1,102 @@
+<view class='list'>
+  <view class='item'>
+    <view class='imgs'>
+      <view class='img front'>
+        <view class='icon'>
+          <text>正</text>
+        </view>
+        <image src='/images/test/template.png'></image>
+      </view>
+      <view class='img back'>
+        <view class='icon'>
+          <text>背</text>
+        </view>
+        <image src='/images/test/template.png'></image>
+      </view>
+    </view>
+    <view class='info'>
+      <view class='left'>
+        <text class='left-item'>2018-11-23</text>
+        <text class='left-item'>POLO衫</text>
+        <text class='left-item'>颜色:灰色</text>
+      </view>
+      <text class='share'>分享</text>
+    </view>
+  </view>
+  <view class='item'>
+    <view class='imgs'>
+      <view class='img front'>
+        <view class='icon'>
+          <text>正</text>
+        </view>
+        <image src='/images/test/template.png'></image>
+      </view>
+      <view class='img back'>
+        <view class='icon'>
+          <text>背</text>
+        </view>
+        <image src='/images/test/template.png'></image>
+      </view>
+    </view>
+    <view class='info'>
+      <view class='left'>
+        <text class='left-item'>2018-11-23</text>
+        <text class='left-item'>POLO衫</text>
+        <text class='left-item'>颜色:灰色</text>
+      </view>
+      <text class='share'>分享</text>
+    </view>
+  </view>
+  <view class='item'>
+    <view class='imgs'>
+      <view class='img front'>
+        <view class='icon'>
+          <text>正</text>
+        </view>
+        <image src='/images/test/template.png'></image>
+      </view>
+      <view class='img back'>
+        <view class='icon'>
+          <text>背</text>
+        </view>
+        <image src='/images/test/template.png'></image>
+      </view>
+    </view>
+    <view class='info'>
+      <view class='left'>
+        <text class='left-item'>2018-11-23</text>
+        <text class='left-item'>POLO衫</text>
+        <text class='left-item'>颜色:灰色</text>
+      </view>
+      <text class='share'>分享</text>
+    </view>
+  </view>
+  <view class='item'>
+    <view class='imgs'>
+      <view class='img front'>
+        <view class='icon'>
+          <text>正</text>
+        </view>
+        <image src='/images/test/template.png'></image>
+      </view>
+      <view class='img back'>
+        <view class='icon'>
+          <text>背</text>
+        </view>
+        <image src='/images/test/template.png'></image>
+      </view>
+    </view>
+    <view class='info'>
+      <view class='left'>
+        <text class='left-item'>2018-11-23</text>
+        <text class='left-item'>POLO衫</text>
+        <text class='left-item'>颜色:灰色</text>
+      </view>
+      <text class='share'>分享</text>
+    </view>
+  </view>
+
+  <view class='end'>
+    <text>-- END --</text>
+  </view>
+</view>

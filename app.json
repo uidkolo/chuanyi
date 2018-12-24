@@ -15,7 +15,12 @@
     "pages/index/pay/success/success",
     "pages/mine/favorite/favorite",
     "pages/index/detail/size/size",
+<<<<<<< HEAD
+    "pages/mine/show/show",
+    "pages/mine/photo/photo"
+=======
     "pages/login/login"
+>>>>>>> 8a7da26d64326ac89bfa601ddc42a62eeb7f41ec
   ],
   "window": {
     "backgroundColor": "#f5f5f5",

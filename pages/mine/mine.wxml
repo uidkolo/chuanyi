@@ -4,8 +4,8 @@
     <view class='info'>
       <text class='name'>{{nickname}}</text>
       <view class='id'>
-        <text class='content'>ID：868866</text>
-        <text class='copy'>复制</text>
+        <text class='content'>我的关注 | 26</text>
+        <!-- <text class='copy'>复制</text> -->
       </view>
     </view>
   </view>
@@ -26,10 +26,12 @@
   </navigator>
   <view class='box'>
     <navigator class='item' url='/pages/mine/order/order?index=1'>
+      <text class='num'>1</text>
       <image class='icon' src='/images/mine/order_01.png'></image>
       <text>待付款</text>
     </navigator>
     <navigator class='item' url='/pages/mine/order/order?index=2'>
+      <text class='num'>10</text>
       <image class='icon' src='/images/mine/order_02.png'></image>
       <text>待发货</text>
     </navigator>
@@ -55,15 +57,15 @@
 <view class='link'>
   <navigator class='item' url='/pages/mine/wallet/wallet'>
     <image class='icon' src='/images/mine/link_01.png'></image>
-    <text>我的钱包</text>
+    <text>串币</text>
   </navigator>
-  <navigator class='item'>
+  <navigator class='item' url='/pages/mine/show/show'>
     <image class='icon' src='/images/mine/link_02.png'></image>
     <text>买家秀</text>
   </navigator>
-  <navigator class='item'>
+  <navigator class='item' url='/pages/mine/photo/photo'>
     <image class='icon' src='/images/mine/link_03.png'></image>
-    <text>我的定制</text>
+    <text>作品相册</text>
   </navigator>
   <navigator class='item' url='/pages/mine/car/car'>
     <image class='icon' src='/images/mine/link_04.png'></image>
@@ -88,5 +90,9 @@
   <navigator class='item'>
     <image class='icon' src='/images/mine/link_09.png'></image>
     <text>关注我们</text>
+  </navigator>
+  <navigator class='item'>
+    <image class='icon' src='/images/mine/link_10.png'></image>
+    <text>邀请好友</text>
   </navigator>
 </view>
