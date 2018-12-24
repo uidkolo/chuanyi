@@ -1,39 +1,47 @@
+<!-- 设计区域 -->
 <view class='top'>
-  <view class='left'>
-    <view class='item {{type==1?"active":""}}' bindtap='tabType' data-type='1'><text>男</text><text>装</text></view>
-    <view class='item {{type==2?"active":""}}' bindtap='tabType' data-type='2'><text>女</text><text>装</text></view>
-    <view class='item {{type==3?"active":""}}' bindtap='tabType' data-type='3'><text>童</text><text>装</text></view>
+  <view class='top-left'>
+    <view class='item {{type==1?"active":""}}' bindtap='tabType' data-type='1'>
+      <text>男</text><text>装</text>
+    </view>
+    <view class='item {{type==2?"active":""}}' bindtap='tabType' data-type='2'>
+      <text>女</text><text>装</text>
+    </view>
+    <view class='item {{type==3?"active":""}}' bindtap='tabType' data-type='3'>
+      <text>童</text><text>装</text>
+    </view>
   </view>
-  <view class='center'>
-    <!-- <canvas canvas-id='canvas'></canvas> -->
+  <view class='top-center'>
     <view class='canvas-box'>
-      <view class='canvas-border'>
-        <canvas class='canvas' canvas-id='canvas'></canvas>
-      </view>
+      <canvas class='canvas' canvas-id='canvas01' disable-scroll bindtouchstart='touchstart' bindtouchmove='touchmove' bindtouchend='touchend'></canvas>
       <image class='img' src='{{colors[currentColorIndex][currentDirection]}}'></image>
     </view>
     <view class='shadow'>
       <image src='/images/design/shadow.png'></image>
     </view>
   </view>
-  <view class='right'>
+  <view class='top-right'>
     <text class='item' wx:for='{{colors}}' wx:key='index' style='background:{{item.color}}' bindtap='tabColor' data-index='{{index}}'></text>
   </view>
 </view>
 
-<view class='direction'>
-  <text class='item front {{currentDirection=="front_thumb"?"active":""}}' bindtap='tabDirection' data-label='0'>正面</text>
-  <text class='item back {{currentDirection=="back_thumb"?"active":""}}'  bindtap='tabDirection' data-label='1'>反面</text>
+<!-- 选项区域 -->
+<view class='center'>
+  <view class='direction'>
+    <text class='item front {{currentDirection=="front_thumb"?"active":""}}' bindtap='tabDirection' data-label='0'>正面</text>
+    <text class='item back {{currentDirection=="back_thumb"?"active":""}}'  bindtap='tabDirection' data-label='1'>反面</text>
+  </view>
+  <view class='style'>
+    <scroll-view scroll-x>
+      <image class='item' wx:for='{{clothes}}' wx:key='index' src='{{item.thumb}}'></image>
+    </scroll-view>
+  </view>
 </view>
 
-<view class='style'>
-  <scroll-view scroll-x>
-    <image class='item' wx:for='{{clothes}}' wx:key='index' src='{{item.thumb}}'></image>
-  </scroll-view>
-</view>
-
-<view class='fodder'>
-  <view class='select' wx:if='{{!selectFodder}}'>
+<!-- 底部 -->
+<view class='bottom'>
+  <!-- 选项 -->
+  <view class='select' wx:if='{{fodderStep==0}}'>
     <view class='item' bindtap='showSelectFodder'>
       <image class='icon' src='/images/icon/icon_fodder.png'></image>
       <text>素材</text>
@@ -47,8 +55,9 @@
       <text>文字</text>
     </view>
   </view>
-
-  <view class='fodder-box' wx:if='{{selectFodder}}'>
+  <view class='btn' bindtap='confirm' wx:if='{{fodderStep==0}}'>完成设计</view>
+  <!-- 素材 -->
+  <view class='fodder-box' wx:if='{{fodderStep==1}}'>
     <view class='fodder-header'>
       <picker range='{{fodderTypes}}' range-key='name' bindchange='selectFodder'>
         <view class='item'>
@@ -64,13 +73,28 @@
         <image class='icon' src='/images/icon/icon_back.png'></image>
         <text>返回</text>
       </view>
-      
     </view>
     <view class='list'>
-      <image class='item' wx:for='{{fodders}}' wx:key='index' src='{{item.thumb}}' bindtap='pickerFodder' data-index='{{index}}'></image>
+      <image class='item' wx:for='{{fodders[currentFodderPage-1]}}' wx:key='index' src='{{item.thumb}}' bindtap='pickerFodder' data-index='{{index}}'></image>
     </view>
   </view>
-
-  <view class='btn' bindtap='confirm'>完成设计</view>
 </view>
-
+<!-- 素材操作 -->
+<view class='fodder-edit' wx:if='{{fodderStep==2}}'>
+  <view class='edit'>
+    <view class='item'>
+      <text class='label'>大小</text>
+      <slider activeColor='#f7c900' value='50' min='25' bindchange='fodderSize'></slider>
+    </view>
+    <view class='item'>
+      <text class='label'>旋转</text>
+      <slider activeColor='#f7c900' value='0' min='0' max='360' bindchange='fodderRotate'></slider>
+    </view>
+  </view>
+  <view class='edit-bottom'>
+    <view class='item change'>换一个</view>
+    <view class='item center'>居中</view>
+    <view class='item cancel'>清除</view>
+    <view class='item confire'>完成</view>
+  </view>
+</view>

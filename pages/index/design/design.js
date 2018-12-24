@@ -5,27 +5,50 @@ Page({
    * 页面的初始数据
    */
   data: {
-    type: 1,
+    notNull: false, //画布为空？
+    type: 1, //衣服分类 1:男装 2:女装 3:童装
     clothes: [], //款式
     colors: [], //颜色样式
     currentColorIndex: 0, //当前颜色index
     currentDirection: 'front_thumb', //正反面
-    selectFodder: false, //显示选择素材模块
+    fodderStep: 0, //素材操作阶段
     fodderTypes: [], //素材分类
-    fodderTypeName: '全部素材',//素材分类名称
+    fodderTypeName: '全部素材', //素材分类名称
     fodderTypeId: '', //素材类型id
     fodders: [], //素材
+    currentFodderPage: 0, //当前素材页码
     pageNo: 1, //当前页码
-    pageSize: 10, //每页条数
+    pageSize: 2, //每页条数
     maxPage: 1, //最大页数
-    designImg: [] //图片素材组
+    designImg: [], //图片素材组
+    fodderObject: [], //画布上的素材对象
+    startX: 0, //触摸开始点x
+    startY: 0, //触摸开始点y
+    moveX: 0, //触摸移动距离x
+    moveY: 0, //触摸移动距离y
+    fodderX: 5, //素材初始x
+    fodderY: 20, //素材初始y,
+    fodderW: 80, //素材初始w
+    fodderH: 80, //素材初始h,
+    fodderRotate: 0, //素材初始rotate,
+    translateX: 0, //素材初始 translateX
+    translateY: 0, //素材初始 translateY
+    currentCanvas: 0
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
-    this.clothesList(this.data.type)
+    this.init()
+  },
+  // 页面初始化
+  init(){
+    // 默认加载男装款式列表
+    this.clothesList(1).then(clothes=>{
+      // 默认加载男装第一款的样式
+      this.getStyle(clothes[0].id).then()
+    })
   },
   // 切换服装类型
   tabType(e) {
@@ -33,57 +56,59 @@ Page({
       type: e.currentTarget.dataset.type,
       currentDirection: 'front_thumb'
     })
-    // 默认加载男装
-    this.clothesList(this.data.type)
-  },
-  // 完成设计
-  confirm() {
-    wx.navigateTo({
-      url: '/pages/index/detail/detail'
+    this.clothesList(e.currentTarget.dataset.type).then(clothes=>{
+      // 加载第一款的样式
+      if(clothes.length>0){
+        this.getStyle(clothes[0].id).then()
+      }
     })
   },
-  // 获取衣服款式
+  // 获取衣服款式列表
   clothesList(type) {
-    wx.request({
-      url: 'https://cy.nulizhe.com/api/Clothes/clothesList',
-      data: {
-        type: type
-      },
-      success: res => {
-        if (res.data.code == 1) {
-          this.setData({
-            clothes: res.data.data.clothes
-          })
-          // 默认加载第一项的颜色
-          this.getStyle(res.data.data.clothes[0].id)
-        } else {
-          wx.showToast({
-            title: res.data.message,
-            image: '/images/tip.png'
-          })
+    return new Promise((resolve, reject) => {
+      wx.request({
+        url: 'https://cy.nulizhe.com/api/Clothes/clothesList',
+        data: {
+          type: type
+        },
+        success: res => {
+          if (res.data.code == 1) {
+            resolve(res.data.data.clothes)
+            this.setData({
+              clothes: res.data.data.clothes
+            })
+          } else {
+            wx.showToast({
+              title: res.data.message,
+              image: '/images/tip.png'
+            })
+          }
         }
-      }
+      })
     })
   },
   // 获取衣服颜色和素材
   getStyle(id) {
-    wx.request({
-      url: 'https://cy.nulizhe.com/api/Clothes/clothesStyle',
-      data: {
-        clothes_id: id
-      },
-      success: res => {
-        if (res.data.code == 1) {
-          this.setData({
-            colors: res.data.data.colors
-          })
-        } else {
-          wx.showToast({
-            title: res.data.message,
-            images: '/images/tip.png'
-          })
+    return new Promise((resolve, reject) => {
+      wx.request({
+        url: 'https://cy.nulizhe.com/api/Clothes/clothesStyle',
+        data: {
+          clothes_id: id
+        },
+        success: res => {
+          if (res.data.code == 1) {
+            resolve(res.data.data.colors)
+            this.setData({
+              colors: res.data.data.colors
+            })
+          } else {
+            wx.showToast({
+              title: res.data.message,
+              images: '/images/tip.png'
+            })
+          }
         }
-      }
+      })
     })
   },
   // 切换颜色
@@ -107,7 +132,7 @@ Page({
   // 点击素材按钮
   showSelectFodder() {
     this.setData({
-      selectFodder: true
+      fodderStep: 1
     })
     // 记载素材分类
     this.getFodderTypes()
@@ -117,7 +142,7 @@ Page({
   // 点击返回按钮
   backSelectFodder() {
     this.setData({
-      selectFodder: false,
+      fodderStep: 0,
       fodderTypeId: '',
       fodderTypeName: '全部素材',
       pageNo: 1,
@@ -157,6 +182,15 @@ Page({
   },
   // 加载素材
   getFodders() {
+    if (this.data.currentFodderPage < this.data.maxPage) {
+      this.setData({
+        currentFodderPage: this.data.currentFodderPage + 1
+      })
+    } else {
+      this.setData({
+        currentFodderPage: 1
+      })
+    }
     if (this.data.pageNo <= this.data.maxPage) {
       wx.showLoading({
         title: '加载中',
@@ -168,14 +202,16 @@ Page({
           page: this.data.pageNo,
           limit: this.data.pageSize
         },
-        success: res=>{
+        success: res => {
           wx.hideLoading()
-          if(res.data.code==1){
+          if (res.data.code == 1) {
+            this.data.fodders.push(res.data.data.materials)
             this.setData({
-              fodders: res.data.data.materials,
+              pageNo: this.data.pageNo + 1,
+              fodders: this.data.fodders,
               maxPage: res.data.data.total
             })
-          }else{
+          } else {
             wx.showToast({
               title: res.data.message,
               image: '/images/tip.png'
@@ -186,33 +222,97 @@ Page({
     }
   },
   //下一页
-  nextPage(){
-    this.setData({
-      pageNo: this.data.pageNo+1
-    })
+  nextPage() {
     this.getFodders()
   },
   // 渲染画布
-  draw(){
-    const canvas = wx.createCanvasContext('canvas')
+  draw() {
+    const canvas = wx.createCanvasContext('canvas01')
+    //清空画布
+    canvas.clearRect(-(item.x + item.w / 2), -(item.y + item.h / 2), 1000, 1200)
+    this.data.fodderObject.forEach(item => {
+      canvas.translate(item.x + item.w / 2, item.y + item.h / 2)
+      canvas.rotate(item.rotate * Math.PI / 180)
+      canvas.drawImage(item.file, item.w / 2, item.h / 2, item.w, item.h)
+      canvas.rotate(-item.rotate * Math.PI / 180)
+      canvas.translate(-(item.x + item.w / 2), -(item.y + item.h / 2))
+      canvas.draw(true, () => {
+        this.setData({
+          notNull: true, //画布不为空
+        })
+      })
+    })
   },
   // 选择素材
-  pickerFodder(e){
-    const canvas = wx.createCanvasContext('canvas')
+  pickerFodder(e) {
     wx.showLoading({
       title: '请稍等',
     })
     wx.downloadFile({
-      url: this.data.fodders[e.currentTarget.dataset.index].thumb,
-      success: res=>{
+      url: this.data.fodders[this.data.currentFodderPage - 1][e.currentTarget.dataset.index].thumb,
+      success: res => {
         wx.hideLoading()
-        canvas.clearRect(0,0,100,100)
-        canvas.drawImage(res.tempFilePath,0,0,100,100)
-        canvas.draw(true, ()=>{
-          console.log(123123)
+        this.setData({
+          fodderStep: 2,
+          fodderObject: [{
+            file: res.tempFilePath,
+            x: 5,
+            y: 20,
+            w: 80,
+            h: 80,
+            rotate: 0
+          }]
         })
+        this.draw()
       }
     })
+  },
+  // 触摸开始
+  touchstart(e) {
+    this.setData({
+      startX: e.touches[0].x,
+      startY: e.touches[0].y,
+      fodderX: this.data.fodderObject[0].x,
+      fodderY: this.data.fodderObject[0].y
+    })
+  },
+  // 触摸移动
+  touchmove(e) {
+    this.setData({
+      moveX: e.touches[0].x - this.data.startX,
+      moveY: e.touches[0].y - this.data.startY,
+    })
+    this.data.fodderObject[0].x = this.data.fodderX + this.data.moveX
+    this.data.fodderObject[0].y = this.data.fodderY + this.data.moveY
+    this.setData({
+      fodderObject: this.data.fodderObject
+    })
+    // 重新渲染画布
+    this.draw()
+  },
+  // 触摸结束
+  touchend(e) {
+    this.setData({
+      fodderX: this.data.fodderObject[0].x,
+      fodderY: this.data.fodderObject[0].y
+    })
+  },
+  // 素材缩放
+  fodderSize(event) {
+    this.data.fodderObject[this.data.currentCanvas].w = this.data.fodderW * (event.detail.value / 50)
+    this.data.fodderObject[this.data.currentCanvas].h = this.data.fodderH * (event.detail.value / 50)
+    // 重新渲染画布
+    this.draw()
+  },
+  // 素材旋转
+  fodderRotate(event) {
+    this.data.fodderObject[this.data.currentCanvas].rotate = event.detail.value
+    this.setData({
+      translateX: this.data.fodderX + this.data.fodderW / 2,
+      translateY: this.data.fodderY + this.data.fodderH / 2
+    })
+    // 重新渲染画布
+    this.draw()
   },
   /**
    * 生命周期函数--监听页面初次渲染完成

@@ -1,9 +1,10 @@
 {
   "pages": [
+    "pages/index/design/design",
     "pages/index/index",
     "pages/team/team",
     "pages/works/works",
-    "pages/index/design/design",
+    
     "pages/index/detail/detail",
     "pages/mine/mine",
     "pages/mine/order/order",
