@@ -11,6 +11,7 @@ Page({
     colors: [], //颜色样式
     currentColorIndex: 0, //当前颜色index
     currentDirection: 'front_thumb', //正反面
+    defaultFooders: [], //默认素材
     fodderStep: 0, //素材操作阶段
     fodderTypes: [], //素材分类
     fodderTypeName: '全部素材', //素材分类名称
@@ -18,10 +19,11 @@ Page({
     fodders: [], //素材
     currentFodderPage: 0, //当前素材页码
     pageNo: 1, //当前页码
-    pageSize: 2, //每页条数
+    pageSize: 10, //每页条数
     maxPage: 1, //最大页数
     designImg: [], //图片素材组
-    fodderObject: [], //画布上的素材对象
+    frontFodders: [], //正面画布上的素材
+    backFodders: [], //背面画布上的素材
     startX: 0, //触摸开始点x
     startY: 0, //触摸开始点y
     moveX: 0, //触摸移动距离x
@@ -43,22 +45,25 @@ Page({
     this.init()
   },
   // 页面初始化
-  init(){
+  init() {
     // 默认加载男装款式列表
-    this.clothesList(1).then(clothes=>{
+    this.clothesList(1).then(clothes => {
       // 默认加载男装第一款的样式
-      this.getStyle(clothes[0].id).then()
+      this.getStyle(clothes[0].id)
     })
+    // 默认加载第一页素材
+    this.getFodderDefault()
   },
   // 切换服装类型
   tabType(e) {
     this.setData({
       type: e.currentTarget.dataset.type,
+      currentColorIndex: 0,
       currentDirection: 'front_thumb'
     })
-    this.clothesList(e.currentTarget.dataset.type).then(clothes=>{
+    this.clothesList(e.currentTarget.dataset.type).then(clothes => {
       // 加载第一款的样式
-      if(clothes.length>0){
+      if (clothes.length > 0) {
         this.getStyle(clothes[0].id).then()
       }
     })
@@ -111,9 +116,14 @@ Page({
       })
     })
   },
+  // 切换款式
+  getCothes(e) {
+    this.getStyle(e.currentTarget.dataset.id)
+  },
   // 切换颜色
   tabColor(e) {
     this.setData({
+      currentDirection: 'front_thumb',
       currentColorIndex: e.currentTarget.dataset.index
     })
   },
@@ -221,50 +231,96 @@ Page({
       })
     }
   },
+  // 加载默认素材
+  getFodderDefault() {
+    wx.showLoading({
+      title: '正在加载',
+    })
+    wx.request({
+      url: 'https://cy.nulizhe.com/api/Material/getMaterialByType',
+      data: {
+        page: 1,
+        limit: 10
+      },
+      success: res => {
+        wx.hideLoading()
+        if (res.data.code == 1) {
+          this.setData({
+            defaultFooders: res.data.data.materials
+          })
+        } else {
+          wx.showToast({
+            title: res.data.message,
+            image: '/images/tip.png'
+          })
+        }
+      }
+    })
+  },
   //下一页
   nextPage() {
     this.getFodders()
   },
-  // 渲染画布
-  draw() {
-    const canvas = wx.createCanvasContext('canvas01')
-    //清空画布
-    canvas.clearRect(-(item.x + item.w / 2), -(item.y + item.h / 2), 1000, 1200)
-    this.data.fodderObject.forEach(item => {
-      canvas.translate(item.x + item.w / 2, item.y + item.h / 2)
-      canvas.rotate(item.rotate * Math.PI / 180)
-      canvas.drawImage(item.file, item.w / 2, item.h / 2, item.w, item.h)
-      canvas.rotate(-item.rotate * Math.PI / 180)
-      canvas.translate(-(item.x + item.w / 2), -(item.y + item.h / 2))
-      canvas.draw(true, () => {
-        this.setData({
-          notNull: true, //画布不为空
-        })
-      })
-    })
-  },
   // 选择素材
   pickerFodder(e) {
+    if (e.currentTarget.dataset.type == 0) { //默认素材
+      var url = this.data.defaultFooders[e.currentTarget.dataset.index].thumb
+    } else { //素材列表
+      var url = this.data.fodders[this.data.currentFodderPage - 1][e.currentTarget.dataset.index].thumb
+    }
     wx.showLoading({
       title: '请稍等',
     })
     wx.downloadFile({
-      url: this.data.fodders[this.data.currentFodderPage - 1][e.currentTarget.dataset.index].thumb,
+      url: url,
       success: res => {
         wx.hideLoading()
-        this.setData({
-          fodderStep: 2,
-          fodderObject: [{
+        if (this.data.currentDirection == "front_thumb") { //正面
+          this.data.frontFodders.push({
             file: res.tempFilePath,
             x: 5,
             y: 20,
             w: 80,
             h: 80,
             rotate: 0
-          }]
-        })
-        this.draw()
+          })
+          this.setData({
+            fodderStep: 2,
+            frontFodders: this.data.frontFodders
+          })
+          // 渲染画布
+          this.draw('canvas-front', this.data.frontFodders)
+        } else { //反面
+          this.data.frontFodders.push({
+            file: res.tempFilePath,
+            x: 5,
+            y: 20,
+            w: 80,
+            h: 80,
+            rotate: 0
+          })
+          this.setData({
+            fodderStep: 2,
+            backFodders: this.data.backFodders
+          })
+          // 渲染画布
+          this.draw('canvas-back', this.data.backFodders)
+        }
       }
+    })
+  },
+  // 渲染画布
+  draw(id, fodders) {
+    const canvas = wx.createCanvasContext(id)
+    //清空画布
+    fodders.forEach(item => {
+      //canvas.clearRect(-(item.x + item.w / 2), -(item.y + item.h / 2), 1000, 1200)
+      // canvas.translate(item.x + item.w / 2, item.y + item.h / 2)
+      // canvas.rotate(item.rotate * Math.PI / 180)
+      canvas.drawImage(item.file, 0, 0, item.w, item.h)
+      // canvas.rotate(-item.rotate * Math.PI / 180)
+      // canvas.translate(-(item.x + item.w / 2), -(item.y + item.h / 2))
+      canvas.draw()
     })
   },
   // 触摸开始
