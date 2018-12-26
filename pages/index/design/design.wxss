@@ -62,7 +62,7 @@
   width: 60rpx;
   height: 60rpx;
   border-radius: 60rpx;
-  border: 1rpx solid #dcdcdc;
+  border: 1rpx solid #fff;
   margin: 20rpx 0;
 }
 .top-right .item.red{
@@ -153,15 +153,34 @@
 .bottom .select .check-fodder .icon{
   margin-right: 0;
 }
-.bottom .fodder-box{
+
+.bottom .fodder-default{
+  height: 114rpx;
+  white-space:nowrap;
+}
+.bottom .fodder-default .item{
+  width: 106rpx;
+  height: 106rpx;
+  border: 1px solid #CCCCCC;
+  margin-right: 30rpx;
+  display: inline-block;
+}
+.bottom .fodder-default .item:first-child{
+  margin-left: 40rpx;
+}
+.bottom .fodder-default .item:last-child{
+  margin-right: 40rpx;
+}
+
+.fodder-box{
   padding: 40rpx;
 }
-.bottom .fodder-box .fodder-header{
+.fodder-box .fodder-header{
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
-.bottom .fodder-box .fodder-header .item{
+.fodder-box .fodder-header .item{
   height: 56rpx;
   width: 160rpx;
   border-radius: 10rpx;
@@ -173,20 +192,20 @@
   border: 1px solid #dcdcdc;
   line-height: 1;
 }
-.bottom .fodder-box .fodder-header .item .icon{
+.fodder-box .fodder-header .item .icon{
   width: 30rpx;
   height: 30rpx;
   margin-right: 10rpx;
 }
-.bottom .fodder-box .fodder-header .item:first-child .icon{
+.fodder-box .fodder-header .item:first-child .icon{
   margin-right: 0;
 }
-.bottom .fodder-box .list{
+.fodder-box .fodder-list{
   display: flex;
   flex-wrap: wrap;
   margin-top: 30rpx;
 }
-.bottom .fodder-box .list .item{
+.fodder-box .fodder-list .item{
   width: 106rpx;
   height: 106rpx;
   margin-right:  30rpx;
@@ -194,25 +213,21 @@
   border: 1px solid #dcdcdc;
   margin-bottom: 30rpx;
 }
-.bottom .fodder-box .item:nth-child(5n){
+.fodder-box .item:nth-child(5n){
   margin-right: 0;
 }
 
 .bottom .btn{
   height: 92rpx;
-  width: 680rpx;
   background: #f7c900;
   color: #1a1a1a;
   font-size: 36rpx;
   line-height: 92rpx;
   text-align: center;
   border-radius: 8rpx;
-  margin: 20rpx auto 0;
+  margin: 40rpx 40rpx 0;
 }
 
-.fodder-edit{
-  padding: 0 40rpx;
-}
 .fodder-edit .edit .item{
   display: flex;
   align-items: center;
@@ -230,7 +245,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 30rpx 0;
+  padding: 30rpx 0 0;
 }
 .fodder-edit .edit-bottom .item{
   width: 156rpx;

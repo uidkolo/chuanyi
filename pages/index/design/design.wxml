@@ -13,7 +13,8 @@
   </view>
   <view class='top-center'>
     <view class='canvas-box'>
-      <canvas class='canvas' canvas-id='canvas01' disable-scroll bindtouchstart='touchstart' bindtouchmove='touchmove' bindtouchend='touchend'></canvas>
+      <canvas wx:if='{{currentDirection=="front_thumb"}}' class='canvas {{frontFodders.length>0?"not-null":""}}' canvas-id='canvas-front' disable-scroll bindtouchstart='touchstart' bindtouchmove='touchmove' bindtouchend='touchend'></canvas>
+      <canvas wx:if='{{currentDirection=="back_thumb"}}' class='canvas {{backFodders.length>0?"not-null":""}}' canvas-id='canvas-back' disable-scroll bindtouchstart='touchstart' bindtouchmove='touchmove' bindtouchend='touchend'></canvas>
       <image class='img' src='{{colors[currentColorIndex][currentDirection]}}'></image>
     </view>
     <view class='shadow'>
@@ -33,15 +34,15 @@
   </view>
   <view class='style'>
     <scroll-view scroll-x>
-      <image class='item' wx:for='{{clothes}}' wx:key='index' src='{{item.thumb}}'></image>
+      <image class='item' wx:for='{{clothes}}' wx:key='index' src='{{item.thumb}}' bindtap='getCothes' data-id='{{item.id}}'></image>
     </scroll-view>
   </view>
 </view>
 
 <!-- 底部 -->
-<view class='bottom'>
+<view class='bottom' wx:if='{{fodderStep==0}}'>
   <!-- 选项 -->
-  <view class='select' wx:if='{{fodderStep==0}}'>
+  <view class='select'>
     <view class='item' bindtap='showSelectFodder'>
       <image class='icon' src='/images/icon/icon_fodder.png'></image>
       <text>素材</text>
@@ -55,46 +56,52 @@
       <text>文字</text>
     </view>
   </view>
+  <!-- 默认素材区域 -->
+  <scroll-view class='fodder-default' scroll-x>
+    <image class='item' wx:for='{{defaultFooders}}' wx:key='index' src='{{item.thumb}}' bindtap='pickerFodder' data-index='{{index}}' data-type='0'></image>
+  </scroll-view>
   <view class='btn' bindtap='confirm' wx:if='{{fodderStep==0}}'>完成设计</view>
-  <!-- 素材 -->
-  <view class='fodder-box' wx:if='{{fodderStep==1}}'>
-    <view class='fodder-header'>
-      <picker range='{{fodderTypes}}' range-key='name' bindchange='selectFodder'>
-        <view class='item'>
-          <text>{{fodderTypeName}}</text>
-          <image class='icon' src='/images/icon/icon_picker.png'></image>
-        </view>
-      </picker>
-      <view class='item' bindtap='nextPage'>
-        <image class='icon' src='/images/icon/icon_fresh.png'></image>
-        <text>换一批</text>
-      </view>
-      <view class='item' bindtap='backSelectFodder'>
-        <image class='icon' src='/images/icon/icon_back.png'></image>
-        <text>返回</text>
-      </view>
-    </view>
-    <view class='list'>
-      <image class='item' wx:for='{{fodders[currentFodderPage-1]}}' wx:key='index' src='{{item.thumb}}' bindtap='pickerFodder' data-index='{{index}}'></image>
-    </view>
-  </view>
 </view>
-<!-- 素材操作 -->
-<view class='fodder-edit' wx:if='{{fodderStep==2}}'>
-  <view class='edit'>
-    <view class='item'>
-      <text class='label'>大小</text>
-      <slider activeColor='#f7c900' value='50' min='25' bindchange='fodderSize'></slider>
+
+
+<!-- 素材 -->
+<view class='fodder-box' wx:if='{{fodderStep>0}}'>
+  <view class='fodder-header'wx:if='{{fodderStep==1}}'>
+    <picker range='{{fodderTypes}}' range-key='name' bindchange='selectFodder'>
+      <view class='item'>
+        <text>{{fodderTypeName}}</text>
+        <image class='icon' src='/images/icon/icon_picker.png'></image>
+      </view>
+    </picker>
+    <view class='item' bindtap='nextPage'>
+      <image class='icon' src='/images/icon/icon_fresh.png'></image>
+      <text>换一批</text>
     </view>
-    <view class='item'>
-      <text class='label'>旋转</text>
-      <slider activeColor='#f7c900' value='0' min='0' max='360' bindchange='fodderRotate'></slider>
+    <view class='item' bindtap='backSelectFodder'>
+      <image class='icon' src='/images/icon/icon_back.png'></image>
+      <text>返回</text>
     </view>
   </view>
-  <view class='edit-bottom'>
-    <view class='item change'>换一个</view>
-    <view class='item center'>居中</view>
-    <view class='item cancel'>清除</view>
-    <view class='item confire'>完成</view>
+  <view class='fodder-list' wx:if='{{fodderStep==1}}'>
+    <image class='item' wx:for='{{fodders[currentFodderPage-1]}}' wx:key='index' src='{{item.thumb}}' bindtap='pickerFodder' data-index='{{index}}' data-type='1'></image>
+  </view>
+  <!-- 素材操作 -->
+  <view class='fodder-edit' wx:if='{{fodderStep==2}}'>
+    <view class='edit'>
+      <view class='item'>
+        <text class='label'>大小</text>
+        <slider activeColor='#f7c900' value='50' min='25' bindchange='fodderSize'></slider>
+      </view>
+      <view class='item'>
+        <text class='label'>旋转</text>
+        <slider activeColor='#f7c900' value='0' min='0' max='360' bindchange='fodderRotate'></slider>
+      </view>
+    </view>
+    <view class='edit-bottom'>
+      <view class='item change'>换一个</view>
+      <view class='item change'>居中</view>
+      <view class='item cancel'>清除</view>
+      <view class='item confire'>完成</view>
+    </view>
   </view>
 </view>
