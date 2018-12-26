@@ -62,8 +62,8 @@ App({
                 resolve(res.data.data.auth_token)
               } else {
                 wx.showToast({
-                  title: res.data.code,
-                  images: '/images/tip.png'
+                  title: res.data.message,
+                  image: '/images/tip.png'
                 })
               }
             }

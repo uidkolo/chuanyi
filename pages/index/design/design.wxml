@@ -13,8 +13,7 @@
   </view>
   <view class='top-center'>
     <view class='canvas-box'>
-      <canvas wx:if='{{currentDirection=="front_thumb"}}' class='canvas {{frontFodders.length>0?"not-null":""}}' canvas-id='canvas-front' disable-scroll bindtouchstart='touchstart' bindtouchmove='touchmove' bindtouchend='touchend'></canvas>
-      <canvas wx:if='{{currentDirection=="back_thumb"}}' class='canvas {{backFodders.length>0?"not-null":""}}' canvas-id='canvas-back' disable-scroll bindtouchstart='touchstart' bindtouchmove='touchmove' bindtouchend='touchend'></canvas>
+      <canvas  class='canvas not-null}}' canvas-id='canvas'  disable-scroll bindtouchstart='touchstart' bindtouchmove='touchmove'></canvas>
       <image class='img' src='{{colors[currentColorIndex][currentDirection]}}'></image>
     </view>
     <view class='shadow'>
@@ -29,8 +28,8 @@
 <!-- 选项区域 -->
 <view class='center'>
   <view class='direction'>
-    <text class='item front {{currentDirection=="front_thumb"?"active":""}}' bindtap='tabDirection' data-label='0'>正面</text>
-    <text class='item back {{currentDirection=="back_thumb"?"active":""}}'  bindtap='tabDirection' data-label='1'>反面</text>
+    <text class='item front {{currentDirection=="front_thumb"?"active":""}}' bindtap='tabDirection' data-label='front_thumb'>正面</text>
+    <text class='item back {{currentDirection=="back_thumb"?"active":""}}'  bindtap='tabDirection' data-label='back_thumb'>反面</text>
   </view>
   <view class='style'>
     <scroll-view scroll-x>
@@ -47,7 +46,7 @@
       <image class='icon' src='/images/icon/icon_fodder.png'></image>
       <text>素材</text>
     </view>
-    <view class='item'>
+    <view class='item' bindtap='choicePhoto'>
       <image class='icon' src='/images/icon/icon_photo.png'></image>
       <text>相册</text>
     </view>
@@ -98,10 +97,10 @@
       </view>
     </view>
     <view class='edit-bottom'>
-      <view class='item change'>换一个</view>
-      <view class='item change'>居中</view>
-      <view class='item cancel'>清除</view>
-      <view class='item confire'>完成</view>
+      <view class='item change' bindtap='changOne'>换一个</view>
+      <view class='item change' bindtap='alignCenter'>居中</view>
+      <view class='item cancel' bindtap='clear'>清除</view>
+      <view class='item confire' bindtap='changOne'>完成</view>
     </view>
   </view>
 </view>

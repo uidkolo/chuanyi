@@ -21,21 +21,18 @@ Page({
     pageNo: 1, //当前页码
     pageSize: 10, //每页条数
     maxPage: 1, //最大页数
-    designImg: [], //图片素材组
-    frontFodders: [], //正面画布上的素材
-    backFodders: [], //背面画布上的素材
+    designFodders: {
+      front_thumb: {},
+      back_thumb: {}
+    }, //画布上的素材
     startX: 0, //触摸开始点x
     startY: 0, //触摸开始点y
     moveX: 0, //触摸移动距离x
     moveY: 0, //触摸移动距离y
     fodderX: 5, //素材初始x
-    fodderY: 20, //素材初始y,
-    fodderW: 80, //素材初始w
-    fodderH: 80, //素材初始h,
-    fodderRotate: 0, //素材初始rotate,
-    translateX: 0, //素材初始 translateX
-    translateY: 0, //素材初始 translateY
-    currentCanvas: 0
+    fodderY: 20, //素材初始y
+    defaultW: 80, //素材默认宽度
+    defaultH: 80 //素材默认高度
   },
 
   /**
@@ -129,22 +126,22 @@ Page({
   },
   //切换正反面
   tabDirection(e) {
-    if (e.currentTarget.dataset.label == 0) {
-      this.setData({
-        currentDirection: 'front_thumb'
-      })
-    } else {
-      this.setData({
-        currentDirection: 'back_thumb'
-      })
-    }
+    this.setData({
+      currentDirection: e.currentTarget.dataset.label,
+      fodderStep: 0,
+      // designFodders:{
+      //   front_thumb: {},
+      //   back_thumb: {}
+      // }
+    })
+    this.draw()
   },
   // 点击素材按钮
   showSelectFodder() {
     this.setData({
       fodderStep: 1
     })
-    // 记载素材分类
+    // 加载素材分类
     this.getFodderTypes()
     // 默认加载全部素材第一页
     this.getFodders()
@@ -271,104 +268,167 @@ Page({
     wx.showLoading({
       title: '请稍等',
     })
-    wx.downloadFile({
+    wx.downloadFile({ //下载图片
       url: url,
-      success: res => {
+      success: file => {
         wx.hideLoading()
-        if (this.data.currentDirection == "front_thumb") { //正面
-          this.data.frontFodders.push({
-            file: res.tempFilePath,
-            x: 5,
-            y: 20,
-            w: 80,
-            h: 80,
-            rotate: 0
-          })
-          this.setData({
-            fodderStep: 2,
-            frontFodders: this.data.frontFodders
-          })
-          // 渲染画布
-          this.draw('canvas-front', this.data.frontFodders)
-        } else { //反面
-          this.data.frontFodders.push({
-            file: res.tempFilePath,
-            x: 5,
-            y: 20,
-            w: 80,
-            h: 80,
-            rotate: 0
-          })
-          this.setData({
-            fodderStep: 2,
-            backFodders: this.data.backFodders
-          })
-          // 渲染画布
-          this.draw('canvas-back', this.data.backFodders)
-        }
+        wx.getSystemInfo({ //获取屏幕宽度
+          success: res => {
+            let ratio = res.windowWidth / 375 //比例
+            this.data.designFodders[this.data.currentDirection] = {
+              type: 'img',
+              file: file.tempFilePath,
+              x: 5 * ratio,
+              y: 20 * ratio,
+              w: this.data.defaultW * ratio,
+              h: this.data.defaultW * ratio,
+              rotate: 0
+            }
+            this.setData({
+              fodderStep: 2,
+              designFodders: this.data.designFodders
+            })
+            // 渲染画布
+            this.draw()
+          }
+        })
       }
     })
   },
   // 渲染画布
-  draw(id, fodders) {
-    const canvas = wx.createCanvasContext(id)
-    //清空画布
-    fodders.forEach(item => {
-      //canvas.clearRect(-(item.x + item.w / 2), -(item.y + item.h / 2), 1000, 1200)
-      // canvas.translate(item.x + item.w / 2, item.y + item.h / 2)
-      // canvas.rotate(item.rotate * Math.PI / 180)
-      canvas.drawImage(item.file, 0, 0, item.w, item.h)
-      // canvas.rotate(-item.rotate * Math.PI / 180)
-      // canvas.translate(-(item.x + item.w / 2), -(item.y + item.h / 2))
-      canvas.draw()
+  draw() {
+    const canvas = wx.createCanvasContext('canvas')
+    var fodder = this.data.designFodders[this.data.currentDirection]
+    wx.getSystemInfo({
+      success: res => {
+        let ratio = res.windowWidth / 375 //比例
+        canvas.clearRect(0, 0, 90 * ratio, 120 * ratio) //清空画布
+        if (this.data.designFodders[this.data.currentDirection].x != undefined) {
+          canvas.translate(fodder.x + fodder.w / 2, fodder.y + fodder.h / 2)
+          canvas.rotate(fodder.rotate * Math.PI / 180)
+          canvas.drawImage(fodder.file, -fodder.w / 2, -fodder.h / 2, fodder.w, fodder.h)
+        }
+        canvas.draw()
+      }
     })
+
   },
   // 触摸开始
   touchstart(e) {
     this.setData({
       startX: e.touches[0].x,
-      startY: e.touches[0].y,
-      fodderX: this.data.fodderObject[0].x,
-      fodderY: this.data.fodderObject[0].y
+      startY: e.touches[0].y
     })
+    if (this.data.designFodders[this.data.currentDirection].x != undefined) {
+      this.setData({
+        fodderX: this.data.designFodders[this.data.currentDirection].x,
+        fodderY: this.data.designFodders[this.data.currentDirection].y,
+        fodderStep: 2
+      })
+    }
   },
   // 触摸移动
   touchmove(e) {
-    this.setData({
-      moveX: e.touches[0].x - this.data.startX,
-      moveY: e.touches[0].y - this.data.startY,
-    })
-    this.data.fodderObject[0].x = this.data.fodderX + this.data.moveX
-    this.data.fodderObject[0].y = this.data.fodderY + this.data.moveY
-    this.setData({
-      fodderObject: this.data.fodderObject
-    })
+    if (this.data.designFodders[this.data.currentDirection].x != undefined && this.data.fodderStep == 2) {
+      this.data.designFodders[this.data.currentDirection].x = this.data.fodderX + (e.touches[0].x - this.data.startX)
+      this.data.designFodders[this.data.currentDirection].y = this.data.fodderY + (e.touches[0].y - this.data.startY)
+      this.setData({
+        designFodders: this.data.designFodders
+      })
+    }
     // 重新渲染画布
     this.draw()
-  },
-  // 触摸结束
-  touchend(e) {
-    this.setData({
-      fodderX: this.data.fodderObject[0].x,
-      fodderY: this.data.fodderObject[0].y
-    })
   },
   // 素材缩放
   fodderSize(event) {
-    this.data.fodderObject[this.data.currentCanvas].w = this.data.fodderW * (event.detail.value / 50)
-    this.data.fodderObject[this.data.currentCanvas].h = this.data.fodderH * (event.detail.value / 50)
-    // 重新渲染画布
-    this.draw()
+    wx.getSystemInfo({
+      success: res => {
+        let ratio = res.windowWidth / 375 //比例
+        this.data.designFodders[this.data.currentDirection].w = this.data.defaultW * ratio * (event.detail.value / 50)
+        this.data.designFodders[this.data.currentDirection].h = this.data.defaultH * ratio * (event.detail.value / 50)
+        this.setData({
+          designFodders: this.data.designFodders
+        })
+        // 重新渲染画布
+        this.draw()
+      }
+    })
   },
   // 素材旋转
   fodderRotate(event) {
-    this.data.fodderObject[this.data.currentCanvas].rotate = event.detail.value
+    this.data.designFodders[this.data.currentDirection].rotate = event.detail.value
     this.setData({
-      translateX: this.data.fodderX + this.data.fodderW / 2,
-      translateY: this.data.fodderY + this.data.fodderH / 2
+      designFodders: this.data.designFodders
     })
     // 重新渲染画布
     this.draw()
+  },
+  // 换一个
+  changOne() {
+    this.setData({
+      fodderStep: 0
+    })
+  },
+  // 居中
+  alignCenter() {
+    var fodder = this.data.designFodders[this.data.currentDirection]
+    wx.getSystemInfo({
+      success: res => {
+        let ratio = res.windowWidth / 375 //比例
+        fodder.x = 90 * ratio / 2 - fodder.w / 2
+        this.setData({
+          designFodders: this.data.designFodders
+        })
+        this.draw()
+      }
+    })
+  },
+  // 清除
+  clear() {
+    this.data.designFodders[this.data.currentDirection] = {}
+    this.setData({
+      designFodders: this.data.designFodders
+    })
+    this.draw()
+  },
+
+  // 选择相册图片
+  choicePhoto() {
+    wx.chooseImage({
+      count: 1,
+      sizeType: ['original'],
+      success: file => {
+        wx.getImageInfo({
+          src: file.tempFilePaths[0],
+          success: info => {
+            this.setData({
+              defaultW: 80,
+              defaultH: 80*(info.height/info.width)
+            })
+            wx.getSystemInfo({ //获取屏幕宽度
+              success: res => {
+                let ratio = res.windowWidth / 375 //比例
+                this.data.designFodders[this.data.currentDirection] = {
+                  type: 'img',
+                  file: file.tempFilePaths[0],
+                  x: 5 * ratio,
+                  y: 20 * ratio,
+                  w: this.data.defaultW * ratio,
+                  h: this.data.defaultH * ratio,
+                  rotate: 0
+                }
+                this.setData({
+                  fodderStep: 2,
+                  designFodders: this.data.designFodders
+                })
+                // 渲染画布
+                this.draw()
+              }
+            })
+          }
+        })
+      }
+    })
   },
   /**
    * 生命周期函数--监听页面初次渲染完成
