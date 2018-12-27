@@ -34,26 +34,31 @@
 }
 .top-center .canvas-box{
   position: relative;
-  width: 450rpx;
-  height: 620rpx;
+  width: 413rpx;
+  height: 530rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .top-center .canvas-box .img{
-  width: 450rpx;
+  position: absolute;
+  width: 413rpx;
   height: 530rpx;
 }
 .top-center .shadow image{
-  width: 450rpx;
+  width: 413rpx;
   height: 60rpx;
 }
 .top-center .not-null{
   border: 1px solid #a5a5a5;
 }
 .top-center .canvas-box .canvas{
-  position: absolute;
+  /* position: absolute;
   top: 140rpx;
-  left: 135rpx;
+  left: 135rpx; */
   width: 180rpx;
   height: 240rpx;
+  z-index: 9;
 }
 
 
@@ -236,11 +241,44 @@
 .fodder-edit .edit .item slider{
   flex-grow: 1;
   margin-right: 0;
+  margin-left: 0;
 }
 .fodder-edit .edit .item .label{
   font-size: 30rpx;
   color: #333;
+  flex-shrink: 0;
+  margin-right: 40rpx;
 }
+.fodder-edit .edit .item .text-input{
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-grow: 1;
+}
+.fodder-edit .edit .text-item{
+  margin-bottom: 20rpx;
+}
+.fodder-edit .edit .item .text-input input{
+  background: #FAFAFA;
+  height: 50rpx;
+  border: 1px solid #BFBFBF;
+  font-size: 24rpx;
+  padding: 0 20rpx;
+  flex-grow: 1;
+}
+.fodder-edit .edit .item .text-input .text-btn{
+  flex-shrink: 0;
+  border: 1px solid #BFBFBF;
+  font-size: 24rpx;
+  height: 50rpx;
+  line-height: 46rpx;
+  width: 126rpx;
+  text-align: center;
+  border-left: none;
+  color: #666666;
+  background: #E6E6E6;
+}
+
 .fodder-edit .edit-bottom{
   display: flex;
   align-items: center;
@@ -265,4 +303,24 @@
   background: #F7C900;
   border: 2rpx solid #F7C900;
   color: #1A1A1A;
+}
+.fodder-edit .edit-bottom .text-btn{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 20rpx;
+  color: #666666;
+}
+.fodder-edit .edit-bottom .text-btn image{
+  width: 44rpx;
+  height: 44rpx;
+}
+
+
+.canvas-view{
+  width: 2220px;
+  height: 2850rpx;
+}
+.canvas-design{
+  
 }

@@ -13,7 +13,7 @@
   </view>
   <view class='top-center'>
     <view class='canvas-box'>
-      <canvas  class='canvas not-null}}' canvas-id='canvas'  disable-scroll bindtouchstart='touchstart' bindtouchmove='touchmove'></canvas>
+      <canvas  class='canvas {{designFodders[currentDirection].x&&fodderStep==2?"not-null":""}}' canvas-id='canvas'  disable-scroll bindtouchstart='touchstart' bindtouchmove='touchmove'></canvas>
       <image class='img' src='{{colors[currentColorIndex][currentDirection]}}'></image>
     </view>
     <view class='shadow'>
@@ -50,14 +50,14 @@
       <image class='icon' src='/images/icon/icon_photo.png'></image>
       <text>相册</text>
     </view>
-    <view class='item'>
+    <view class='item' bindtap='addFont'>
       <image class='icon' src='/images/icon/icon_text.png'></image>
       <text>文字</text>
     </view>
   </view>
   <!-- 默认素材区域 -->
   <scroll-view class='fodder-default' scroll-x>
-    <image class='item' wx:for='{{defaultFooders}}' wx:key='index' src='{{item.thumb}}' bindtap='pickerFodder' data-index='{{index}}' data-type='0'></image>
+    <image mode='aspectFit' class='item' wx:for='{{defaultFooders}}' wx:key='index' src='{{item.thumb}}' bindtap='pickerFodder' data-index='{{index}}' data-type='0'></image>
   </scroll-view>
   <view class='btn' bindtap='confirm' wx:if='{{fodderStep==0}}'>完成设计</view>
 </view>
@@ -82,7 +82,7 @@
     </view>
   </view>
   <view class='fodder-list' wx:if='{{fodderStep==1}}'>
-    <image class='item' wx:for='{{fodders[currentFodderPage-1]}}' wx:key='index' src='{{item.thumb}}' bindtap='pickerFodder' data-index='{{index}}' data-type='1'></image>
+    <image mode='aspectFit' class='item' wx:for='{{fodders[currentFodderPage-1]}}' wx:key='index' src='{{item.thumb}}' bindtap='pickerFodder' data-index='{{index}}' data-type='1'></image>
   </view>
   <!-- 素材操作 -->
   <view class='fodder-edit' wx:if='{{fodderStep==2}}'>
@@ -100,7 +100,55 @@
       <view class='item change' bindtap='changOne'>换一个</view>
       <view class='item change' bindtap='alignCenter'>居中</view>
       <view class='item cancel' bindtap='clear'>清除</view>
-      <view class='item confire' bindtap='changOne'>完成</view>
+      <view class='item confire' bindtap='confirm'>完成</view>
     </view>
   </view>
+  <!-- 素材操作 -->
+  <view class='fodder-edit' wx:if='{{fodderStep==3}}'>
+    <view class='edit'>
+      <view class='item text-item'>
+        <text class='label'>编辑文字</text>
+        <view class='text-input'>
+          <input placeholder='不超过10个字'></input>
+          <view class='text-btn'>确定</view>
+        </view>
+      </view>
+      <view class='item'>
+        <text class='label'>大小</text>
+        <slider activeColor='#f7c900' value='50' min='25' bindchange='fodderSize'></slider>
+      </view>
+      <view class='item'>
+        <text class='label'>旋转</text>
+        <slider activeColor='#f7c900' value='0' min='0' max='360' bindchange='fodderRotate'></slider>
+      </view>
+    </view>
+    <view class='edit-bottom'>
+      <view class='text-btn'>
+        <image src='/images/design/icon_font.png'></image>
+        <text>字体</text>
+      </view>
+      <view class='text-btn'>
+        <image src='/images/design/icon_color.png'></image>
+        <text>颜色</text>
+      </view>
+      <view class='text-btn'>
+        <image src='/images/design/icon_direction.png'></image>
+        <text>方向</text>
+      </view>
+      <view class='text-btn'>
+        <image src='/images/design/icon_center.png'></image>
+        <text>居中</text>
+      </view>
+      <view class='text-btn'>
+        <image src='/images/design/icon_clear.png'></image>
+        <text>清除</text>
+      </view>
+    </view>
+  </view>
+</view>
+
+<!-- 最终生成的画布 -->
+<view class='design-canvas-box'>
+  <!-- 设计图 -->
+  <canvas  class='canvas-design' canvas-id='front' style='width:{{designCanvasW}}px;height:{{designCanvasH}}px'></canvas>
 </view>

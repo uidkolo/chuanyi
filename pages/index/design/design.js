@@ -31,8 +31,10 @@ Page({
     moveY: 0, //触摸移动距离y
     fodderX: 5, //素材初始x
     fodderY: 20, //素材初始y
-    defaultW: 80, //素材默认宽度
-    defaultH: 80 //素材默认高度
+    defaultW: 0, //素材宽度
+    defaultH: 0, //素材高度
+    designCanvasW: 0,//最终设计canvas宽度
+    designCanvasH: 0, //最终设计canvas高度
   },
 
   /**
@@ -261,35 +263,47 @@ Page({
   // 选择素材
   pickerFodder(e) {
     if (e.currentTarget.dataset.type == 0) { //默认素材
-      var url = this.data.defaultFooders[e.currentTarget.dataset.index].thumb
+      var thumb = this.data.defaultFooders[e.currentTarget.dataset.index].thumb
+      var url = this.data.defaultFooders[e.currentTarget.dataset.index].img_url
     } else { //素材列表
-      var url = this.data.fodders[this.data.currentFodderPage - 1][e.currentTarget.dataset.index].thumb
+      var thumb = this.data.fodders[this.data.currentFodderPage - 1][e.currentTarget.dataset.index].thumb
+      var url = this.data.fodders[this.data.currentFodderPage - 1][e.currentTarget.dataset.index].img_url
     }
     wx.showLoading({
       title: '请稍等',
     })
     wx.downloadFile({ //下载图片
-      url: url,
+      url: thumb,
       success: file => {
         wx.hideLoading()
-        wx.getSystemInfo({ //获取屏幕宽度
-          success: res => {
-            let ratio = res.windowWidth / 375 //比例
-            this.data.designFodders[this.data.currentDirection] = {
-              type: 'img',
-              file: file.tempFilePath,
-              x: 5 * ratio,
-              y: 20 * ratio,
-              w: this.data.defaultW * ratio,
-              h: this.data.defaultW * ratio,
-              rotate: 0
-            }
+        wx.getImageInfo({
+          src: file.tempFilePath,
+          success: info => {
             this.setData({
-              fodderStep: 2,
-              designFodders: this.data.designFodders
+              defaultW: 80,
+              defaultH: 80 * (info.height / info.width)
             })
-            // 渲染画布
-            this.draw()
+            wx.getSystemInfo({ //获取屏幕宽度
+              success: res => {
+                let ratio = res.windowWidth / 375 //比例
+                this.data.designFodders[this.data.currentDirection] = {
+                  type: 'img',
+                  url: url,
+                  thumb: file.tempFilePath,
+                  x: 5 * ratio,
+                  y: (120 - 80 * (info.height / info.width)) / 2 * ratio,
+                  w: 80 * ratio,
+                  h: 80 * (info.height / info.width) * ratio,
+                  rotate: 0
+                }
+                this.setData({
+                  fodderStep: 2,
+                  designFodders: this.data.designFodders
+                })
+                // 渲染画布
+                this.draw()
+              }
+            })
           }
         })
       }
@@ -299,18 +313,25 @@ Page({
   draw() {
     const canvas = wx.createCanvasContext('canvas')
     var fodder = this.data.designFodders[this.data.currentDirection]
-    wx.getSystemInfo({
-      success: res => {
-        let ratio = res.windowWidth / 375 //比例
-        canvas.clearRect(0, 0, 90 * ratio, 120 * ratio) //清空画布
-        if (this.data.designFodders[this.data.currentDirection].x != undefined) {
-          canvas.translate(fodder.x + fodder.w / 2, fodder.y + fodder.h / 2)
-          canvas.rotate(fodder.rotate * Math.PI / 180)
-          canvas.drawImage(fodder.file, -fodder.w / 2, -fodder.h / 2, fodder.w, fodder.h)
+    if (fodder.type == 'img') { //图片素材
+      wx.getSystemInfo({
+        success: res => {
+          let ratio = res.windowWidth / 375 //比例
+          canvas.clearRect(0, 0, 90 * ratio, 120 * ratio) //清空画布
+          if (this.data.designFodders[this.data.currentDirection].x != undefined) {
+            canvas.translate(fodder.x + fodder.w / 2, fodder.y + fodder.h / 2)
+            canvas.rotate(fodder.rotate * Math.PI / 180)
+            canvas.drawImage(fodder.thumb, -fodder.w / 2, -fodder.h / 2, fodder.w, fodder.h)
+          }
+          canvas.draw()
         }
-        canvas.draw()
-      }
-    })
+      })
+    }else{ //文字素材
+      // canvas.font = '18px status-bar'
+      canvas.setFontSize(20)
+      canvas.fillText('Hello', 20, 20)
+      canvas.fillText('MINA', 100, 100)
+    }
 
   },
   // 触摸开始
@@ -365,9 +386,7 @@ Page({
   },
   // 换一个
   changOne() {
-    this.setData({
-      fodderStep: 0
-    })
+    this.showSelectFodder()
   },
   // 居中
   alignCenter() {
@@ -391,6 +410,12 @@ Page({
     })
     this.draw()
   },
+  // 完成
+  confirm() {
+    this.setData({
+      fodderStep: 0
+    })
+  },
 
   // 选择相册图片
   choicePhoto() {
@@ -398,23 +423,25 @@ Page({
       count: 1,
       sizeType: ['original'],
       success: file => {
+        console.log(file)
         wx.getImageInfo({
           src: file.tempFilePaths[0],
           success: info => {
             this.setData({
               defaultW: 80,
-              defaultH: 80*(info.height/info.width)
+              defaultH: 80 * (info.height / info.width)
             })
             wx.getSystemInfo({ //获取屏幕宽度
               success: res => {
                 let ratio = res.windowWidth / 375 //比例
                 this.data.designFodders[this.data.currentDirection] = {
                   type: 'img',
-                  file: file.tempFilePaths[0],
+                  url: file.tempFilePaths[0],
+                  thumb: file.tempFilePaths[0],
                   x: 5 * ratio,
-                  y: 20 * ratio,
-                  w: this.data.defaultW * ratio,
-                  h: this.data.defaultH * ratio,
+                  y: (120 - 80 * (info.height / info.width)) / 2 * ratio,
+                  w: 80 * ratio,
+                  h: 80 * (info.height / info.width) * ratio,
                   rotate: 0
                 }
                 this.setData({
@@ -428,6 +455,20 @@ Page({
           }
         })
       }
+    })
+  },
+  // 新增字体
+  addFont() {
+    this.data.designFodders[this.data.currentDirection] = {
+      type: 'text',
+      content: 'hello',
+      x: 0 ,
+      y: 0 ,
+      rotate: 0
+    }
+    this.setData({
+      fodderStep: 3,
+      designFodders: this.data.designFodders
     })
   },
   /**

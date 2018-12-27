@@ -1,4 +1,4 @@
-view, navigator{
+view, navigator,input{
   box-sizing: border-box
 }
 image{
