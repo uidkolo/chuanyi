@@ -254,6 +254,7 @@
   align-items: center;
   justify-content: flex-end;
   flex-grow: 1;
+  border: 1px solid #BFBFBF;
 }
 .fodder-edit .edit .text-item{
   margin-bottom: 20rpx;
@@ -261,20 +262,18 @@
 .fodder-edit .edit .item .text-input input{
   background: #FAFAFA;
   height: 50rpx;
-  border: 1px solid #BFBFBF;
   font-size: 24rpx;
   padding: 0 20rpx;
   flex-grow: 1;
 }
 .fodder-edit .edit .item .text-input .text-btn{
   flex-shrink: 0;
-  border: 1px solid #BFBFBF;
+  border-left: 1px solid #BFBFBF;
   font-size: 24rpx;
   height: 50rpx;
-  line-height: 46rpx;
+  line-height: 50rpx;
   width: 126rpx;
   text-align: center;
-  border-left: none;
   color: #666666;
   background: #E6E6E6;
 }
@@ -316,6 +315,48 @@
   height: 44rpx;
 }
 
+/* 字体 */
+.fonts{
+  background: #fff;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  left: 0;
+}
+.fonts .font-item{
+  padding: 40rpx 80rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 40rpx;
+}
+.fonts .font-item+.font-item{
+  border-top: 1px solid #f1f1f1;
+}
+.fonts .font-item image{
+  width: 200rpx;
+  height: 40rpx;
+}
+.fontColors{
+  background: #fff;
+  height: 80rpx;
+  padding: 40rpx 0;
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  white-space: nowrap;
+}
+.fontColors .fontColor-item{
+  display: inline-block;
+  width: 80rpx;
+  height: 80rpx;
+  border: 1px solid #f1f1f1;
+  margin-right: 20rpx;
+}
+.fontColors .fontColor-item:first-child{
+  margin-left: 20rpx;
+}
 
 .canvas-view{
   width: 2220px;
