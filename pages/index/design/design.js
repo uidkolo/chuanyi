@@ -43,7 +43,7 @@ Page({
     fontId: '',
     direction: 1,
     word: '',
-    sliderValue:{
+    sliderValue: {
       front_thumb: {
         sizeValue: 50,
         rotateValue: 0
@@ -53,8 +53,8 @@ Page({
         rotateValue: 0
       }
     },
-    sizeValue: 50,//大小slider的值
-    rotateValue: 0,//角度slider的值
+    sizeValue: 50, //大小slider的值
+    rotateValue: 0, //角度slider的值
     disabled: true
   },
 
@@ -358,13 +358,13 @@ Page({
       this.setData({
         fodderX: this.data.designFodders[this.data.currentDirection].x,
         fodderY: this.data.designFodders[this.data.currentDirection].y,
-        fodderStep: this.data.designFodders[this.data.currentDirection].type=='font'?3:2
+        fodderStep: this.data.designFodders[this.data.currentDirection].type == 'font' ? 3 : 2
       })
     }
   },
   // 触摸移动
   touchmove(e) {
-    if (this.data.designFodders[this.data.currentDirection].x != undefined && this.data.fodderStep!=0) {
+    if (this.data.designFodders[this.data.currentDirection].x != undefined && this.data.fodderStep != 0) {
       this.data.designFodders[this.data.currentDirection].x = this.data.fodderX + (e.touches[0].x - this.data.startX)
       this.data.designFodders[this.data.currentDirection].y = this.data.fodderY + (e.touches[0].y - this.data.startY)
       this.setData({
@@ -439,9 +439,9 @@ Page({
     })
   },
   // 修改文字方向
-  changeDir(){
+  changeDir() {
     this.setData({
-      direction: this.data.direction == 1? 2:1
+      direction: this.data.direction == 1 ? 2 : 1
     })
     // 重新生成字体
     this.getFontImage()
@@ -489,11 +489,20 @@ Page({
   },
   // 新增字体
   addFont() {
-    this.setData({
-      fodderStep: 3,
-      sizeValue: this.data.sliderValue[this.data.currentDirection].sizeValue,
-      rotateValue: this.data.sliderValue[this.data.currentDirection].rotateValue
-    })
+    if (this.data.designFodders[this.data.currentDirection].type != 'font') {
+      this.setData({
+        fodderStep: 3,
+        sizeValue: 50,
+        rotateValue: 0
+      })
+    } else {
+      this.setData({
+        fodderStep: 3,
+        sizeValue: this.data.sliderValue[this.data.currentDirection].sizeValue,
+        rotateValue: this.data.sliderValue[this.data.currentDirection].rotateValue
+      })
+    }
+
     // 加载字体列表
     this.getFonts().then(fonts => {
       this.setData({
@@ -584,7 +593,7 @@ Page({
     this.getFontImage()
   },
   // 选择颜色
-  pickerFontColor(e){
+  pickerFontColor(e) {
     this.setData({
       color: e.currentTarget.dataset.color,
     })
@@ -611,33 +620,39 @@ Page({
       success: res => {
         if (res.data.code == 1) {
           wx.downloadFile({ //下载图片
-            url: res.data.data.font_img +'?x-oss-process=style/mini',
+            url: res.data.data.font_img + '?x-oss-process=style/mini',
             success: file => {
+              this.data.sliderValue[this.data.currentDirection].sizeValue = 50
+              this.data.sliderValue[this.data.currentDirection].rotateValue = 0
+              this.setData({
+                disabled: false,
+                sliderValue: this.data.sliderValue
+              })
               wx.hideLoading()
               wx.getImageInfo({
                 src: file.tempFilePath,
                 success: info => {
                   // 根据字体方向设置大小
-                  if(this.data.direction==1){
+                  if (this.data.direction == 1) {
                     this.setData({
                       defaultW: 80,
                       defaultH: 80 * (info.height / info.width)
                     })
                     var w = 80
                     var h = 80 * (info.height / info.width)
-                    var x = (90-w)/2
-                    var y = (120-h)/2
-                  }else{
+                    var x = (90 - w) / 2
+                    var y = (120 - h) / 2
+                  } else {
                     this.setData({
                       defaultW: 100 * (info.width / info.height),
                       defaultH: 100
                     })
                     var w = 80 * (info.width / info.height)
-                    var h = 80 
+                    var h = 80
                     var x = (90 - w) / 2
                     var y = (120 - h) / 2
                   }
-                  
+
                   wx.getSystemInfo({ //获取屏幕宽度
                     success: sysInfo => {
                       let ratio = sysInfo.windowWidth / 375 //比例
@@ -674,108 +689,112 @@ Page({
   },
   // 完成设计
   confirmDesign() {
-    const designCanvas = wx.createCanvasContext('canvas-design')
     const fodderFront = this.data.designFodders.front_thumb
-    const fodderBack = this.data.designFodders.front_thumb
-    // 生成正面
-    wx.showLoading({
-      title: '正在生成',
+    const fodderBack = this.data.designFodders.back_thumb
+    this.createDesign(fodderFront).then(url=>{
+      console.log('正面：'+url)
     })
-    if (fodderFront.type == 'img') { //素材
-      wx.downloadFile({
-        url: fodderFront.url,
-        success: file => {
-          let width = 30000 / 9
-          let height = 40000 / 9
-          let fodderW = width * (fodderFront.w / 90)
-          let fodderH = height * (fodderFront.h / 120)
-          let fodderX = width * (fodderFront.x / 90)
-          let fodderY = height * (fodderFront.y / 120)
-          this.setData({
-            designCanvasW: width,
-            designCanvasH: height
-          })
-          designCanvas.clearRect(0, 0, width, height) //清空画布
-          designCanvas.translate(fodderX + fodderW / 2, fodderY + fodderH / 2)
-          designCanvas.rotate(fodderFront.rotate * Math.PI / 180)
-          designCanvas.drawImage(file.tempFilePath, -fodderW / 2, -fodderH / 2, fodderW, fodderH)
-          designCanvas.draw(false, () => {
-            wx.canvasToTempFilePath({
-              destWidth: width,
-              destHeight: height,
-              canvasId: 'canvas-design',
-              quality: 1,
-              success: res => {
-                wx.hideLoading()
-                console.log(res.tempFilePath)
-                wx.saveImageToPhotosAlbum({
-                  filePath: res.tempFilePath,
-                  success: () => {
-                    console.log('保存成功')
-                  }
-                })
-              }
+    this.createDesign(fodderBack).then(url=>{
+      console.log('反面：' + url)
+    })
+  },
+  // 生成设计图
+  createDesign(fooder) {
+    return new Promise((resolve, reject) => {
+      const designCanvas = wx.createCanvasContext('canvas-design')
+      // 生成正面
+      wx.showLoading({
+        title: '正在生成',
+        mask: true
+      })
+      if (fooder.type == 'img' || fooder.type == 'font') { //素材
+        wx.downloadFile({
+          url: fooder.url,
+          success: file => {
+            let width = 30000 / 9
+            let height = 40000 / 9
+            let fodderW = width * (fooder.w / 90)
+            let fodderH = height * (fooder.h / 120)
+            let fodderX = width * (fooder.x / 90)
+            let fodderY = height * (fooder.y / 120)
+            this.setData({
+              designCanvasW: width,
+              designCanvasH: height
             })
-          })
-        }
-      })
-    } else if (fodderFront.type == "photo") { //相册
-      let width = 30000 / 9
-      let height = 40000 / 9
-      let fodderW = width * (fodderFront.w / 90)
-      let fodderH = height * (fodderFront.h / 120)
-      let fodderX = width * (fodderFront.x / 90)
-      let fodderY = height * (fodderFront.y / 120)
-      this.setData({
-        designCanvasW: width,
-        designCanvasH: height
-      })
-      designCanvas.clearRect(0, 0, width, height) //清空画布
-      designCanvas.translate(fodderX + fodderW / 2, fodderY + fodderH / 2)
-      designCanvas.rotate(fodderFront.rotate * Math.PI / 180)
-      designCanvas.drawImage(fodderFront.url, -fodderW / 2, -fodderH / 2, fodderW, fodderH)
-      designCanvas.draw(false, () => {
-        wx.canvasToTempFilePath({
-          destWidth: width,
-          destHeight: height,
-          canvasId: 'canvas-design',
-          quality: 1,
-          success: res => {
-            wx.hideLoading()
-            console.log(res.tempFilePath)
-            wx.saveImageToPhotosAlbum({
-              filePath: res.tempFilePath,
-              success: () => {
-                console.log('保存成功')
-              }
+            designCanvas.clearRect(0, 0, width, height) //清空画布
+            designCanvas.translate(fodderX + fodderW / 2, fodderY + fodderH / 2)
+            designCanvas.rotate(fooder.rotate * Math.PI / 180)
+            designCanvas.drawImage(file.tempFilePath, -fodderW / 2, -fodderH / 2, fodderW, fodderH)
+            designCanvas.draw(false, () => {
+              wx.canvasToTempFilePath({
+                destWidth: width,
+                destHeight: height,
+                canvasId: 'canvas-design',
+                quality: 1,
+                success: res => {
+                  wx.hideLoading()
+                  // 上传图片
+                  this.uploadImg(res.tempFilePath).then(url => {
+                    resolve(url)
+                  })
+                }
+              })
             })
           }
         })
-      })
-    } else { //素材为空
-      let width = 30000 / 9
-      let height = 40000 / 9
-      this.setData({
-        designCanvasW: width,
-        designCanvasH: height
-      })
-    }
+      } else if (fooder.type == "photo") { //相册
+        let width = 30000 / 9
+        let height = 40000 / 9
+        let fodderW = width * (fooder.w / 90)
+        let fodderH = height * (fooder.h / 120)
+        let fodderX = width * (fooder.x / 90)
+        let fodderY = height * (fooder.y / 120)
+        this.setData({
+          designCanvasW: width,
+          designCanvasH: height
+        })
+        designCanvas.clearRect(0, 0, width, height) //清空画布
+        designCanvas.translate(fodderX + fodderW / 2, fodderY + fodderH / 2)
+        designCanvas.rotate(fooder.rotate * Math.PI / 180)
+        designCanvas.drawImage(fooder.url, -fodderW / 2, -fodderH / 2, fodderW, fodderH)
+        designCanvas.draw(false, () => {
+          wx.canvasToTempFilePath({
+            destWidth: width,
+            destHeight: height,
+            canvasId: 'canvas-design',
+            quality: 1,
+            success: res => {
+              wx.hideLoading()
+              // 上传图片
+              this.uploadImg(res.tempFilePath).then(url => {
+                resolve(url)
+              })
+            }
+          })
+        })
+      } else { //素材为空
+        let width = 30000 / 9
+        let height = 40000 / 9
+        this.setData({
+          designCanvasW: width,
+          designCanvasH: height
+        })
+      }
+    })
   },
   //上传图片
   uploadImg: function(file) {
-    var nowTime = util.formatTime(new Date());
-    uploadImage(res.tempFilePaths[i], 'images/' + nowTime + '/',
-      function(result) {
-        console.log("======上传成功图片地址为：", result);
-        //做你具体的业务逻辑操作
-        wx.hideLoading();
-      },
-      function(result) {
-        console.log("======上传失败======", result);
-        //做你具体的业务逻辑操作
-        wx.hideLoading()
-      }
-    )
+    return new Promise((resolve, reject) => {
+      var nowTime = util.formatTime(new Date());
+      uploadImage(file, 'images/' + nowTime + '/',
+        function(result) {
+          resolve(result)
+        },
+        function(result) {
+          console.log("======上传失败======", result);
+        }
+      )
+    })
   },
   // 点击mask,关闭mask
   closeMask() {
