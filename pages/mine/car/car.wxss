@@ -24,11 +24,15 @@ page{
 .list .item+.item{
   margin-top: 30rpx;
 }
+.list .item .item-left{
+  display: flex;
+  align-items: center;
+}
 .list .item .img{
-  width: 140rpx;
+  width: 109rpx;
   height: 140rpx;
   flex-shrink: 0;
-  margin: 0 10rpx;
+  margin: 0 40rpx 0 20rpx;
 }
 .list .item .icon{
   width: 22rpx;
@@ -39,15 +43,20 @@ page{
   top: 4rpx;
 }
 .list .item .right{
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  min-height: 180rpx;
 }
 .list .item .right .top{
   display: flex;
   justify-content: space-between;
   font-size: 26rpx;
   color: #4D4D4D;
+}
+.list .item .item-name{
+  text-align: justify;
 }
 .list .item .right .info{
   display: flex;
@@ -73,6 +82,13 @@ page{
   font-size: 40rpx;
   color: #1a1a1a;
 }
+.list .item .right .num-btn{
+  width: 50rpx;
+  height: 50rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .list .item .right .bottom .num image{
   width: 20rpx;
   height: 20rpx;
@@ -82,13 +98,13 @@ page{
   height:50rpx;
   width: 80rpx;
   font-size: 26rpx;
-  margin: 0 20rpx;
   line-height: 50rpx;
   text-align: center;
 }
 
 .count-box{
   height: 130rpx;
+  margin-top: 40rpx;
 }
 .count{
   height: 130rpx;

@@ -1,31 +1,20 @@
 page{
   background: #f5f5f5;
 }
-.header{
-  background: #fff;
-  height: 700rpx;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0 30rpx;
-}
 
-.header .center{
-  width: 450rpx;
-  height: 700rpx;
-  padding: 20rpx 0 10rpx;
+.swiper{
+  height: 610rpx;
+}
+.swiper-item{
+  height: 610rpx;
   display: flex;
-  flex-direction: column;
-  justify-content: space-around;
   align-items: center;
+  justify-content: center;
 }
-.header .center .canvas image{
-  width: 450rpx;
+.swiper-img{
+  width: 412rpx;
   height: 530rpx;
-}
-.header .center .shadow image{
-  width: 450rpx;
-  height: 60rpx;
+  margin: 0 auto;
 }
 
 .info{
@@ -126,11 +115,41 @@ page{
   justify-content: center;
   color: #4D4D4D;
   font-size: 22rpx;
+  height: 84rpx;
+  line-height: 1;
+  position: relative;
+}
+.bottom .left .item .num{
+  position: absolute;
+  right: -10rpx;
+  top: -10rpx;
+  font-size: 20rpx;
+  display: block;
+  width: 30rpx;
+  height: 30rpx;
+  line-height: 30rpx;
+  border-radius: 30rpx;
+  text-align: center;
+  background: #D6000F;
+  color: #fff;
+}
+.bottom .left button.item{
+  padding: 0;
+  margin: 0;
+  border: none;
+  background: none;
+  display: block;
+  position: relative;
+  top: 5rpx;
+}
+.bottom .left button.item::after{
+  border: none;
 }
 .bottom .left .item image{
   width: 44rpx;
   height: 44rpx;
   margin-bottom: 10rpx;
+  flex-shrink: 0;
 }
 .bottom .right{
   display: flex;
@@ -184,11 +203,13 @@ page{
   height: 180rpx;
   border: 1rpx solid #dcdcdc;
   margin-right: 30rpx;
-  padding: 10rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .picker-box .top .img image{
-  width: 100%;
-  height: 100%;
+  width: 124rpx;
+  height: 160rpx;
 }
 .picker-box .top .right{
   font-size: 26rpx;
@@ -209,15 +230,26 @@ page{
 .picker-box .picker-item .label{
   color: #999;
   font-size: 26rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.show-size{
+  color: #E5BF00;
+  display: flex;
+  align-items: center;
+}
+.show-size-icon{
+  width: 30rpx;
+  height: 30rpx;
 }
 .picker-box .picker-item .content{
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;
 }
 .picker-box .picker-item .content .item{
-  width: 160rpx;
+  width: 165rpx;
   height: 60rpx;
   background: #F2F2F2;
   font-size: 26rpx;
@@ -226,6 +258,10 @@ page{
   line-height: 60rpx;
   text-align: center;
   margin-top: 20rpx;
+  margin-right: 10rpx;
+}
+.picker-box .picker-item .content .item:nth-child(4n){
+  margin-right: 0;
 }
 .picker-box .picker-item .content .item.active{
   background: #F8DB16;
@@ -235,7 +271,7 @@ page{
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 20rpx 30rpx 30rpx;
+  padding: 30rpx 30rpx 30rpx;
 }
 .picker-box .num .label{
   color: #999;
@@ -244,6 +280,13 @@ page{
 .picker-box .num .right{
   display: flex;
   align-items: center;
+}
+.picker-box .num .num-btn{
+  width: 50rpx;
+  height: 50rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .picker-box .num .right image{
   height: 20rpx;
@@ -257,5 +300,4 @@ page{
   line-height: 50rpx;
   color: #1a1a1a;
   font-size: 26rpx;
-  margin: 0 20rpx;
 }

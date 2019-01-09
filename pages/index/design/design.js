@@ -37,6 +37,8 @@ Page({
     defaultH: 0, //素材高度
     designCanvasW: 0, //最终设计canvas宽度
     designCanvasH: 0, //最终设计canvas高度
+    viewCanvasW: 0, //最终预览图canvas宽度
+    viewCanvasH: 0, //最终预览图canvas高度
     fontMask: false,
     fontColorMask: false,
     fontIndex: 0,
@@ -68,6 +70,9 @@ Page({
   init() {
     // 默认加载男装款式列表
     this.clothesList(1).then(clothes => {
+      this.setData({
+        clothes_id: clothes[0].id
+      })
       // 默认加载男装第一款的样式
       this.getStyle(clothes[0].id)
     })
@@ -139,6 +144,9 @@ Page({
   // 切换款式
   getCothes(e) {
     this.getStyle(e.currentTarget.dataset.id)
+    this.setData({
+      clothes_id: e.currentTarget.dataset.id
+    })
   },
   // 切换颜色
   tabColor(e) {
@@ -689,24 +697,49 @@ Page({
   },
   // 完成设计
   confirmDesign() {
+    wx.showLoading({
+      title: '正在生成',
+      mask: true
+    })
     const fodderFront = this.data.designFodders.front_thumb
     const fodderBack = this.data.designFodders.back_thumb
-    this.createDesign(fodderFront).then(url=>{
-      console.log('正面：'+url)
-    })
-    this.createDesign(fodderBack).then(url=>{
-      console.log('反面：' + url)
+    this.createDesign(fodderFront).then(frontDesignUrl => {
+      this.createDesign(fodderBack).then(backDesignUrl => {
+        this.setData({
+          designCanvasW: 0,
+          designCanvasH: 0,
+          frontDesignUrl: frontDesignUrl,
+          backDesignUrl: backDesignUrl
+        })
+        // 生成预览图
+        const frontBg = this.data.colors[this.data.currentColorIndex].front_thumb
+        const frontFodder = this.data.designFodders['front_thumb']
+        const backBg = this.data.colors[this.data.currentColorIndex].back_thumb
+        const backFodder = this.data.designFodders['back_thumb']
+        this.createViewImg(frontBg, frontFodder).then(frontView => {
+          this.createViewImg(backBg, backFodder).then(backView => {
+            this.setData({
+              viewCanvasW: 0,
+              viewCanvasH: 0,
+              frontViewUrl: frontView,
+              backViewUrl: backView
+            })
+            wx.hideLoading()
+            // 保存设计
+            this.saveDesign().then(id => {
+              wx.navigateTo({
+                url: `/pages/index/detail/detail?id=${id}`,
+              })
+            })
+          })
+        })
+      })
     })
   },
   // 生成设计图
   createDesign(fooder) {
     return new Promise((resolve, reject) => {
       const designCanvas = wx.createCanvasContext('canvas-design')
-      // 生成正面
-      wx.showLoading({
-        title: '正在生成',
-        mask: true
-      })
       if (fooder.type == 'img' || fooder.type == 'font') { //素材
         wx.downloadFile({
           url: fooder.url,
@@ -732,7 +765,6 @@ Page({
                 canvasId: 'canvas-design',
                 quality: 1,
                 success: res => {
-                  wx.hideLoading()
                   // 上传图片
                   this.uploadImg(res.tempFilePath).then(url => {
                     resolve(url)
@@ -764,7 +796,6 @@ Page({
             canvasId: 'canvas-design',
             quality: 1,
             success: res => {
-              wx.hideLoading()
               // 上传图片
               this.uploadImg(res.tempFilePath).then(url => {
                 resolve(url)
@@ -779,7 +810,57 @@ Page({
           designCanvasW: width,
           designCanvasH: height
         })
+        designCanvas.clearRect(0, 0, width, height) //清空画布
+        designCanvas.draw(false, () => {
+          wx.canvasToTempFilePath({
+            destWidth: width,
+            destHeight: height,
+            canvasId: 'canvas-design',
+            quality: 1,
+            success: res => {
+              // 上传图片
+              this.uploadImg(res.tempFilePath).then(url => {
+                resolve(url)
+              })
+            }
+          })
+        })
       }
+    })
+  },
+  // 生成预览图
+  createViewImg(bg, fooder) {
+    return new Promise((resolve, reject) => {
+      const viewCanvas = wx.createCanvasContext('canvas-view')
+      var canvasW = 412
+      var canvasH = 530
+      this.setData({
+        viewCanvasW: canvasW,
+        viewCanvasH: canvasH,
+      })
+      viewCanvas.clearRect(0, 0, canvasW, canvasH) //清空画布
+      console.log(bg)
+      wx.downloadFile({
+        url: bg,
+        success: fileBg => {
+          viewCanvas.drawImage(fileBg.tempFilePath, 0, 0, canvasW, canvasH) //绘制背景
+          viewCanvas.drawImage(fooder.thumb, 116 + fooder.x * 2, 145 + fooder.y * 2, fooder.w * 2, fooder.h * 2) //绘制素材
+          viewCanvas.draw(false, () => {
+            wx.canvasToTempFilePath({
+              destWidth: canvasW,
+              destHeight: canvasH,
+              canvasId: 'canvas-view',
+              quality: 1,
+              success: res => {
+                // 上传图片
+                this.uploadImg(res.tempFilePath).then(url => {
+                  resolve(url)
+                })
+              }
+            })
+          })
+        }
+      })
     })
   },
   //上传图片
@@ -801,6 +882,38 @@ Page({
     this.setData({
       fontMask: false,
       fontColorMask: false
+    })
+  },
+  // 保存设计
+  saveDesign() {
+    return new Promise((resolve, reject) => {
+      wx.request({
+        url: 'https://cy.nulizhe.com/api/Design/saveDesign',
+        method: 'POST',
+        header: {
+          "content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+        },
+        data: {
+          token: wx.getStorageSync('auth_token'),
+          front: this.data.frontDesignUrl,
+          front_thumb: this.data.frontViewUrl,
+          back: this.data.backDesignUrl,
+          back_thumb: this.data.backViewUrl,
+          clothes_id: this.data.clothes_id,
+          color: this.data.colors[this.data.currentColorIndex].color,
+          color_name: this.data.colors[this.data.currentColorIndex].color_name
+        },
+        success: res => {
+          if (res.data.code == 1) {
+            resolve(res.data.data.design_id)
+          } else {
+            wx.showToast({
+              title: res.data.message,
+              image: '/images/tip.png'
+            })
+          }
+        }
+      })
     })
   },
   /**

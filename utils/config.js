@@ -3,6 +3,6 @@ var config = {
   uploadImageUrl: `${fileHost}`,
   AccessKeySecret: 'tFNGYvtxIoso6jfxEPMEReoyCK4X1w', 
   OSSAccessKeyId: 'LTAIYRFSMgZw5yrR',
-  timeout: 87600
+  timeout: 60000
 };
 module.exports = config

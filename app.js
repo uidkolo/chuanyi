@@ -71,5 +71,53 @@ App({
         }
       })
     })
-  }
+  },
+  post(url, data) {
+    return new Promise((resolve, reject) => {
+      wx.request({
+        url: `https://cy.nulizhe.com${url}`,
+        method: 'POST',
+        header: {
+          "content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+        },
+        data: data==undefined?{}:data,
+        success: res => {
+          if (res.data.code == 1) {
+            if(res.data.data){
+              resolve(res.data.data)
+            }else{
+              resolve()
+            }
+          } else {
+            wx.showToast({
+              title: res.data.message,
+              image: '/images/tip.png'
+            })
+          }
+        }
+      })
+    })
+  },
+  get(url,data){
+    return new Promise((resolve, reject) => {
+      wx.request({
+        url: `https://cy.nulizhe.com${url}`,
+        data: data == undefined ? {} : data,
+        success: res => {
+          if (res.data.code == 1) {
+            if (res.data.data) {
+              resolve(res.data.data)
+            } else {
+              resolve()
+            }
+          } else {
+            wx.showToast({
+              title: res.data.msg,
+              image: '/images/tip.png'
+            })
+          }
+        }
+      })
+    })
+  },
 })

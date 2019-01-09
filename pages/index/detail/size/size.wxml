@@ -22,33 +22,12 @@
     </view>
   </view>
   <view class='tbody'>
-    <view class='item'>
-      <view class='size'>170</view>
-      <view class='length'>66</view>
-      <view class='bust'>94</view>
-      <view class='height'>165/170</view>
-      <view class='weight'>50/60</view>
-    </view>
-    <view class='item'>
-      <view class='size'>175</view>
-      <view class='length'>68</view>
-      <view class='bust'>98</view>
-      <view class='height'>170/175</view>
-      <view class='weight'>60/70</view>
-    </view>
-    <view class='item'>
-      <view class='size'>180</view>
-      <view class='length'>70</view>
-      <view class='bust'>102</view>
-      <view class='height'>175/180</view>
-      <view class='weight'>70/80</view>
-    </view>
-    <view class='item'>
-      <view class='size'>185</view>
-      <view class='length'>72</view>
-      <view class='bust'>106</view>
-      <view class='height'>780/185</view>
-      <view class='weight'>80/90</view>
+    <view class='item' wx:for='{{sizes}}' wx:key='index'>
+      <view class='size'>{{item.size}}</view>
+      <view class='length'>{{item.length}}</view>
+      <view class='bust'>{{item.circumference}}</view>
+      <view class='height'>{{item.height}}</view>
+      <view class='weight'>{{item.weight}}</view>
     </view>
   </view>
 </view>

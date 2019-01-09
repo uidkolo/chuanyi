@@ -1,74 +1,77 @@
 <view class='list'>
-  <radio-group>
-    <view class='item'>
+  <radio-group bindchange='setDefault'>
+    <view class='item' wx:for='{{adds}}' wx:key='index'>
       <view class='top'>
-        <text class='name'>刘大龙</text>
-        <text class='phone'>158****1254</text>
+        <text class='name'>{{item.recipients}}</text>
+        <text class='phone'>{{item.mobile}}</text>
       </view>
-      <view class='add'>福建省厦门市湖里区立案前街道菜汤社1好</view>
+      <view class='add'>{{item.province+item.city+item.area+item.detail}}</view>
       <view class='bottom'>
         <view class='radio'>
-          <radio color='#F8DB16'></radio>
+          <radio color='#F8DB16' checked='{{item.is_default==1}}' value='{{item.id}}'></radio>
           <text>默认地址</text>
         </view>
         <view class='btns'>
-          <text>编辑</text>
-          <text>删除</text>
-        </view>
-      </view>
-    </view>
-    <view class='item'>
-      <view class='top'>
-        <text class='name'>刘大龙</text>
-        <text class='phone'>158****1254</text>
-      </view>
-      <view class='add'>福建省厦门市湖里区立案前街道菜汤社1好</view>
-      <view class='bottom'>
-        <view class='radio'>
-          <radio color='#F8DB16'></radio>
-          <text>默认地址</text>
-        </view>
-        <view class='btns'>
-          <text>编辑</text>
-          <text>删除</text>
-        </view>
-      </view>
-    </view>
-    <view class='item'>
-      <view class='top'>
-        <text class='name'>刘大龙</text>
-        <text class='phone'>158****1254</text>
-      </view>
-      <view class='add'>福建省厦门市湖里区立案前街道菜汤社1好</view>
-      <view class='bottom'>
-        <view class='radio'>
-          <radio color='#F8DB16'></radio>
-          <text>默认地址</text>
-        </view>
-        <view class='btns'>
-          <text>编辑</text>
-          <text>删除</text>
-        </view>
-      </view>
-    </view>
-    <view class='item'>
-      <view class='top'>
-        <text class='name'>刘大龙</text>
-        <text class='phone'>158****1254</text>
-      </view>
-      <view class='add'>福建省厦门市湖里区立案前街道菜汤社1好</view>
-      <view class='bottom'>
-        <view class='radio'>
-          <radio color='#F8DB16'></radio>
-          <text>默认地址</text>
-        </view>
-        <view class='btns'>
-          <text>编辑</text>
-          <text>删除</text>
+          <text bindtap='bindtapEdit' data-index='{{index}}'>编辑</text>
+          <text bindtap='deleteAdd' data-id='{{item.id}}'>删除</text>
         </view>
       </view>
     </view>
   </radio-group>
 </view>
 
-<view class='btn'>添加新地址</view>
+<view class='btn' bindtap='add'>添加新地址</view>
+
+<view class='mask' wx:if='{{addMask}}'>
+  <view class='add-from'>
+
+    <view class='add-form-item'>
+      <view class='add-label'>
+        <text add-label>*</text>收货人
+      </view>
+      <view class='add-content'>
+        <input value='{{recipients}}' cursor-spacing='20' class='add-input' placeholder='请输入姓名' placeholder-class='placeholder' bindinput='input' data-key='recipients'></input>
+      </view>
+    </view>
+
+    <view class='add-form-item'>
+      <view class='add-label'>
+        <text add-label>*</text>手机
+      </view>
+      <view class='add-content'>
+        <input value='{{mobile}}' cursor-spacing='20' class='add-input' placeholder='请输入手机' placeholder-class='placeholder' bindinput='input' data-key='mobile'></input>
+      </view>
+    </view>
+
+    <view class='add-form-item'>
+      <view class='add-label'>
+        <text add-label>*</text>省市
+      </view>
+      <picker mode='region' class='add-picker' bindchange='pickerAdd'>
+      <view class='add-content add-picker-box'>
+        <text class='placeholder' wx:if='{{!area}}'>请选择省市</text>
+        <view class='add-content-value' wx:else>{{province+city+area}}</view>
+        <image class='add-picker-icon' src='/images/mine/icon_picker.png'></image>
+      </view>
+      </picker>
+    </view>
+
+    <view class='add-form-item add-form-textarea'>
+      <view class='add-label'>
+        <text add-label>*</text>详细地址
+      </view>
+      <view class='add-content add-textarea-box'>
+        <textarea value='{{detail}}' cursor-spacing='20' class='add-textarea' placeholder='请输入详细地址' placeholder-class='placeholder' bindinput='input' data-key='detail'></textarea>
+      </view>
+    </view>
+
+    <view class='add-btns'>
+      <view class='cancel' bindtap='cancel'>取消</view>
+      <!-- 新增 -->
+      <view class='save' bindtap='saveAdd' wx:if='{{!edit}}' data-type='1'>保存</view>
+      <!-- 更新 -->
+      <view class='save' bindtap='saveAdd' wx:else data-type='2'>保存</view>
+    </view>
+
+  </view>
+</view>

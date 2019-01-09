@@ -12,9 +12,19 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    this.getSizes(options.id)
   },
-
+  // 获取尺码
+  getSizes(id){
+    let url = '/api/clothes/clothesSizeTable'
+    getApp().get(url,{
+      clothes_id: id
+    }).then(data=>{
+      this.setData({
+        sizes: data.size_table
+      })
+    })
+  },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */

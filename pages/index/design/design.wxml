@@ -173,4 +173,6 @@
 <view class='design-canvas-box'>
   <!-- 设计图 -->
   <canvas class='canvas-design' canvas-id='canvas-design' style='width:{{designCanvasW}}px;height:{{designCanvasH}}px'></canvas>
+  <!-- 预览图 -->
+  <canvas class='canvas-view' canvas-id='canvas-view' style='width:{{viewCanvasW}}px;height:{{viewCanvasH}}px'></canvas>
 </view>

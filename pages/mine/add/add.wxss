@@ -74,3 +74,95 @@ page{
   color: #1a1a1a;
   font-size: 30rpx;
 }
+
+.mask{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.add-from{
+  background: #fff;
+  border-radius: 8rpx;
+  width: 690rpx;
+  padding: 40rpx 30rpx;
+}
+.add-form-item{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20rpx;
+}
+.add-label{
+  color: #666666;
+  font-size: 28rpx;
+  flex-shrink: 0;
+  width: 160rpx;
+}
+.add-label text{
+  color: #F7C900;
+}
+.add-content{
+  height: 80rpx;
+  border: 1px solid #CCCCCC;
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 28rpx;
+  color: #333333;
+  border-radius: 4rpx;
+  width: 100%;
+}
+.add-content-value{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-grow: 1;
+}
+.add-input{
+  height: 80rpx;
+  flex-grow: 1;
+  padding: 0 20rpx;
+}
+.add-picker{
+  width: 235rpx;
+  flex-grow: 1;
+  height: 80rpx;
+}
+.add-picker-icon{
+  width: 30rpx;
+  height: 30rpx;
+  flex-shrink: 0;
+}
+.add-picker-box{
+  padding: 0 20rpx;
+}
+
+.add-form-textarea{
+  align-items: flex-start;
+}
+.add-textarea-box{
+  height: 170rpx;
+  padding: 20rpx;
+}
+.add-textarea{
+  height: 130rpx;
+  width: 100%;
+}
+.add-btns{
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  font-size: 30rpx;
+  color: #1A1A1A;
+}
+.cancel, .save{
+  height: 70rpx;
+  width: 160rpx;
+  line-height: 70rpx;
+  text-align: center;
+}
+.save{
+  background: #F7C900;
+  border-radius: 4rpx;
+}

@@ -1,25 +1,23 @@
-<view class='header'>
-  <view class='center'>
-    <view class='canvas'>
-      <image src='/images/test/template.png'></image>
-    </view>
-    <view class='shadow'>
-      <image src='/images/design/shadow.png'></image>
-    </view>
-  </view>
-</view>
+<swiper class='swiper' indicator-dots indicator-active-color='#f8db16'>
+  <swiper-item class='swiper-item'>
+    <image class='swiper-img' src='{{info.design.front_thumb}}'></image>
+  </swiper-item>
+  <swiper-item class='swiper-item'>
+    <image class='swiper-img' src='{{info.design.back_thumb}}'></image>
+  </swiper-item>
+</swiper>
 
 <view class='info'>
   <view class='top'>
     <view class='price'>
       <view class='pri'>
-        <text>￥</text>99-199
+        <text>￥</text>{{info.min_money}}-{{info.max_money}}
       </view>
       <text>选择面料、尺寸</text>
     </view>
-    <view class='title'>2018夏季新款男士休闲版潮流修身T恤</view>
+    <view class='title'>{{info.design.clothes_name}}</view>
   </view>
-  <view class='size'>
+  <view class='size' bindtap='pickSizes'>
     <text class='label'>尺码：</text>
       <view class='picker'>
         <text class='value'>选择规格</text>
@@ -36,36 +34,42 @@
 <view class='bottom-box'>
   <view class='bottom'>
     <view class='left'>
-      <view class='item'>
+      <navigator class='item' open-type='switchTab' url='/pages/index/index'>
         <image src='/images/detail/icon_index.png'></image>
         <text>主页</text>
-      </view>
-      <view class='item'>
+      </navigator>
+      <button class='item' open-type="contact">
         <image src='/images/detail/icon_service.png'></image>
         <text>客服</text>
-      </view>
-      <view class='item'>
+      </button>
+      <navigator class='item' url='/pages/mine/car/car'>
+        <text class='num'>{{cartNum}}</text>
         <image src='/images/detail/icon_car.png'></image>
         <text>购物车</text>
-      </view>
+      </navigator>
     </view>
     <view class='right'>
-      <view class='add'>加入购物车</view>
+      <view class='add' bindtap='addToCar'>加入购物车</view>
       <view class='confirm' bindtap='confirm'>提交定制</view>
     </view>
   </view>
 </view>
 
-<view class='mask'>
+<view class='mask' wx:if='{{infoMask}}'>
   <view class='picker-box'>
-    <image class='close' src='/images/icon/icon_close.png'></image>
+    <image class='close' src='/images/icon/icon_close.png' bindtap='close'></image>
     <view class='top'>
       <view class='img'>
-        <image src='/images/test/template.png'></image>
+        <image src='{{info.design.front_thumb}}'></image>
       </view>
       <view class='right'>
         <view class='price'>
-          <text>￥</text>99-199
+          <block wx:if='{{!price}}'>
+            <text>￥</text>{{info.min_money}}-{{info.max_money}}
+          </block>
+          <block wx:else>
+            <text>￥</text>{{price}}
+          </block>
         </view>
         <view>选择面料、尺寸</view>
       </view>
@@ -73,28 +77,31 @@
     <view class='picker-item'>
       <view class='label'>面料</view>
       <view class='content'>
-        <view class='item active'>99%棉</view>
-        <view class='item'>蚕丝</view>
-        <view class='item'>纯棉</view>
-        <view class='item'>加绒</view>
+        <view class='item {{item.id==fabricId?"active":""}}' wx:for='{{info.fabrics}}' wx:key='index' bindtap='pickerFabric' data-id='{{item.id}}' data-price='{{item.price}}'>{{item.name}}</view>
       </view>
     </view>
     <view class='picker-item'>
-      <view class='label'>面料</view>
+      <view class='label'>
+        <text>尺寸</text>
+        <navigator class='show-size' url='/pages/index/detail/size/size?id={{info.clothes.id}}'>
+          <text>查看尺码表</text>
+          <image class='show-size-icon' src='/images/detail/icon_picker_yellow.png'></image>
+        </navigator>
+      </view>
       <view class='content'>
-        <view class='item'>165</view>
-        <view class='item active'>170</view>
-        <view class='item'>175</view>
-        <view class='item'>180</view>
-        <view class='item'>185</view>
+        <view class='item {{size==item?"active":""}}' wx:for='{{info.sizes}}' wx:key='index' bindtap='pickerSize' data-size='{{item}}'>{{item}}</view>
       </view>
     </view>
     <view class='num'>
       <text class='label'>数量</text>
       <view class='right'>
-        <image src='/images/icon/icon_reduce.png'></image>
-        <text class='value'>1</text>
-        <image src='/images/icon/icon_add.png'></image>
+        <view class='num-btn' bindtap='reduceNum'>
+          <image src='/images/icon/icon_reduce.png'></image>
+        </view>
+        <text class='value'>{{number}}</text>
+        <view class='num-btn' bindtap='addNum'>
+          <image src='/images/icon/icon_add.png'></image>
+        </view>
       </view>
     </view>
   </view>
