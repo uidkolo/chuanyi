@@ -176,3 +176,11 @@
   <!-- 预览图 -->
   <canvas class='canvas-view' canvas-id='canvas-view' style='width:{{viewCanvasW}}px;height:{{viewCanvasH}}px'></canvas>
 </view>
+
+<view class='mask' wx:if='{{uploadMask}}'>
+  <view class='uploadProgress'>
+    <view class='uploadProgress-title'>生成设计需要较长时间，请耐心等待</view>
+    <view>正在生成{{uploadTip}}<text class='uploadProgress-num'>{{designProgress}}</text>%</view>
+    <progress percent='{{designProgress}}' activeColor='#F7C900' border-radius='16'></progress>
+  </view>
+</view>

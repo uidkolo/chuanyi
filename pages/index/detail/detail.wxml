@@ -1,3 +1,4 @@
+<import src="/wxParse/wxParse.wxml" />
 <swiper class='swiper' indicator-dots indicator-active-color='#f8db16'>
   <swiper-item class='swiper-item'>
     <image class='swiper-img' src='{{info.design.front_thumb}}'></image>
@@ -19,15 +20,94 @@
   </view>
   <view class='size' bindtap='pickSizes'>
     <text class='label'>尺码：</text>
-      <view class='picker'>
-        <text class='value'>选择规格</text>
-        <image class='icon' src='/images/detail/icon_picker.png'></image>
-      </view>
+    <view class='picker'>
+      <text class='value'>选择规格</text>
+      <image class='icon' src='/images/detail/icon_picker.png'></image>
+    </view>
   </view>
   <view class='btns'>
-    <text class='btn'>衣服详情</text>
-    <text class='btn'>衣服参数</text>
-    <text class='btn'>购买须知</text>
+    <text class='btn {{currentContentIndex == 0 ?"active":""}}' bindtap='tabContent' data-index='0'>衣服详情</text>
+    <text class='btn {{currentContentIndex == 1 ?"active":""}}' bindtap='tabContent' data-index='1'>衣服参数</text>
+    <text class='btn {{currentContentIndex == 2 ?"active":""}}' bindtap='tabContent' data-index='2'>购买须知</text>
+  </view>
+</view>
+
+<view class='content-box'>
+  <!-- 衣服详情 -->
+  <view class='content-detail' wx:if='{{currentContentIndex==0}}'>
+    <template is="wxParse" data="{{wxParseData:detail.nodes}}" />
+  </view>
+  <!-- 衣服参数 -->
+  <view class='content-param' wx:if='{{currentContentIndex==1}}'>
+    <view class='content-param-item'>
+      <text class='content-param-label'>款式名称</text>
+      <text>{{info.clothes.name}}</text>
+    </view>
+    <view class='content-param-item'>
+      <text class='content-param-label'>品牌</text>
+      <text>{{info.clothes.brand}}</text>
+    </view>
+    <view class='content-param-item'>
+      <text class='content-param-label'>风格</text>
+      <text>{{info.clothes.style}}</text>
+    </view>
+    <view class='content-param-item'>
+      <text class='content-param-label'>衣门襟</text>
+      <text>{{info.clothes.cloth_door}}</text>
+    </view>
+    <view class='content-param-item'>
+      <text class='content-param-label'>洗涤条件
+</text>
+      <text>{{info.clothes.wash_condition}}</text>
+    </view>
+    <view class='content-param-item'>
+      <text class='content-param-label'>衣领</text>
+      <text>{{info.clothes.collar}}</text>
+    </view>
+    <view class='content-param-item'>
+      <text class='content-param-label'>版型</text>
+      <text>{{info.clothes.template}}</text>
+    </view>
+    <view class='content-param-item'>
+      <text class='content-param-label'>袖长</text>
+      <text>{{info.clothes.sleeve}}</text>
+    </view>
+    <view class='content-param-item'>
+      <text class='content-param-label'>上市时间</text>
+      <text>{{info.clothes.time}}</text>
+    </view>
+    <view class='content-param-item'>
+      <text class='content-param-label'>默认快递</text>
+      <text>{{info.clothes.express}}</text>
+    </view>
+    <view class='content-param-item'>
+      <text class='content-param-label'>服务信息</text>
+      <text>{{info.clothes.server_info}}</text>
+    </view>
+  </view>
+  <!-- 购买须知 -->
+  <view class='content-tip' wx:if='{{currentContentIndex==2}}'>
+    <view class='content-tip-item'>
+      <view class='content-tip-title'>
+        <text class='content-tip-dot'>.</text>
+        <text>关于快递</text>
+      </view>
+      <view class='content-tip-content'>串衣仓储与多家快递公司合作，会根据你的地址自动匹配当地运营叫好的快递公司，保证所有国内地区均有快递可以送达，暂不支持指定快递。</view>
+    </view>
+    <view class='content-tip-item'>
+      <view class='content-tip-title'>
+        <text class='content-tip-dot'>.</text>
+        <text>关于签收</text>
+      </view>
+      <view class='content-tip-content'>收到商品后需要您当场验证确认无误后再签收，如果是包装完好且本人签收的再反馈少发、发错等类似问题，请自理。若非当面签收后发现异常请第一时间联系快递核实。</view>
+    </view>
+    <view class='content-tip-item'>
+      <view class='content-tip-title'>
+        <text class='content-tip-dot'>.</text>
+        <text>关于退换货</text>
+      </view>
+      <view class='content-tip-content'>在商品完好不影响二次销售的情况下，支持签收之日起的7天内无理由退货，退货运费由买家承担。</view>
+    </view>
   </view>
 </view>
 

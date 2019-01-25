@@ -1,0 +1,35 @@
+<view class='list'>
+  <view class='item' wx:for='{{orders}}' wx:key='{{index}}'>
+    <view class='products'>
+      <view class='product '>
+        <image class='img' src='{{item.goods.design_front_thumb}}'></image>
+        <view class='right'>
+          <view class='title'>{{item.goods.clothes_name}}</view>
+          <view class='info'>
+            <text>{{item.goods.fabric_name}}</text>
+            <text>{{item.goods.size}}</text>
+            <text>{{item.goods.source}}</text>
+          </view>
+          <view class='bottom'>
+            <text class='price'>￥{{item.goods.price}}</text>
+            <text class='num'>x{{item.goods.count}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class='aftersale-info'>
+      <text class='aftersale-info-btn'>{{item.way==1?"换":"退"}}</text>
+      <text class='aftersale-info-text'>{{item.way_word}}</text>
+      <text class='aftersale-info-time'>{{item.status_word}}</text>
+    </view>
+    <view class='aftersale-btns'>
+    <navigator class='aftersale-btn aftersale-btn--yellow' url='/pages/mine/order/afterSale/afterSale?id={{item.id}}&scene=1' wx:if='{{item.status==5}}'>修改申请</navigator>
+    <view class='aftersale-btn' wx:if='{{item.status!=4}}' bindtap='cancelApply' data-id='{{item.id}}'>撤销申请</view>
+      <navigator class='aftersale-btn aftersale-btn--yellow' url='/pages/mine/afterSaleList/detail/detail?id={{item.id}}' wx:if='{{item.status==2}}'>填写快递</navigator>
+      <button open-type='contact' class='aftersale-btn' url='/pages/mine/afterSaleList/detail/detail?id={{item.id}}'>联系客服</button>
+    </view>
+  </view>
+</view>
+<view class='end' wx:if='{{end}}'>
+  <text>-- END --</text>
+</view> 

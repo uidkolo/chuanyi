@@ -4,6 +4,7 @@ page{
 }
 .list{
   border-top: 1rpx solid #dcdcdc;
+  min-height: 400rpx;
 }
 .list .item{
   background: #fff;

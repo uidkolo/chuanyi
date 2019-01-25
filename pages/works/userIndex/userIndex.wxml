@@ -1,0 +1,57 @@
+<view class='user-box'>
+  <view class='user'>
+    <image class='avatar' src='{{info.avatar}}'></image>
+    <view class='user-name'>
+      <text class='nickname'>{{info.nick_name}}</text>
+      <text class='user-attention' wx:if='{{info.is_self==0&&info.is_follow==0}}' bindtap='followOrCancel'>+ 关注</text>
+      <text class='user-attentiond' wx:if='{{info.is_self==0&&info.is_follow==1}}' bindtap='followOrCancel'>已关注</text>
+    </view>
+    <view class='user-num'>
+      作品 {{info.original_design_count}}
+      <text class='user-num-line'></text>粉丝 {{info.fans}}
+    </view>
+  </view>
+</view>
+
+<view class='list'>
+  <navigator class='item' wx:for='{{designs}}' wx:key='{{index}}' url='/pages/index/detail/detail?id={{item.id}}'>
+    <view class='slogan'>{{item.clothes_name}}</view>
+    <view class='imgs'>
+      <view class='img front'>
+        <view class='icon'>
+          <text>正</text>
+        </view>
+        <image src='{{item.front_thumb}}'></image>
+      </view>
+      <view class='img back'>
+        <view class='icon'>
+          <text>背</text>
+        </view>
+        <image src='{{item.back_thumb}}'></image>
+      </view>
+    </view>
+    <view class='info'>
+      <view class='left'>
+        <text class='left-item'>{{item.date}}</text>
+      </view>
+      <view class='right'>
+        <view class='right-item'>
+          <image class='right-item-icon' src='/images/works/save.png'></image>
+          <text>{{item.collect_count}}</text>
+        </view>
+        <view class='right-item'>
+          <image class='right-item-icon' src='/images/works/discuss.png'></image>
+          <text>{{item.comment_count}}</text>
+        </view>
+        <view class='right-item'>
+          <image class='right-item-icon' src='/images/works/like.png'></image>
+          <text>{{item.like_count}}</text>
+        </view>
+      </view>
+    </view>
+  </navigator>
+</view>
+
+<view class='end'>
+  <text>-- END --</text>
+</view>

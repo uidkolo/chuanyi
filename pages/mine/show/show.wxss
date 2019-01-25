@@ -95,13 +95,19 @@ page{
   align-items: center;
   border: 1rpx solid #CCCCCC;
   height: 36rpx;
-  line-height: 36rpx;
   border-radius:36rpx;
-  padding: 0 10rpx;
-  margin-left: 10rpx;
+  justify-content: center;
+  width: 100rpx;
+  margin-left: 20rpx;
+  padding: 0 20rpx;
+}
+.right .right-item-value{
+  flex-grow: 1;
+  text-align: center;
 }
 .list .item .bottom .right image{
-  width: 22rpx;
-  height: 22rpx;
+  width: 24rpx;
+  height: 24rpx;
   margin-right: 5rpx;
+  flex-shrink: 0;
 }

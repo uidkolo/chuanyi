@@ -1,3 +1,4 @@
+<block wx:if='{{goods.length>0}}'>
 <view class='total'>
   <text>共{{goods.length}}件宝贝</text>
 </view>
@@ -43,6 +44,16 @@
         <text class='num'>￥{{totalPrice}}</text>
       </view>
     </view>
-    <view class='right'>结算</view>
+    <view class='right' bindtap='closing'>结算</view>
   </view>
 </view>
+</block>
+
+<!-- 购物车为空 -->
+<block wx:else>
+  <view class='null'>
+    <image class='null-icon' src='/images/icon/icon_car.png'></image>
+    <view class='null-tip'>购物车空空如也，快来挑好货呗~</view>
+    <view class='null-btn'>去作品馆逛逛</view>
+  </view>
+</block>

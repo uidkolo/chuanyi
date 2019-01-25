@@ -1,0 +1,77 @@
+<view class='goods'>
+  <view class='goods-img-box'>
+    <image class='goods-img' src='{{info.goods.design_front_thumb}}'></image>
+  </view>
+  <view class='goods-right'>
+    <view class='goods-name'>{{info.goods.clothes_name}}</view>
+    <view class='goods-right-bottom'>
+      <text class='goods-right-bottom-item'>{{info.goods.fabric_name}}</text>
+      <text class='goods-right-bottom-item'>{{info.goods.size}}</text>
+      <text class='goods-right-bottom-item'>{{info.goods.source}}</text>
+    </view>
+  </view>
+</view>
+
+<view class='picker-item'>
+  <text class='picker-item-label'>申请服务</text>
+  <picker mode='selector' range='{{info.goods_return_way}}' bindchange='pickerWay'>
+    <view class='picker-item-right'>
+      <text class='picker-item-value'>{{wayContent}}</text>
+      <image class='picker-item-icon' src='/images/icon/icon_picker.png'></image>
+    </view>
+  </picker>
+</view>
+
+<view class='picker-item'>
+  <text class='picker-item-label'>物流状态</text>
+  <text class='picker-item-status'>{{info.logistics}}</text>
+</view>
+
+<view class='picker-item'>
+  <text class='picker-item-label'>售后原因</text>
+  <picker range='{{info.goods_return_reason}}' bindchange='pickerReason'>
+    <view class='picker-item-right'>
+      <text class='picker-item-value'>{{reasonContent}}</text>
+      <image class='picker-item-icon' src='/images/icon/icon_picker.png'></image>
+    </view>
+  </picker>
+</view>
+
+<view class='picker-item'>
+  <text class='picker-item-label'>退款金额</text>
+  <text class='picker-item-price'>￥{{info.max_return_money}}</text>
+</view>
+<view class='tip'>最多 ￥{{info.max_return_money}}，含发货邮费 ￥0.00</view>
+
+<view class='textarea-item'>
+  <view class='textarea-label'>退款说明：</view>
+  <textarea placeholder='填写说明能帮您更快处理噢' placeholder-class='placeholder' bindinput='input' value='{{explain}}'></textarea>
+</view>
+
+<view class='imgs'>
+  <view class='imgs-label'>上传凭证</view>
+  <view class='imgs-content'>
+    <view class='imgs-box'>
+      <view class='imgs-item' wx:for='{{imgs}}' wx:key='{{index}}'>
+        <icon type='clear' class='imgs-icon' size='15' color='#D6000F' bindtap='delete' data-index='{{index}}'></icon>
+        <image class='imgs-img' src='{{item}}' bindtap='preview' data-index='{{index}}'></image>
+      </view>
+    </view>
+    <view class='imgs-btn' bindtap='chooseImg'>
+      <image class='imgs-btn-icon' src='/images/order/icon_photo.png'></image>
+      <text>{{imgs.length}}/4</text>
+    </view>
+  </view>
+</view>
+
+<view class='tip'>
+  <view>1. 外包装快递面照片了；</view>
+  <view>2. 商品全貌照片；</view>
+  <view>3. 问题商品照片。</view>
+  <view>(若无法提供以上照片，您的售后可能无法支持，请您准确上传照片。)</view>
+</view>
+
+<view class='btn-box'>
+  <view class='btn' bindtap='changeApply' wx:if='{{scene==1}}'>提交申请</view>
+  <view class='btn' bindtap='apply' wx:else>提交申请</view>
+</view>

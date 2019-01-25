@@ -1,8 +1,23 @@
+.logo{
+  width: 190rpx;
+  height: 76rpx;
+  margin: 200rpx auto 0;
+}
 .title{
-  color: #3d3d3d;
-  font-size: 40rpx;
-  text-align: center;
-  margin: 160rpx 0;
+  font-size: 28rpx;
+  color: #8d8d8d;
+  margin: 50rpx 0 100rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.dot{
+  display: block;
+  width: 10rpx;
+  height: 10rpx;
+  background: #8d8d8d;
+  border-radius: 10rpx;
+  margin-right: 20rpx;
 }
 .login{
   display: flex;
@@ -12,8 +27,8 @@
   color: #fff;
   margin: 0 80rpx;
   font-size: 30rpx;
-  height: 100rpx;
-  border-radius: 100rpx;
+  height: 90rpx;
+  border-radius: 90rpx;
 }
 .login image{
   width: 59rpx;
@@ -27,9 +42,13 @@
   padding: 40rpx;
   display: flex;
   align-items: center;
+  justify-content: center;
   color: #8d8d8d;
   font-size: 24rpx;
   position: fixed;
   bottom: 0;
   width: 100%;
+}
+.agree icon{
+  margin-right: 20rpx;
 }

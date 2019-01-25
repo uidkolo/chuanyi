@@ -1,0 +1,97 @@
+.item{
+  padding: 30rpx;
+}
+.item-title{
+  font-size: 30rpx;
+  color: #1A1A1A;
+}
+.item-input{
+  height: 90rpx;
+  border: 1px solid #F7C900;
+  border-radius: 8rpx;
+  margin-top: 30rpx;
+  font-size: 28rpx;
+  padding: 0 20rpx;
+}
+.item-code{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 30rpx;
+}
+.item-code-input{
+  height: 90rpx;
+  border: 1px solid #F7C900;
+  border-radius: 8rpx;
+  font-size: 28rpx;
+  padding: 0 20rpx;
+  flex-grow: 1;
+  margin-right: 30rpx;
+}
+.item-code-btn{
+  height: 90rpx;
+  background: #F7C900;
+  line-height: 90rpx;
+  text-align: center;
+  width: 220rpx;
+  flex-shrink: 0;
+  font-size: 28rpx;
+  color: #1A1A1A;
+  border-radius: 8rpx;
+}
+
+.item-upload{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 24rpx;
+  color: #CCCCCC;
+  margin-top: 30rpx;
+}
+.item-upload-btn{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 330rpx;
+  height: 200rpx;
+  background: #FAFAFA;
+  justify-content: center;
+  position: relative;
+}
+.item-upload-icon{
+  width: 64rpx;
+  height: 46rpx;
+  margin-bottom: 10rpx;
+}
+.item-upload-btn{
+  display: flex;
+}
+.tip{
+  display: flex;
+  align-items: center;
+  font-size: 24rpx;
+  color: #999999;
+  justify-content: center;
+  margin-top: 20rpx;
+}
+.tip-color{
+  color: #E5BF00;
+}
+.tip-icon{
+  margin-right: 20rpx;
+}
+.btn{
+  background: #F7C900;
+  font-size: 36rpx;
+  color: #1A1A1A;
+  height: 92rpx;
+  line-height: 92rpx;
+  text-align: center;
+  border-radius: 8rpx;
+  margin-top: 20rpx;
+}
+.item-upload-img{
+  position: absolute;
+  width: 330rpx;
+  height: 200rpx;
+}

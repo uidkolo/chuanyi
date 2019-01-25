@@ -1,10 +1,11 @@
-<view class='title'>登录</view>
+<image class='logo' src='/images/icon/logo.png'></image>
+<view class='title'><text class='dot'></text>授权获取您的信息（昵称和头像）</view>
 <button open-type='getUserInfo' class='login' bindgetuserinfo='bindGetUserInfo'>
   <image src='/images/icon/icon_wechat.png'></image>
-  <text>微信登录</text>
+  <text>授权登录</text>
 </button>
 
 <view class='agree'>
-  <checkbox checked></checkbox>
+  <icon type='success' color='#0fb70a' size='16'></icon>
   <text>同意《串衣网络服务协议》 及 《串衣隐私保护申明》 </text>
 </view>

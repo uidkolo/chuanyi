@@ -1,0 +1,134 @@
+.goods{
+  border-bottom: 20rpx solid #F5F5F5;
+  padding: 0 30rpx;
+}
+.goods-item{
+  height: 150rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.goods-img-box{
+  width: 88rpx;
+  height: 88rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #DDDDDD;
+  margin-right: 20rpx;
+}
+.goods-img{
+  height: 80rpx;
+  width: 62rpx;
+}
+.goods-item-left{
+  display: flex;
+  align-items: center;
+  font-size: 30rpx;
+  color: #4D4D4D;
+}
+.goods-info-right{
+  font-size: 24rpx;
+  color: #666666;
+}
+
+.express{
+  border-bottom: 20rpx solid #F5F5F5;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30rpx;
+  height: 150rpx;
+}
+.express-name{
+  font-size: 30rpx;
+  color: #1A1A1A;
+}
+.express-num{
+  display: flex;
+  align-items: center;
+  font-size: 30rpx;
+  color: #999999;
+  margin-top: 10rpx;
+}
+.express-right{
+  width: 48rpx;
+  height: 48rpx;
+}
+.express-btn{
+  height: 40rpx;
+  width: 80rpx;
+  font-size: 20rpx;
+  color: #333333;
+  line-height: 40rpx;
+  text-align: center;
+  border: 1px solid #DDDDDD;
+  border-radius: 4rpx;
+  margin-left: 40rpx;
+}
+
+.info{
+  padding: 30rpx;
+}
+.info-title{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 30rpx;
+  color: #1A1A1A;
+}
+.info-tip{
+  font-size: 24rpx;
+  color: #999999;
+}
+.info-list{
+  padding: 30rpx 0;
+  font-size: 24rpx;
+}
+.info-item{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.info-item-left{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 30rpx;
+  height: 140rpx;
+  width: 80rpx;
+}
+.info-item-right{
+  height: 140rpx;
+  flex-grow: 1;
+  border-bottom: 1px solid #DDDDDD;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: #999999;
+  line-height: 1.8;
+}
+.info-item-right--active{
+  color: #333;
+}
+.info-item-dot{
+  display: block;
+  width: 20rpx;
+  height: 20rpx;
+  border-radius: 20rpx;
+  background: #EEEEEE;
+  position: relative;
+  z-index: 2;
+  flex-shrink: 0;
+}
+.info-item-dot--active{
+  background: #F8DB16;
+  border: 6rpx solid #f6edb2;
+}
+.info-item-line{
+  display: block;
+  height: 140rpx;
+  width: 1px;
+  background: #DDDDDD;
+  position: absolute;
+}

@@ -1,0 +1,32 @@
+<view class='item' wx:for='{{goods}}' wx:key='{{index}}'>
+  <view class='goods'>
+    <view class='goods-item'>
+      <view class='goods-item-left'>
+        <view class='goods-img-box'>
+          <image class='goods-img' src='{{item.design_front_thumb}}'></image>
+        </view>
+        <view class='goods-express'>运输中</view>
+      </view>
+      <view class='goods-info-right'>共{{item.count}}件</view>
+    </view>
+  </view>
+
+  <textarea class='textarea' placeholder='衣服面料好吗？上身效果怎么样？' placeholder-class='placeholder' bindinput='input' data-index='{{index}}' value='{{item.content}}'></textarea>
+
+  <view class='imgs'>
+    <view class='imgs-box'>
+      <view class='imgs-item' wx:for='{{item.imgs}}' wx:for-item='item2' wx:for-index='index2' wx:key='{{index2}}'>
+        <icon type='clear' class='imgs-icon' size='15' color='#D6000F' bindtap='delete' data-index='{{index}}' data-index2='{{index2}}'></icon>
+        <image class='imgs-img' src='{{item2}}' bindtap='preview' data-index='{{index}}' data-index2='{{index2}}'></image>
+      </view>
+    </view>
+    <view class='imgs-btn' bindtap='chooseImg' data-index='{{index}}'>
+      <image class='imgs-btn-icon' src='/images/order/icon_photo.png'></image>
+      <text>{{item.imgs.length}}/4</text>
+    </view>
+  </view>
+</view>
+
+<view class='btn-box'>
+  <view class='btn' bindtap='discuss'>发布评价</view>
+</view>

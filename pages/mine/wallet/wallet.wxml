@@ -1,8 +1,8 @@
 <view class='tab-box'>
   <view class='tab'>
-    <text class='item active'>未使用(12)</text>
-    <text class='item'>使用记录(9)</text>
-    <text class='item'>已过期(25)</text>
+    <text class='item {{tabIndex==0?"active":""}}' bindtap='tab' data-index='0'>未使用({{can_use_count}})</text>
+    <text class='item {{tabIndex==1?"active":""}}' bindtap='tab' data-index='1'>使用记录({{used_count}})</text>
+    <text class='item {{tabIndex==2?"active":""}}' bindtap='tab' data-index='2'>已过期({{overdue_count}})</text>
   </view>
 </view>
 
@@ -11,9 +11,9 @@
   <text>提示：1串币=1元，且串币不能叠加使用</text>
 </view>
 <view class='list'>
-  <view class='item'>
-    <view class='left new'>
-      <text class='num'>5</text>
+  <view class='item' wx:for='{{reds}}' wx:key='{{index}}'>
+    <view class='left {{tabIndex==0?"new":"used"}}'>
+      <text class='num'>{{item.money}}</text>
       <text class='content'>特价商品除外</text>
     </view>
     <view class='right'>
@@ -22,134 +22,20 @@
           <text class='label'>串币</text>
           <text>瓜分串币</text>
         </view>
-        <view class='date'>有效期：2018.12.02 13:00:00</view>
+        <view class='date'>有效期：{{item.overdue_time}}</view>
       </view>
       <view class='bottom'>
         <view class='from'>
           <image src='/images/mine/icon_share.png'></image>
-          <text>来自大龙分享</text>
+          <text>来自{{item.from_user}}分享</text>
         </view>
-        <text class='btn'>转赠</text>
-      </view>
-    </view>
-  </view>
-  <view class='item'>
-    <view class='left new'>
-      <text class='num'>5</text>
-      <text class='content'>特价商品除外</text>
-    </view>
-    <view class='right'>
-      <view class='top'>
-        <view class='name'>
-          <text class='label'>串币</text>
-          <text>邀请串币</text>
-        </view>
-        <view class='date'>有效期：2018.12.02 13:00:00</view>
-      </view>
-      <view class='bottom'>
-        <view class='from'>
-          <image src='/images/mine/icon_share.png'></image>
-          <text>来自大龙分享</text>
-        </view>
-        <text class='btn'>转赠</text>
-      </view>
-    </view>
-  </view>
-  <view class='item'>
-    <view class='left new'>
-      <text class='num'>5</text>
-      <text class='content'>特价商品除外</text>
-    </view>
-    <view class='right'>
-      <view class='top'>
-        <view class='name'>
-          <text class='label'>串币</text>
-          <text>新人串币</text>
-        </view>
-        <view class='date'>有效期：2018.12.02 13:00:00</view>
-      </view>
-      <view class='bottom'>
-        <view class='from'>
-          <image src='/images/mine/icon_share.png'></image>
-          <text>来自大龙分享</text>
-        </view>
-        <text class='btn'>转赠</text>
+        <button class='btn' open-type='share' data-id='{{item.id}}' wx:if='{{tabIndex==0}}'>转赠</button>
       </view>
     </view>
   </view>
 </view>
 
-
-<view class='list'>
-  <view class='item'>
-    <view class='left used'>
-      <text class='num'>5</text>
-      <text class='content'>特价商品除外</text>
-    </view>
-    <view class='right'>
-      <view class='top'>
-        <view class='name'>
-          <text class='label'>串币</text>
-          <text>瓜分串币</text>
-        </view>
-        <view class='date'>有效期：2018.12.02 13:00:00</view>
-      </view>
-      <view class='bottom'>
-        <view class='from'>
-          <image src='/images/mine/icon_share.png'></image>
-          <text>来自大龙分享</text>
-        </view>
-        <text class='btn'>转赠</text>
-      </view>
-    </view>
-  </view>
-  <view class='item'>
-    <view class='left used'>
-      <text class='num'>5</text>
-      <text class='content'>特价商品除外</text>
-    </view>
-    <view class='right'>
-      <view class='top'>
-        <view class='name'>
-          <text class='label'>串币</text>
-          <text>邀请串币</text>
-        </view>
-        <view class='date'>有效期：2018.12.02 13:00:00</view>
-      </view>
-      <view class='bottom'>
-        <view class='from'>
-          <image src='/images/mine/icon_share.png'></image>
-          <text>来自大龙分享</text>
-        </view>
-        <text class='btn'>转赠</text>
-      </view>
-    </view>
-  </view>
-  <view class='item'>
-    <view class='left used'>
-      <text class='num'>5</text>
-      <text class='content'>特价商品除外</text>
-    </view>
-    <view class='right'>
-      <view class='top'>
-        <view class='name'>
-          <text class='label'>串币</text>
-          <text>新人串币</text>
-        </view>
-        <view class='date'>有效期：2018.12.02 13:00:00</view>
-      </view>
-      <view class='bottom'>
-        <view class='from'>
-          <image src='/images/mine/icon_share.png'></image>
-          <text>来自大龙分享</text>
-        </view>
-        <text class='btn'>转赠</text>
-      </view>
-    </view>
-  </view>
-</view>
-
-<view class='end'>
-  <text>--END--</text>
+<view class='end' wx:if='{{end}}'>
+  <text>-- END --</text>
 </view>
 

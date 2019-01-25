@@ -1,0 +1,75 @@
+<view class='search-box'>
+  <view class='search'>
+    <input class='search-input' placeholder='输入关键字' placeholder-class='placeholder' bindinput='input' data-key='keyword'></input>
+    <view class='search-btn' bindtap='search'>
+      <icon type='search' color='#4D4D4D' size='16'></icon>
+    </view>
+  </view>
+</view>
+
+<view class='hot-box' wx:if='{{!searched}}'>
+  <view class='hot'>
+    <view class='module-title'>热搜</view>
+    <view class='hot-list'>
+      <text class='hot-item' wx:for='{{hots}}' wx:key='{{index}}'>{{item}}</text>
+    </view>
+  </view>
+</view>
+
+<view class='tab-box' wx:if='{{searched}}'>
+  <view class='tab'>
+    <text class='tab-item {{item.id==kind?"active":""}}' wx:for='{{kinds}}' wx:key='{{index}}' bindtap='tab' data-id='{{item.id}}'>{{item.name}}</text>
+  </view>
+</view>
+
+<view class='list' wx:if='{{searched}}'>
+  <view class='module-title'>包含“{{keyword}}”的搜索结果：</view>
+  <view class='list-content'>
+    <navigator class='list-item' wx:for='{{designs}}' wx:key='{{index}}' url='/pages/index/detail/detail?id={{item.id}}'>
+      <view class='list-item-img-box'>
+        <image class='list-item-img' src='{{item.front_thumb}}'></image>
+      </view>
+      <view class='list-item-name'>{{item.clothes_name}}</view>
+      <view class='list-item-info'>
+        <view class='list-item-info-left'>
+          <image class='list-item-avatar' src='{{item.user.avatar}}'></image>
+          <text class='list-item-nickname'>{{item.user.nick_name}}</text>
+        </view>
+        <view class='list-item-info-right'>
+          <image class='list-item-info-right-icon' src='/images/mine/icon_agree.png'></image>
+          <text>{{item.like_count}}</text>
+        </view>
+      </view>
+    </navigator>
+  </view>
+  <view class='end' wx:if='{{designs.length!=0&&end&&tabIndex!=2}}'>
+    <text>-- END --</text>
+  </view>
+  <view class='none' wx:if='{{designs.length==0}}'>
+    <image class='none-img' src='/images/works/search_none.png'></image>
+    <text>抱歉，未找到与“{{keyword}}”相关的信息</text>
+  </view>
+</view>
+
+
+<view class='list recommend'>
+  <view class='module-title'>为您推荐：</view>
+  <view class='list-content'>
+    <navigator class='list-item' wx:for='{{recommends}}' wx:key='{{index}}' url='/pages/index/detail/detail?id={{item.design_id}}'>
+      <view class='list-item-img-box'>
+        <image class='list-item-img' src='{{item.front_thumb}}'></image>
+      </view>
+      <view class='list-item-name'>{{item.clothes_name}}</view>
+      <view class='list-item-info'>
+        <view class='list-item-info-left'>
+          <image class='list-item-avatar' src='{{item.user.avatar}}'></image>
+          <text class='list-item-nickname'>{{item.user.nick_name}}</text>
+        </view>
+        <view class='list-item-info-right'>
+          <image class='list-item-info-right-icon' src='/images/mine/icon_agree.png'></image>
+          <text>{{item.like_count}}</text>
+        </view>
+      </view>
+    </navigator>
+  </view>
+</view>

@@ -1,11 +1,13 @@
 <view class='list'>
   <radio-group bindchange='setDefault'>
     <view class='item' wx:for='{{adds}}' wx:key='index'>
-      <view class='top'>
-        <text class='name'>{{item.recipients}}</text>
-        <text class='phone'>{{item.mobile}}</text>
+      <view bindtap='checkAdd' data-index= '{{index}}'>
+        <view class='top'>
+          <text class='name'>{{item.recipients}}</text>
+          <text class='phone'>{{item.mobile}}</text>
+        </view>
+        <view class='add'>{{item.province+item.city+item.area+item.detail}}</view>
       </view>
-      <view class='add'>{{item.province+item.city+item.area+item.detail}}</view>
       <view class='bottom'>
         <view class='radio'>
           <radio color='#F8DB16' checked='{{item.is_default==1}}' value='{{item.id}}'></radio>

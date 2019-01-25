@@ -1,113 +1,44 @@
 <view class='picker'>
-  <picker>
+  <picker mode='selector' range='{{kinds}}' range-key='name' bindchange='pickerKind'>
     <view class='box'>
-      <text>全部类目</text>
+      <text>{{kind}}</text>
       <image src='/images/mine/icon_picker.png'></image>
     </view>
   </picker>
 </view>
 
 <view class='list'>
-  <view class='item'>
+  <view class='item' wx:for='{{comments}}' wx:key='{{index}}'>
     <view class='top'>
-      <image class='avatar' src='/images/test/fodder.png'></image>
-      <text class='name'>断了的弦</text>
+      <image class='avatar' src='{{item.user.avatar}}'></image>
+      <text class='name'>{{item.user.nick_name}}</text>
     </view>
     <view class='info'>
-      <text class='date'>2018-10-06</text>
-      <text class='type'>POLO衫</text>
-      <text class='color'>颜色：灰色</text>
-      <text class='size'>尺码：XL</text>
+      <text class='date'>{{item.comment_time}}</text>
+      <text class='type'>{{item.clothes_kind}}</text>
+      <text class='color'>颜色：{{item.color_name}}</text>
+      <text class='size'>尺码：{{item.size}}</text>
     </view>
-    <view class='content'>衣服质量很好，印制的效果也不错。面料手感，做工款式都很满意</view>
+    <view class='content'>{{item.content}}</view>
     <view class='imgs'>
-      <image src='/images/test/01.jpg'></image>
-      <image src='/images/test/01.jpg'></image>
-      <image src='/images/test/01.jpg'></image>
-      <image src='/images/test/01.jpg'></image>
+      <image wx:for='{{item.imgs}}' wx:for-item='item2' wx:for-index='index2' src='{{item2}}' wx:key='{{index2}}' bindtap='preview' data-index='{{index}}' data-index2='{{index2}}' data-id='{{item.id}}'></image>
     </view>
     <view class='bottom'>
-      <text class='view'>浏览304次</text>
+      <text class='view'>浏览{{item.see_count}}次</text>
       <view class='right'>
         <view class='right-item'>
           <image src='/images/mine/icon_discuss.png'></image>
-          <text>评论</text>
+          <text class='right-item-value'>{{item.comment_count}}</text>
         </view>
         <view class='right-item'>
           <image src='/images/mine/icon_agree.png'></image>
-          <text>点赞</text>
+          <text class='right-item-value'>{{item.like_count}}</text>
         </view>
       </view>
     </view>
   </view>
+</view>
 
-  <view class='item'>
-    <view class='top'>
-      <image class='avatar' src='/images/test/fodder.png'></image>
-      <text class='name'>断了的弦</text>
-    </view>
-    <view class='info'>
-      <text class='date'>2018-10-06</text>
-      <text class='type'>POLO衫</text>
-      <text class='color'>颜色：灰色</text>
-      <text class='size'>尺码：XL</text>
-    </view>
-    <view class='content'>衣服质量很好，印制的效果也不错。面料手感，做工款式都很满意</view>
-    <view class='imgs'>
-      <image src='/images/test/01.jpg'></image>
-      <image src='/images/test/01.jpg'></image>
-      <image src='/images/test/01.jpg'></image>
-      <image src='/images/test/01.jpg'></image>
-    </view>
-    <view class='bottom'>
-      <text class='view'>浏览304次</text>
-      <view class='right'>
-        <view class='right-item'>
-          <image src='/images/mine/icon_discuss.png'></image>
-          <text>评论</text>
-        </view>
-        <view class='right-item'>
-          <image src='/images/mine/icon_agree.png'></image>
-          <text>点赞</text>
-        </view>
-      </view>
-    </view>
-  </view>
-
-  <view class='item'>
-    <view class='top'>
-      <image class='avatar' src='/images/test/fodder.png'></image>
-      <text class='name'>断了的弦</text>
-    </view>
-    <view class='info'>
-      <text class='date'>2018-10-06</text>
-      <text class='type'>POLO衫</text>
-      <text class='color'>颜色：灰色</text>
-      <text class='size'>尺码：XL</text>
-    </view>
-    <view class='content'>衣服质量很好，印制的效果也不错。面料手感，做工款式都很满意</view>
-    <view class='imgs'>
-      <image src='/images/test/01.jpg'></image>
-      <image src='/images/test/01.jpg'></image>
-      <image src='/images/test/01.jpg'></image>
-      <image src='/images/test/01.jpg'></image>
-    </view>
-    <view class='bottom'>
-      <text class='view'>浏览304次</text>
-      <view class='right'>
-        <view class='right-item'>
-          <image src='/images/mine/icon_discuss.png'></image>
-          <text>评论</text>
-        </view>
-        <view class='right-item'>
-          <image src='/images/mine/icon_agree.png'></image>
-          <text>点赞</text>
-        </view>
-      </view>
-    </view>
-  </view>
-
-  <view class='end'>
-    <text>-- END --</text>
-  </view>
+<view class='end' wx:if='{{end}}'>
+  <text>-- END --</text>
 </view>

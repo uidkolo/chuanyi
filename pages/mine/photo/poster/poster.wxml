@@ -1,0 +1,19 @@
+<view class='poster'>
+  <canvas class='canvas' canvas-id='poster' bindtap='preview'></canvas>
+  <cover-view class='slogen background' bindtap='changeTip'></cover-view>
+  <textarea value='{{posterTip}}' focus='{{focus}}' class='textarea' cursor-spacing='40' bindfocus='changeTip' bindinput='input' bindconfirm='confirm' confirm-type='done'></textarea>
+</view>
+<view class='bottom'>
+  <button class='bottom-item' open-type='share'>
+    <view class='bottom-icon'>
+      <image class='bottom-icon-img' src='/images/mine/poster_frend.png'></image>
+    </view>
+    <text>微信好友</text>
+  </button>
+  <view class='bottom-item' bindtap='save'>
+    <view class='bottom-icon bottom-icon-photo'>
+      <image class='bottom-icon-img' src='/images/mine/poster_photo.png'></image>
+    </view>
+    <text>保存相册</text>
+  </view>
+</view>

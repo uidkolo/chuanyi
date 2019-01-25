@@ -13,6 +13,11 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
+    if (options.scene){ //来自临时订单页面
+      this.setData({
+        scene: options.scene
+      })
+    }
     this.getAdds()
   },
   // 获取地址列表
@@ -179,6 +184,15 @@ Page({
         }
       }
     })
+  },
+  // 选择地址
+  checkAdd(e){
+    if(this.data.scene==1){
+      getApp().globalData.currentAdd = this.data.adds[e.currentTarget.dataset.index]
+      wx.redirectTo({
+        url: '/pages/index/pay/pay?scene=1',
+      })
+    }
   },
   /**
    * 生命周期函数--监听页面初次渲染完成

@@ -1,0 +1,133 @@
+<view class='top'>
+  <block wx:if='{{info.status==0}}'>
+    <image src='/images/order/icon_wait.png' class='top-icon'></image>
+    <text>等待付款</text>
+  </block>
+  <block wx:if='{{info.status==1}}'>
+    <image src='/images/order/icon_pay.png' class='top-icon'></image>
+    <text>已付款</text>
+  </block>
+  <block wx:if='{{info.status==2}}'>
+    <image src='/images/order/icon_send.png' class='top-icon'></image>
+    <text>已发货</text>
+  </block>
+  <block wx:if='{{info.status==5}}'>
+    <image src='/images/order/icon_success.png' class='top-icon'></image>
+    <text>交易成功</text>
+  </block>
+</view>
+
+<view class='info'>
+  <view class='express' bindtap='previewExpress'>
+    <image class='express-icon' src='/images/mine/icon_express.png'></image>
+    <view class='express-content'>
+      <view class='express-info'>{{info.status_info.status_word}}</view>
+      <view class='express-data'>{{info.status_info.status_time}}</view>
+    </view>
+    <image class='icon-more' src='/images/mine/more.png'></image>
+  </view>
+  <view class='add'>
+    <image class='add-icon' src='/images/mine/icon_add.png'></image>
+    <view class='add-content'>
+      <view class='add-top'>
+        <text class='add-name'>{{info.address.recipients}}</text>
+        <text class='add-mobile'>{{info.address.mobile}}</text>
+      </view>
+      <view class='add-add'>{{info.address.province}}{{info.address.city}}{{info.address.area}}{{info.address.detail}}</view>
+    </view>
+  </view>
+</view>
+
+<view class='list'>
+  <view class='item'>
+    <view class='head'>
+      <text class='date'>{{item.create_time}}</text>
+      <text class='state'>{{item.status_word}}</text>
+    </view>
+    <view class='products'>
+      <view class='product ' wx:for='{{info.goods}}' wx:for-item='item' wx:for-index='index' wx:key='{{index}}'>
+        <image class='img' src='{{item.design_front_thumb}}'></image>
+        <view class='right'>
+          <view class='title'>{{item.clothes_name}}</view>
+          <view class='info'>
+            <text>{{item.fabric_name}}</text>
+            <text>{{item.size}}</text>
+            <text>{{item.source}}</text>
+          </view>
+          <view class='bottom'>
+            <view class='btn' wx:if='{{info.status!=0&&info.status!=4}}' bindtap='afterSale' data-status='{{item.status}}' data-id='{{item.id}}'>{{item.status_word}}</view>
+            <text class='price'>￥{{item.price}}</text>
+            <text class='num'>x{{item.count}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class='total'>
+      <view class='total-item'>
+        <text class='label'>商品金额</text>
+        <view class='price'>
+          ￥
+          <text>{{info.all_goods_price}}</text>
+        </view>
+      </view>
+      <view class='total-item'>
+        <text class='label'>运费</text>
+        <view class='price'>
+          ￥
+          <text>{{info.express_cost}}</text>
+        </view>
+      </view>
+      <view class='total-item'>
+        <text class='label'>串币</text>
+        <view class='price'>
+          -￥
+          <text>{{info.chuan_coin}}</text>
+        </view>
+      </view>
+      <view class='total-item'>
+        <text class='label'>实付款</text>
+        <view class='price total-price'>
+          ￥
+          <text>{{info.real_pay}}</text>
+        </view>
+      </view>
+    </view>
+    <view class='total' wx:if='{{info.status==0}}'>
+      <view class='total-item'>
+        <text class='label'>余额可抵扣金额</text>
+        <view class='price total-price'>
+          ￥
+          <text>{{info.can_used_balance}}</text>
+        </view>
+      </view>
+      <view class='total-item'>
+        <text class='label'>需微信支付</text>
+        <view class='price total-price'>
+          ￥
+          <text>{{info.need_wx_pay}}</text>
+        </view>
+      </view>
+    </view>
+    <view class='order-no'>
+      <view class='order-no-item'>
+        <text class='order-no-left'>订单编号：{{info.order_number}}</text>
+        <text class='order-no-btn' bindtap='copyOrderNum'>复制</text>
+      </view>
+      <view class='order-no-item' wx:if='{{info.pay_time}}'>
+        <text class='order-no-left'>付款时间：{{info.pay_time}}</text>
+      </view>
+    </view>
+  </view>
+</view>
+
+<view class='btn-box'>
+  <view class='btns'>
+    <text class='cancel' wx:if='{{info.status==0}}' bindtap='cancelOrder'>取消订单</text>
+    <text class='confirm' wx:if='{{info.status==0}}' bindtap='payOrder' data-id='{{id}}'>立即付款</text>
+    <button open-type='contact' class='cancel' wx:if='{{info.status==1}}'>联系客服</button>
+    <text class='confirm' wx:if='{{info.status==1}}' bindtap='remindSend'>提醒发货</text>
+    <navigator class='cancel' wx:if='{{info.status==2|| info.status==5}}' url='/pages/mine/order/express/express?id={{id}}'>查看物流</navigator>
+    <text class='confirm' wx:if='{{info.status==2}}' bindtap='comfireTake'>确认收货</text>
+    <navigator class='confirm' wx:if='{{(info.status==5||info.status==6)&&info.is_comment==0}}' url='/pages/mine/order/discuss/discuss?id={{id}}&scene=2'>评价</navigator>
+  </view>
+</view>

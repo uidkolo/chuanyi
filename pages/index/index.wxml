@@ -11,6 +11,6 @@
   <navigator class='btn' url='/pages/index/design/design'>开始设计</navigator>
 </view>
 
-<view class='service'>
+<button class='service' open-type='contact'>
   <image src='/images/icon/icon_service.png'></image>
-</view>
+</button>

@@ -1,6 +1,5 @@
 page{
   background: #f5f5f5;
-  padding-bottom: 40rpx;
 }
 
 .top{
@@ -157,4 +156,43 @@ page{
 .link .item .icon{
   width: 80rpx;
   height: 80rpx;
+}
+
+/* .attention{
+  height: 800rpx;
+  width: 600rpx;
+  background: #fff;
+  border-radius: 8rpx;
+  padding: 50rpx;
+  position: relative;
+}
+.attention-qrcode{
+  width: 500rpx;
+  height: 500rpx;
+  border: 1px dotted #1A1A1A;
+}
+.attention-icon{
+  width: 70rpx;
+  height: 70rpx;
+  position: absolute;
+  bottom: -90rpx;
+  left: 265rpx;
+}
+.attention-bottom{
+  margin-top: 40rpx;
+  text-align: center;
+  font-size: 36rpx;
+  color: #1A1A1A;
+}
+.attention-btn{
+  height: 70rpx;
+  border-radius: 8rpx;
+  background: #F8DB16;
+  font-size: 28rpx;
+  text-align: center;
+  line-height: 70rpx;
+  margin-top: 40rpx;
+} */
+.attention{
+  padding: 30rpx;
 }

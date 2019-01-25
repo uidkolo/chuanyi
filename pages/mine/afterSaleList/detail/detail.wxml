@@ -1,0 +1,38 @@
+<view class='goods'>
+  <view class='goods-img-box'>
+    <image class='goods-img' src='{{info.goods.design_front_thumb}}'></image>
+  </view>
+  <view class='goods-right'>
+    <view class='goods-name'>{{info.goods.clothes_name}}</view>
+    <view class='goods-right-bottom'>
+      <text class='goods-right-bottom-item'>{{info.goods.fabric_name}}</text>
+      <text class='goods-right-bottom-item'>{{info.goods.size}}</text>
+      <text class='goods-right-bottom-item'>{{info.goods.source}}</text>
+    </view>
+  </view>
+</view>
+
+<view class='picker-item'>
+  <text class='picker-item-label'>物流公司</text>
+  <picker mode='selector' range='{{info.common_express_company}}' range-key='value' bindchange='pickerExpress'>
+    <view class='picker-item-right'>
+      <text class='picker-item-value'>{{expressValue}}</text>
+      <image class='picker-item-icon' src='/images/icon/icon_picker.png'></image>
+    </view>
+  </picker>
+</view>
+<view class='picker-item'>
+  <text class='picker-item-label'>物流单号</text>
+  <input type='number' class='picker-item-input' placeholder-class='placeholder' placeholder='请填写物流单号' bindinput='input' data-key='number'></input>
+  <!-- <image class='picker-icon-icon' src='/images/order/icon_scan.png'></image> -->
+</view>
+
+
+<view class='picker-item item-mobile'>
+  <text class='picker-item-label'>联系电话</text>
+  <input type='number' class='picker-item-input mobile-input' placeholder-class='placeholder' placeholder='请填写手机号' bindinput='input' data-key='tel'></input>
+</view>
+
+<view class='btn-box'>
+  <view class='btn' bindtap='apply' bindtap='postExpressInfo'>提交</view>
+</view>

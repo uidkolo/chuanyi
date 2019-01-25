@@ -7,15 +7,38 @@ Page({
   data: {
     nickname: wx.getStorageSync('userInfo').nick_name,
     avatar: wx.getStorageSync('userInfo').avatar,
+    attentionMask: false
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    
   },
-
+  // 获取订单数量
+  getOrderNum(){
+    let url = '/api/order/orderStatistics'
+    getApp().post(url, {
+      token: wx.getStorageSync('auth_token')
+    }).then(data=>{
+      this.setData({
+        orderNum: data
+      })
+    })
+  },
+  // // 关注我们
+  // attention(){
+  //   this.setData({
+  //     attentionMask: true
+  //   })
+  // },
+  // // 关闭关注组件
+  // closeAttention(){
+  //   this.setData({
+  //     attentionMask: false
+  //   })
+  // },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
@@ -27,7 +50,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    this.getOrderNum()
   },
 
   /**

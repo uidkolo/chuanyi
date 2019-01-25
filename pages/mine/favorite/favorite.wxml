@@ -1,52 +1,24 @@
 <view class='picker'>
-  <picker>
+  <picker mode='selector' range='{{kinds}}' range-key='name' bindchange='pickerKind'>
     <view class='box'>
-      <text>全部类目</text>
+      <text>{{kind}}</text>
       <image src='/images/mine/icon_picker.png'></image>
     </view>
   </picker>
 </view>
 
 <view class='list'>
-  <view class='item'>
+  <navigator class='item' wx:for='{{favorites}}' wx:key='{{index}}' url='/pages/index/detail/detail?id={{item.design_id}}'>
     <view class='img'>
-      <image src='/images/test/01.jpg'></image>
+      <image src='{{item.img}}'></image>
     </view>
     <view class='right'>
-      <view class='name'>夏季男士短袖t恤纯棉大男装圆领宽松韩版潮流半袖男体恤上...</view>
-      <view class='price'>￥99.00</view>
+      <view class='name'>{{item.design_name}}</view>
+      <!-- <view class='price'>￥99.00</view> -->
     </view>
-  </view>
-  <view class='item'>
-    <view class='img'>
-      <image src='/images/test/01.jpg'></image>
-    </view>
-    <view class='right'>
-      <view class='name'>夏季男士短袖t恤纯棉大男装圆领宽松韩版潮流半袖男体恤上...</view>
-      <view class='price'>￥99.00</view>
-    </view>
-  </view>
-  <view class='item'>
-    <view class='img'>
-      <image src='/images/test/01.jpg'></image>
-    </view>
-    <view class='right'>
-      <view class='name'>夏季男士短袖t恤纯棉大男装圆领宽松韩版潮流半袖男体恤上...</view>
-      <view class='price'>￥99.00</view>
-    </view>
-  </view>
-  <view class='item'>
-    <view class='img'>
-      <image src='/images/test/01.jpg'></image>
-    </view>
-    <view class='right'>
-      <view class='name'>夏季男士短袖t恤纯棉大男装圆领宽松韩版潮流半袖男体恤上...</view>
-      <view class='price'>￥99.00</view>
-    </view>
-  </view>
+  </navigator>
+</view>
 
-  <view class='end'>
+ <view class='end'>
     <text>--END--</text>
   </view>
-
-</view>

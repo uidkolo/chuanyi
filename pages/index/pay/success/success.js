@@ -12,9 +12,25 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    this.setData({
+      money: parseFloat(options.money / 100).toFixed(2),
+      orderId: options.id
+    })
+    this.createRed(options.id)
   },
-
+  createRed(orderId){
+    let url = '/api/red_packet/getNewRedPacket'
+    getApp().post(url, {
+      token: wx.getStorageSync('auth_token'),
+      order_id: orderId
+    }).then(data=>{
+      console.log(data)
+      this.setData({
+        redId: data.red_info.red_id,
+        redName: data.red_info.name
+      })
+    })
+  },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */

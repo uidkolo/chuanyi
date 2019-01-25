@@ -80,10 +80,11 @@ page{
   margin-top: 10rpx;
 }
 .list .item .img{
-  width: 140rpx;
-  height: 140rpx;
-  flex-shrink: 0;
-  margin: 0 10rpx;
+  width:109rpx;
+  height:140rpx;
+  flex-shrink:0;
+  margin:0 40rpx 0 0rpx;
+
 }
 .list .item .icon{
   width: 22rpx;
@@ -94,9 +95,11 @@ page{
   top: 4rpx;
 }
 .list .item .right{
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  min-height: 140rpx;
 }
 .list .item .right .top{
   display: flex;
@@ -128,6 +131,13 @@ page{
   font-size: 40rpx;
   color: #1a1a1a;
 }
+.list .item .right .bottom .num .num-btn{
+  width: 50rpx;
+  height: 50rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .list .item .right .bottom .num image{
   width: 20rpx;
   height: 20rpx;
@@ -137,7 +147,6 @@ page{
   height:50rpx;
   width: 80rpx;
   font-size: 26rpx;
-  margin: 0 20rpx;
   line-height: 50rpx;
   text-align: center;
 }
@@ -197,7 +206,6 @@ page{
   color: #666;
 }
 .count .left .price{
-  margin-left: 20rpx;
   color: #1A1A1A;
   display: flex;
   align-items: center;

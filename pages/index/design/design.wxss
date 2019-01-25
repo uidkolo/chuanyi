@@ -365,3 +365,35 @@
 .canvas-design{
   
 }
+
+.mask{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.uploadProgress{
+  font-size: 28rpx;
+  color: #666;
+  background: #fff;
+  width: 600rpx;
+  border-radius: 8rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60rpx 30rpx;
+}
+.uploadProgress-title{
+  margin-bottom: 30rpx;
+}
+.uploadProgress-num{
+  display: inline-block;
+  width: 80rpx;
+  text-align: center;
+  font-size: 40rpx;
+  color: red;
+}
+progress{
+  width: 100%;
+  margin-top: 20rpx;
+}

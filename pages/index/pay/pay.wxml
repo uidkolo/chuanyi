@@ -1,105 +1,53 @@
-<view class='add-box'>
+<navigator class='add-box' wx:if='{{address}}' url='/pages/mine/add/add?scene=1'>
   <view class='add'>
     <view class='left'>
       <view class='top'>
-        <text>刘大龙</text>
-        <text>158****4444</text>
+        <text>{{address.recipients}}</text>
+        <text>{{address.mobile}}</text>
       </view>
       <view class='bottom'>
-        <text class='tag'>默认</text>
-        <text>福建省厦门市湖里区 软件园望海路</text>
+        <text class='tag' wx:if='{{address.is_default==1}}'>默认</text>
+        <text>{{address.province}}{{address.city}}{{address.area}}{{address.detail}}</text>
       </view>
     </view>
     <image class='icon' src='/images/pay/icon_more.png'></image>
   </view>
-</view>
-<view class='add-btn'>
+</navigator>
+<navigator class='add-btn' wx:if='{{!address}}' url='/pages/mine/add/add?scene=1'>
   <view class='btn'>添加收货地址</view>
-</view>
+</navigator>
 <view class='list'>
   <radio-group>
-    <view class='item'>
+    <view class='item' wx:for='{{goods}}' wx:key='{{index}}'>
       <view class='order'>
-        <radio color='#F8DB16'></radio>
-        <image class='img' src='/images/test/01.jpg'></image>
+        <!-- <radio color='#F8DB16'></radio> -->
+        <image class='img' src='{{item.front_thumb}}'></image>
         <view class='right'>
           <view class='top'>
-            <view>夏季男士短袖t恤纯棉大男装圆领宽松韩体恤上衣...</view>
+            <view>{{item.name}}</view>
           </view>
           <view class='info'>
-            <text>99%纯棉</text>
-            <text>L码</text>
-            <text>个性定制</text>
+            <text>{{item.fabric_name}}</text>
+            <text>{{item.size}}</text>
+            <text>{{item.source}}</text>
           </view>
           <view class='bottom'>
-            <text class='price'>￥99.00</text>
+            <text class='price'>￥{{item.price}}</text>
             <view class='num'>
-              <image src='/images/icon/icon_reduce.png'></image>
-              <text class='value'>2</text>
-              <image src='/images/icon/icon_add.png'></image>
+              <view class='num-btn' bindtap='reduceNum' data-index='{{index}}'>
+                <image src='/images/icon/icon_reduce.png'></image>
+              </view>
+              <text class='value'>{{item.count}}</text>
+              <view class='num-btn' bindtap='addNum' data-index='{{index}}'>
+                <image src='/images/icon/icon_add.png'></image>
+              </view>
             </view>
           </view>
         </view>
       </view>
       <view class='message'>
         <text class='label'>留言：</text>
-        <input placeholder='订单留言，最多不超过100个字'></input>
-      </view>
-    </view>
-    <view class='item'>
-      <view class='order'>
-        <radio color='#F8DB16'></radio>
-        <image class='img' src='/images/test/01.jpg'></image>
-        <view class='right'>
-          <view class='top'>
-            <view>夏季男士短袖t恤纯棉大男装圆领宽松韩体恤上衣...</view>
-          </view>
-          <view class='info'>
-            <text>99%纯棉</text>
-            <text>L码</text>
-            <text>个性定制</text>
-          </view>
-          <view class='bottom'>
-            <text class='price'>￥99.00</text>
-            <view class='num'>
-              <image src='/images/icon/icon_reduce.png'></image>
-              <text class='value'>2</text>
-              <image src='/images/icon/icon_add.png'></image>
-            </view>
-          </view>
-        </view>
-      </view>
-      <view class='message'>
-        <text class='label'>留言：</text>
-        <input placeholder='订单留言，最多不超过100个字'></input>
-      </view>
-    </view>
-    <view class='item'>
-      <view class='order'>
-        <radio color='#F8DB16'></radio>
-        <image class='img' src='/images/test/01.jpg'></image>
-        <view class='right'>
-          <view class='top'>
-            <view>夏季男士短袖t恤纯棉大男装圆领宽松韩体恤上衣...</view>
-          </view>
-          <view class='info'>
-            <text>99%纯棉</text>
-            <text>L码</text>
-            <text>个性定制</text>
-          </view>
-          <view class='bottom'>
-            <text class='price'>￥99.00</text>
-            <view class='num'>
-              <image src='/images/icon/icon_reduce.png'></image>
-              <text class='value'>2</text>
-              <image src='/images/icon/icon_add.png'></image>
-            </view>
-          </view>
-        </view>
-      </view>
-      <view class='message'>
-        <text class='label'>留言：</text>
-        <input placeholder='订单留言，最多不超过100个字'></input>
+        <input placeholder='订单留言，最多不超过100个字' cursor-spacing='20' bindinput='input' data-index='{{index}}'></input>
       </view>
     </view>
   </radio-group>
@@ -109,23 +57,23 @@
 <view class='stat'>
   <view class='item'>
     <text class='label'>商品数量</text>
-    <text class='content'>3</text>
+    <text class='content'>{{all.count}}</text>
   </view>
   <view class='item'>
     <text class='label'>商品金额</text>
-    <text class='content'>￥297.00</text>
+    <text class='content'>￥{{all.price}}</text>
   </view>
   <view class='item'>
     <text class='label'>运费</text>
-    <text class='content red'>+￥0.00</text>
+    <text class='content red'>+￥{{all.postage}}</text>
   </view>
   <view class='item'>
     <text class='label'>串币</text>
-    <text class='content red'>-￥5.00</text>
+    <text class='content red'>-￥{{all.coin}}</text>
   </view>
   <view class='item'>
     <text class='label'>余额</text>
-    <text class='content red'>-￥3.00</text>
+    <text class='content red'>-￥{{all.balance}}</text>
   </view>
 </view>
 
@@ -133,11 +81,11 @@
   <view class='count'>
   <radio-group>
       <view class='left'>
-        <radio color='#F8DB16'></radio>
-        <label>全选</label>
+        <!-- <radio color='#F8DB16'></radio>
+        <label>全选</label> -->
         <view class='price'>
           <text>合计：</text>
-          <text class='num'>￥287.00</text>
+          <text class='num'>￥{{all.totalPrice}}</text>
         </view>
       </view>
     </radio-group>

@@ -1,0 +1,113 @@
+<!-- 设计区域 -->
+<view class='top'>
+  <view class='top-left'>
+    <view class='item {{type==1?"active":""}}' bindtap='tabType' data-type='1'>
+      <text>男</text>
+      <text>装</text>
+    </view>
+    <view class='item {{type==2?"active":""}}' bindtap='tabType' data-type='2'>
+      <text>女</text>
+      <text>装</text>
+    </view>
+    <view class='item {{type==3?"active":""}}' bindtap='tabType' data-type='3'>
+      <text>童</text>
+      <text>装</text>
+    </view>
+  </view>
+  <view class='top-center'>
+    <view class='canvas-box'>
+      <canvas class='canvas {{designFodders[currentDirection].x&&fodderStep!=0?"not-null":""}}' canvas-id='canvas' disable-scroll bindtouchstart='touchstart' bindtouchmove='touchmove'></canvas>
+      <image class='img' src='{{colors[currentColorIndex][currentDirection]}}'></image>
+    </view>
+    <view class='shadow'>
+      <image src='/images/design/shadow.png'></image>
+    </view>
+  </view>
+  <view class='top-right'>
+    <text class='item' wx:for='{{colors}}' wx:key='index' style='background:{{item.color}}' bindtap='tabColor' data-index='{{index}}'></text>
+  </view>
+</view>
+
+<!-- 选项区域 -->
+<view class='center'>
+  <view class='direction'>
+    <text class='item front {{currentDirection=="front_thumb"?"active":""}}' bindtap='tabDirection' data-label='front_thumb'>正面</text>
+    <text class='item back {{currentDirection=="back_thumb"?"active":""}}' bindtap='tabDirection' data-label='back_thumb'>反面</text>
+  </view>
+  <view class='style'>
+    <scroll-view scroll-x>
+      <image class='item' wx:for='{{clothes}}' wx:key='index' src='{{item.thumb}}' bindtap='getCothes' data-id='{{item.id}}'></image>
+    </scroll-view>
+  </view>
+</view>
+
+<!-- 底部 -->
+<view class='bottom' wx:if='{{fodderStep==0}}'>
+  <!-- 选项 -->
+  <view class='select' wx:if='{{!designFodders.front_thumb.x || !designFodders.back_thumb.x}}'>
+    <view class='item' bindtap='choicePhoto'>上传原创图案</view>
+  </view>
+  <!--  价格设置-->
+  <block wx:else>
+    <view class='price'>
+      <view class='price-title'>将该作品定价为</view>
+      <view class='price-default'>
+        <text class='price-default-item {{defaultPriceIndex==1?"active":""}}' bindtap='pickerPrice' data-price='0' data-index='1'>免费</text>
+        <text class='price-default-item {{defaultPriceIndex==2?"active":""}}' bindtap='pickerPrice' data-price='3.99' data-index='2'>￥3.99</text>
+        <text class='price-default-item {{defaultPriceIndex==3?"active":""}}' bindtap='pickerPrice' data-price='5.99' data-index='3'>￥5.99</text>
+        <text class='price-default-item {{defaultPriceIndex==4?"active":""}}' bindtap='pickerPrice' data-price='9.99' data-index='4'>￥9.99</text>
+      </view>
+      <view class='price-diy'>
+        <view class='price-diy-label'>
+          <icon type='success' color='#E5E5E5' size='18'></icon>
+          <text>自定义</text>
+        </view>
+        <view class='price-diy-input'>
+          <text class='price-diy-input-text'>￥</text>
+          <input type='number' class='price-diy-input-value' bindinput='inputPrice' value='{{price}}'></input>
+        </view>
+        <text class='price-diy-tip'>最高不超过30元</text>
+      </view>
+    </view>
+    <view class='btn' bindtap='confirmDesign'>生成作品</view>
+  </block>
+</view>
+<!-- 素材 -->
+<view class='fodder-box' wx:if='{{fodderStep>0}}'>
+  <!-- 素材操作 -->
+  <view class='fodder-edit' wx:if='{{fodderStep==2}}'>
+    <view class='edit'>
+      <view class='item'>
+        <text class='label'>大小</text>
+        <slider activeColor='#f7c900' value='{{sizeValue}}' min='25' bindchange='fodderSize'></slider>
+      </view>
+      <view class='item'>
+        <text class='label'>旋转</text>
+        <slider activeColor='#f7c900' value='{{rotateValue}}' min='0' max='360' bindchange='fodderRotate'></slider>
+      </view>
+    </view>
+    <view class='edit-bottom'>
+      <view class='item change' bindtap='choicePhoto'>重新上传</view>
+      <view class='item change' bindtap='alignCenter'>居中</view>
+      <view class='item cancel' bindtap='clear'>清除</view>
+      <view class='item confire' bindtap='confirm'>完成</view>
+    </view>
+  </view>
+</view>
+
+<!-- 最终生成的画布 -->
+<view class='design-canvas-box'>
+  <!-- 设计图 -->
+  <canvas class='canvas-design' canvas-id='canvas-design' style='width:{{designCanvasW}}px;height:{{designCanvasH}}px'></canvas>
+  <!-- 预览图 -->
+  <canvas class='canvas-view' canvas-id='canvas-view' style='width:{{viewCanvasW}}px;height:{{viewCanvasH}}px'></canvas>
+</view>
+
+<view class='mask' wx:if='{{uploadMask}}'>
+  <view class='uploadProgress'>
+    <view class='uploadProgress-title'>生成设计需要较长时间，请耐心等待</view>
+    <view>正在生成{{uploadTip}}
+      <text class='uploadProgress-num'>{{designProgress}}</text>%</view>
+    <progress percent='{{designProgress}}' activeColor='#F7C900' border-radius='16'></progress>
+  </view>
+</view>

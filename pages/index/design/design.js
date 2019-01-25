@@ -57,7 +57,9 @@ Page({
     },
     sizeValue: 50, //大小slider的值
     rotateValue: 0, //角度slider的值
-    disabled: true
+    disabled: true,
+    designProgress: 0 ,//设计进度
+    uploadMask: false
   },
 
   /**
@@ -697,14 +699,13 @@ Page({
   },
   // 完成设计
   confirmDesign() {
-    wx.showLoading({
-      title: '正在生成',
-      mask: true
+    this.setData({
+      uploadMask: true
     })
     const fodderFront = this.data.designFodders.front_thumb
     const fodderBack = this.data.designFodders.back_thumb
-    this.createDesign(fodderFront).then(frontDesignUrl => {
-      this.createDesign(fodderBack).then(backDesignUrl => {
+    this.createDesign(fodderFront,25,10).then(frontDesignUrl => {
+      this.createDesign(fodderBack, 25,10).then(backDesignUrl => {
         this.setData({
           designCanvasW: 0,
           designCanvasH: 0,
@@ -716,8 +717,8 @@ Page({
         const frontFodder = this.data.designFodders['front_thumb']
         const backBg = this.data.colors[this.data.currentColorIndex].back_thumb
         const backFodder = this.data.designFodders['back_thumb']
-        this.createViewImg(frontBg, frontFodder).then(frontView => {
-          this.createViewImg(backBg, backFodder).then(backView => {
+        this.createViewImg(frontBg, frontFodder, 10,5).then(frontView => {
+          this.createViewImg(backBg, backFodder, 10,5).then(backView => {
             this.setData({
               viewCanvasW: 0,
               viewCanvasH: 0,
@@ -730,6 +731,10 @@ Page({
               wx.navigateTo({
                 url: `/pages/index/detail/detail?id=${id}`,
               })
+              this.setData({
+                uploadMask: false,
+                designProgress: 0
+              })
             })
           })
         })
@@ -737,11 +742,11 @@ Page({
     })
   },
   // 生成设计图
-  createDesign(fooder) {
+  createDesign(fooder, progressD, progressU ) {
     return new Promise((resolve, reject) => {
-      const designCanvas = wx.createCanvasContext('canvas-design')
+      var designCanvas = wx.createCanvasContext('canvas-design')
       if (fooder.type == 'img' || fooder.type == 'font') { //素材
-        wx.downloadFile({
+        var downloadTask = wx.downloadFile({
           url: fooder.url,
           success: file => {
             let width = 30000 / 9
@@ -766,7 +771,7 @@ Page({
                 quality: 1,
                 success: res => {
                   // 上传图片
-                  this.uploadImg(res.tempFilePath).then(url => {
+                  this.uploadImg(res.tempFilePath, progressU).then(url => {
                     resolve(url)
                   })
                 }
@@ -774,9 +779,18 @@ Page({
             })
           }
         })
+        // 监听下载进度
+        let designProgress = this.data.designProgress
+        downloadTask.onProgressUpdate((res) => {
+          this.setData({
+            designProgress: designProgress + Math.ceil(progressD*(res.progress)/100)
+          })
+        })
       } else if (fooder.type == "photo") { //相册
-        let width = 30000 / 9
-        let height = 40000 / 9
+        // let width = 30000 / 9
+        // let height = 40000 / 9
+        let width = 3000 / 9
+        let height = 4000 / 9
         let fodderW = width * (fooder.w / 90)
         let fodderH = height * (fooder.h / 120)
         let fodderX = width * (fooder.x / 90)
@@ -829,9 +843,9 @@ Page({
     })
   },
   // 生成预览图
-  createViewImg(bg, fooder) {
+  createViewImg(bg, fooder, progressD, progressU) {
     return new Promise((resolve, reject) => {
-      const viewCanvas = wx.createCanvasContext('canvas-view')
+      var viewCanvas = wx.createCanvasContext('canvas-view')
       var canvasW = 412
       var canvasH = 530
       this.setData({
@@ -839,8 +853,7 @@ Page({
         viewCanvasH: canvasH,
       })
       viewCanvas.clearRect(0, 0, canvasW, canvasH) //清空画布
-      console.log(bg)
-      wx.downloadFile({
+      var downloadTask = wx.downloadFile({
         url: bg,
         success: fileBg => {
           viewCanvas.drawImage(fileBg.tempFilePath, 0, 0, canvasW, canvasH) //绘制背景
@@ -853,7 +866,7 @@ Page({
               quality: 1,
               success: res => {
                 // 上传图片
-                this.uploadImg(res.tempFilePath).then(url => {
+                this.uploadImg(res.tempFilePath, progressU).then(url => {
                   resolve(url)
                 })
               }
@@ -861,13 +874,20 @@ Page({
           })
         }
       })
+      // 监听下载进度
+      let designProgress = this.data.designProgress
+      downloadTask.onProgressUpdate((res) => {
+        this.setData({
+          designProgress: designProgress + Math.ceil(progressD * (res.progress) / 100)
+        })
+      })
     })
   },
   //上传图片
-  uploadImg: function(file) {
+  uploadImg: function (file, progressU) {
     return new Promise((resolve, reject) => {
       var nowTime = util.formatTime(new Date());
-      uploadImage(file, 'images/' + nowTime + '/',
+      var uploadTask = uploadImage(file, 'images/' + nowTime + '/',
         function(result) {
           resolve(result)
         },
@@ -875,6 +895,13 @@ Page({
           console.log("======上传失败======", result);
         }
       )
+      let designProgress = this.data.designProgress
+      // 监听上传进度
+      uploadTask.onProgressUpdate((res) => {
+        this.setData({
+          designProgress: designProgress + Math.ceil(progressU * (res.progress) / 100)
+        })
+      })
     })
   },
   // 点击mask,关闭mask

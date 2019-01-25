@@ -8,18 +8,18 @@
       </view>
       <view>
         <text class='label'>支付金额：</text>
-        <text>￥287.00</text>
+        <text>￥{{money}}</text>
       </view>
     </view>
   </view>
   <view class='btn-box'>
-    <text class='btn'>完成</text>
-    <text class='btn'>查看订单</text>
+    <navigator class='btn' open-type='switchTab' url='/pages/index/index'>完成</navigator>
+    <navigator class='btn' open-type='redirect' url='/pages/mine/order/detail/detail?id={{orderId}}'>查看订单</navigator>
   </view>
 </view>
 
 <view class='bottom'>
   <image class='title' src='/images/pay/red_title.png'></image>
   <image class='red' src='/images/pay/red.png'></image>
-  <view class='btn'>立即分享到微信群</view>
+  <button class='btn' open-type='share'>立即分享给好友</button>
 </view>

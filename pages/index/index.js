@@ -29,7 +29,9 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
+    if(options.scene==2){ // =>赠送红包入口
 
+    }
   },
   // swiper
   swiper(event){
@@ -37,6 +39,16 @@ Page({
       currentIndex: event.detail.current
     })
   },
+  // 获取轮播
+  getBanners(){
+    let url = '/api/Picture/indexImgs'
+    getApp().get(url).then(data=>{
+      this.setData({
+        banners: data.imgs
+      })
+    })
+  },
+  // 领取赠送红包
   /**
    * 生命周期函数--监听页面初次渲染完成
    */

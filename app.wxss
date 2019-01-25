@@ -1,4 +1,4 @@
-view, navigator,input{
+view, navigator,input,textarea, scroll-view{
   box-sizing: border-box
 }
 image{
@@ -19,6 +19,9 @@ image{
   top: 0;
   left: 0;
   z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .placeholder{

@@ -1,0 +1,77 @@
+page{
+  background: #f5f5f5;
+}
+.poster{
+  background: #fff;
+  margin: 30rpx;
+  position: relative;
+}
+.canvas{
+  width: 690rpx;
+  height: 920rpx;
+}
+.slogen{
+  width: 430rpx;
+  height: 80rpx;
+  border: 1px dotted #f5f5f5;
+  position: absolute;
+  left: 70rpx;
+  bottom: 30rpx;
+}
+.background{
+  background: #fff;
+}
+.textarea{
+  width: 430rpx;
+  height: 80rpx;
+  font-size: 24rpx;
+  position: absolute;
+  left: 70rpx;
+  bottom: 40rpx;
+  background: #fff;
+  color: #B3B3B3;
+}
+
+.bottom{
+  background: #fff;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 30rpx 0;
+}
+.bottom-item{
+  margin: 0 100rpx;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  line-height: 1;
+  justify-content: center;
+  background: none;
+  font-size: 24rpx;
+  color: #808080;
+}
+.bottom-item::after{
+  border: none;
+}
+.bottom-icon{
+  width: 90rpx;
+  height: 90rpx;
+  border-radius: 90rpx;
+  background: #30B131;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10rpx;
+}
+.bottom-icon-img{
+  width: 56rpx;
+  height: 56rpx;
+} 
+.bottom-icon-photo{
+  background: #fff;
+  border: 1px solid #CCCCCC;
+}

@@ -31,7 +31,7 @@ const uploadFile = function(filePath, dir, successc, failc) {
   const policyBase64 = getPolicyBase64();
   const signature = getSignature(policyBase64); //获取签名
 
-  wx.uploadFile({
+  return wx.uploadFile({
     url: aliyunServerURL, //开发者服务器 url
     filePath: filePath, //要上传文件资源的路径
     name: 'file', //必须填file
@@ -55,6 +55,13 @@ const uploadFile = function(filePath, dir, successc, failc) {
     },
   })
 }
+
+// //监听上传进度
+// uploadTask.onProgressUpdate((res) => {
+//   console.log('上传进度', res.progress)
+//   console.log('已经上传的数据长度', res.totalBytesSent)
+//   console.log('预期需要上传的数据总长度', res.totalBytesExpectedToSend)
+// })
 
 const getPolicyBase64 = function() {
   let date = new Date();

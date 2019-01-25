@@ -25,25 +25,28 @@
     <image class='icon' src='/images/mine/more.png'></image>
   </navigator>
   <view class='box'>
-    <navigator class='item' url='/pages/mine/order/order?index=1'>
-      <text class='num'>1</text>
+    <navigator class='item' url='/pages/mine/order/order?index=0'>
+      <text wx:if='{{orderNum.unpay>0}}' class='num'>{{orderNum.unpay}}</text>
       <image class='icon' src='/images/mine/order_01.png'></image>
       <text>待付款</text>
     </navigator>
-    <navigator class='item' url='/pages/mine/order/order?index=2'>
-      <text class='num'>10</text>
+    <navigator class='item' url='/pages/mine/order/order?index=1'>
+      <text wx:if='{{orderNum.wait_send>0}}' class='num'>{{orderNum.wait_send}}</text>
       <image class='icon' src='/images/mine/order_02.png'></image>
       <text>待发货</text>
     </navigator>
-    <navigator class='item' url='/pages/mine/order/order?index=3'>
+    <navigator class='item' url='/pages/mine/order/order?index=2'>
+      <text wx:if='{{orderNum.wait_get>0}}' class='num'>{{orderNum.wait_get}}</text>
       <image class='icon' src='/images/mine/order_03.png'></image>
       <text>待收货</text>
     </navigator>
-    <navigator class='item' url='/pages/mine/order/order?index=4'>
+    <navigator class='item' url='/pages/mine/order/order?index=5'>
+      <text wx:if='{{orderNum.wait_comment>0}}' class='num'>{{orderNum.wait_comment}}</text>
       <image class='icon' src='/images/mine/order_04.png'></image>
       <text>待评价</text>
     </navigator>
-    <navigator class='item'>
+    <navigator class='item' url='/pages/mine/afterSaleList/afterSaleList'>
+      <text wx:if='{{orderNum.return_count>0}}' class='num'>{{orderNum.return_count}}</text>
       <image class='icon' src='/images/mine/order_05.png'></image>
       <text>退款/售后</text>
     </navigator>
@@ -75,24 +78,38 @@
     <image class='icon' src='/images/mine/link_05.png'></image>
     <text>收藏夹</text>
   </navigator>
-  <navigator class='item'>
+  <!-- <navigator class='item'>
     <image class='icon' src='/images/mine/link_06.png'></image>
     <text>我的权益</text>
-  </navigator>
+  </navigator> -->
   <navigator class='item' url='/pages/mine/add/add'>
     <image class='icon' src='/images/mine/link_07.png'></image>
     <text>地址管理</text>
   </navigator>
-  <navigator class='item'>
+  <navigator class='item' url='/pages/mine/cooperation/cooperation'>
     <image class='icon' src='/images/mine/link_08.png'></image>
     <text>我要合作</text>
   </navigator>
-  <navigator class='item'>
+  <!-- <view class='item' bindtap='attention'>
     <image class='icon' src='/images/mine/link_09.png'></image>
     <text>关注我们</text>
-  </navigator>
-  <navigator class='item'>
+  </view> -->
+  <!-- <navigator class='item'>
     <image class='icon' src='/images/mine/link_10.png'></image>
     <text>邀请好友</text>
-  </navigator>
+  </navigator> -->
+</view>
+
+<!-- <view class='mask' wx:if='{{attentionMask}}'>
+  <view class='attention'>
+    <image class='attention-qrcode' src='/images/mine/qrcode.jpg'></image>
+    <view class='attention-bottom'>
+      <text>关注我们</text>
+    </view>
+    <image class='attention-icon' src='/images/mine/icon_close.png'></image>
+    <view class='attention-btn'>保存二维码</view>
+  </view>
+</view> -->
+<view class='attention'>
+  <official-account></official-account>
 </view>

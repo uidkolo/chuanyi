@@ -1,4 +1,5 @@
 // pages/index/design/design.js
+const WxParse = require('../../../wxParse/wxParse.js')
 Page({
 
   /**
@@ -6,7 +7,8 @@ Page({
    */
   data: {
     number: 1,
-    cartNum: 0
+    cartNum: 0,
+    currentContentIndex: 0
   },
 
   /**
@@ -17,7 +19,7 @@ Page({
     this.getCartNum()
 
     // 获取商品信息
-    this.getGoodInfo(10).then(info => {
+    this.getGoodInfo(options.id).then(info => {
       info.max_money = parseFloat(info.max_money / 100).toFixed(2)
       info.min_money = parseFloat(info.min_money / 100).toFixed(2)
       info.fabrics.forEach(item=>{
@@ -26,6 +28,7 @@ Page({
       this.setData({
         info: info
       })
+      WxParse.wxParse('detail', 'html', info.clothes.detail, this, 20)
     })
   },
   // 获取购物车数量
@@ -143,8 +146,36 @@ Page({
   },
   // 提交定制
   confirm() {
-    wx.navigateTo({
-      url: '/pages/index/pay/pay',
+    let url = '/api/order/postOrder'
+    if (!this.data.fabricId) {
+      wx.showToast({
+        title: '请选择面料',
+        image: '/images/tip.png'
+      })
+    } else if (!this.data.size) {
+      wx.showToast({
+        title: '请选择规格',
+        image: '/images/tip.png'
+      })
+    } else {
+      getApp().post(url, {
+        token: wx.getStorageSync('auth_token'),
+        clothes_id: this.data.info.clothes.id,
+        fabric: this.data.fabricId,
+        size: this.data.size,
+        count: this.data.number,
+        design_pic: this.data.info.design.id
+      }).then(data => {
+        wx.navigateTo({
+          url: '/pages/index/pay/pay'
+        })
+      })
+    }
+  },
+  // 切换详情区域
+  tabContent(e){
+    this.setData({
+      currentContentIndex: e.currentTarget.dataset.index
     })
   },
   /**

@@ -1,0 +1,41 @@
+<view class='goods'>
+  <view class='goods-item' wx:for='{{info.goods}}' wx:key='{{index}}'>
+    <view class='goods-item-left'>
+      <view class='goods-img-box'>
+        <image class='goods-img' src='{{item.design_front_thumb}}'></image>
+      </view>
+      <view class='goods-express'>运输中</view>
+    </view>
+    <view class='goods-info-right'>共{{item.count}}件</view>
+  </view>
+</view>
+
+<view class='express'>
+  <view class='express-left'>
+    <view class='express-name'>{{info.express_company}}</view>
+    <view class='express-num'>
+      <text>运单号：{{info.express_number}}</text>
+      <text class='express-btn' bindtap='copy'>复制</text>
+    </view>
+  </view>
+  <!-- <image class='express-right' src='/images/order/icon_mobile.png'></image> -->
+</view>
+
+<view class='info'>
+  <view class='info-title'>
+    <text>物流信息</text>
+    <text class='info-tip'>本服务由{{info.express_company}}提供</text>
+  </view>
+  <view class='info-list'>
+    <view class='info-item' wx:for='{{info.logistics}}' wx:key='{{index}}'>
+      <view class='info-item-left'>
+        <text class='info-item-dot {{index==0?" info-item-dot--active":""}}'></text>
+        <text class='info-item-line'></text>
+      </view>
+      <view class='info-item-right {{index==0?"info-item-right--active":""}}'>
+        <view class='info-content'>{{item.AcceptStation}}</view>
+        <view class='info-date'>{{item.AcceptTime}}</view>
+      </view>
+    </view>
+  </view>
+</view>

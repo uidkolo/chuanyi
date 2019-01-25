@@ -131,6 +131,24 @@ Page({
       }
     })
   },
+  // 结算
+  closing(){
+    let cartsArr = []
+    this.data.goods.forEach(item=>{
+      if(item.checked==1){
+        cartsArr.push( item.cart_id )
+      }
+    })
+    let url = '/api/order/cartPost'
+    getApp().post(url, {
+      token: wx.getStorageSync('auth_token'),
+      carts: cartsArr.join(',')
+    }).then(()=>{
+      wx.navigateTo({
+        url: '/pages/index/pay/pay',
+      })
+    })
+  },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */

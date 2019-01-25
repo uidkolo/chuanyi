@@ -1,0 +1,25 @@
+<view class='form'>
+  <input class='input' placeholder='请输入企业名称' placeholder-class='placeholder' bindinput='input' data-key='company'></input>
+  <input class='input' placeholder='请输入企业负责人' placeholder-class='placeholder' bindinput='input' data-key='leading_official'></input>
+  <input class='input' type='number' placeholder='请输入联系电话' placeholder-class='placeholder' bindinput='input' data-key='tel'></input>
+  <picker mode='region' bindchange='pickerAdd'>
+    <view class='picker'>
+      <text>所在省市</text>
+      <image class='picker-icon' src='/images/mine/icon_picker.png'></image>
+    </view>
+  </picker>
+  <input class='input' placeholder='输入企业详细地址' placeholder-class='placeholder' bindinput='input' data-key='address'></input>
+  <picker range='{{industrys}}' range-key='name' bindchange='pickerIndustry'>
+    <view class='picker'>
+      <text>所属行业</text>
+      <image class='picker-icon' src='/images/mine/icon_picker.png'></image>
+    </view>
+  </picker>
+  <view class='message'>
+    <textarea class='textarea' placeholder='如果您有什么要跟我们说的，请在这里留言' placeholder-class='placeholder' bindinput='input' data-key='message'></textarea>
+    <image class='license' src='{{license}}' wx:if='{{license}}'></image>
+    <view class='message-btn' bindtap='chooseImg'>上传营业执照</view>
+  </view>
+</view>
+
+<view class='btn' bindtap='apply'>立即加盟</view>

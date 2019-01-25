@@ -1,4 +1,4 @@
-// pages/team/team.js
+// pages/mine/order/express/express.js
 Page({
 
   /**
@@ -12,9 +12,31 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    this.getExpress(options.id)
   },
-
+  // 获取快递信息
+  getExpress(id){
+    let url = '/api/order/seeLogistics'
+    getApp().post(url, {
+      token: wx.getStorageSync('auth_token'),
+      order_id: id
+    }).then(data=>{
+      this.setData({
+        info:data
+      })
+    })
+  },
+  // 复制单号
+  copy(){
+    wx.setClipboardData({
+      data: this.data.info.express_number.toString(),
+      success: ()=>{
+        wx.showToast({
+          title: '复制成功',
+        })
+      }
+    })
+  },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */

@@ -128,4 +128,10 @@ page{
 .list .item .right .bottom .btn{
   color: #4D4D4D;
   font-size: 24rpx;
+  margin: 0;
+  padding: 0;
+  background: none;
+}
+.list .item .right .bottom .btn::after{
+  border:none;
 }

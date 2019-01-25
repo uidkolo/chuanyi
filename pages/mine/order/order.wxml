@@ -1,167 +1,55 @@
 <view class='tab-box'>
   <view class='tab'>
-    <text class='item {{tabIndex==0?"active":""}}' bindtap='tab' data-index='0'>全部</text>
-    <text class='item {{tabIndex==1?"active":""}}' bindtap='tab' data-index='1'>待付款</text>
-    <text class='item {{tabIndex==2?"active":""}}' bindtap='tab' data-index='2'>待发货</text>
-    <text class='item {{tabIndex==3?"active":""}}' bindtap='tab' data-index='3'>待收货</text>
-    <text class='item {{tabIndex==4?"active":""}}' bindtap='tab' data-index='4'>待评价</text>
+    <text class='item {{tabIndex===""?"active":""}}' bindtap='tab' data-index=''>全部</text>
+    <text class='item {{tabIndex==="0"?"active":""}}' bindtap='tab' data-index='0'>待付款</text>
+    <text class='item {{tabIndex==1?"active":""}}' bindtap='tab' data-index='1'>待发货</text>
+    <text class='item {{tabIndex==2?"active":""}}' bindtap='tab' data-index='2'>待收货</text>
+    <text class='item {{tabIndex==5?"active":""}}' bindtap='tab' data-index='5'>待评价</text>
   </view>
 </view>
 
 <view class='list'>
-  <view class='item'>
+  <view class='item' wx:for='{{orders}}' wx:key='{{index}}'>
     <view class='head'>
-      <text class='date'>2018-11-12 21:00:45</text>
-      <text class='state'>等待付款</text>
+      <text class='date'>{{item.create_time}}</text>
+      <text class='state'>{{item.status_word}}</text>
     </view>
-    <view class='products'>
-      <view class='product'>
-        <image class='img' src='/images/test/template.png'></image>
+    <navigator class='products' url='/pages/mine/order/detail/detail?id={{item.id}}'>
+      <view class='product ' wx:for='{{item.goods}}' wx:for-item='item2' wx:for-index='index2' wx:key='{{index2}}'>
+        <image class='img' src='{{item2.design_front_thumb}}'></image>
         <view class='right'>
-          <view class='top'>
-            <view class='title'>夏季男士短袖t恤纯棉大男装圆领宽松韩版潮流半袖男体恤上衣服</view>
-            <view class='info'>
-              <text>99%纯棉</text>
-              <text>L码</text>
-              <text>个性化定制</text>
-            </view>
+          <view class='title'>{{item2.clothes_name}}</view>
+          <view class='info'>
+            <text>{{item2.fabric_name}}</text>
+            <text>{{item2.size}}</text>
+            <text>{{item2.source}}</text>
           </view>
           <view class='bottom'>
-            <text class='price'>￥99.00</text>
-            <text class='num'>x2</text>
+            <text class='price'>￥{{item2.price}}</text>
+            <text class='num'>x{{item2.count}}</text>
           </view>
         </view>
       </view>
-      <view class='product'>
-        <image class='img' src='/images/test/template.png'></image>
-        <view class='right'>
-          <view class='top'>
-            <view class='title'>夏季男士短袖t恤纯棉大男装圆领宽松韩版潮流半袖男体恤上衣服</view>
-            <view class='info'>
-              <text>99%纯棉</text>
-              <text>L码</text>
-              <text>个性化定制</text>
-            </view>
-          </view>
-          <view class='bottom'>
-            <text class='price'>￥99.00</text>
-            <text class='num'>x2</text>
-          </view>
-        </view>
-      </view>
-    </view>
+    </navigator>
     <view class='total'>
-      <text class='num'>共3件商品</text>
-      <view class='price'>合计：￥<text>297.00</text></view>
+      <text class='num'>共{{item.goods_count}}件商品</text>
+      <view class='price'>合计：￥
+        <text>{{item.all_goods_price}}</text>
+      </view>
     </view>
     <view class='btns'>
-      <text class='cancel'>取消订单</text>
-      <text class='confirm'>立即付款</text>
-    </view>
-  </view>
-  <view class='item'>
-    <view class='head'>
-      <text class='date'>2018-11-12 21:00:45</text>
-      <text class='state'>等待付款</text>
-    </view>
-    <view class='products'>
-      <view class='product'>
-        <image class='img' src='/images/test/template.png'></image>
-        <view class='right'>
-          <view class='top'>
-            <view class='title'>夏季男士短袖t恤纯棉大男装圆领宽松韩版潮流半袖男体恤上衣服</view>
-            <view class='info'>
-              <text>99%纯棉</text>
-              <text>L码</text>
-              <text>个性化定制</text>
-            </view>
-          </view>
-          <view class='bottom'>
-            <text class='price'>￥99.00</text>
-            <text class='num'>x2</text>
-          </view>
-        </view>
-      </view>
-      <view class='product'>
-        <image class='img' src='/images/test/template.png'></image>
-        <view class='right'>
-          <view class='top'>
-            <view class='title'>夏季男士短袖t恤纯棉大男装圆领宽松韩版潮流半袖男体恤上衣服</view>
-            <view class='info'>
-              <text>99%纯棉</text>
-              <text>L码</text>
-              <text>个性化定制</text>
-            </view>
-          </view>
-          <view class='bottom'>
-            <text class='price'>￥99.00</text>
-            <text class='num'>x2</text>
-          </view>
-        </view>
-      </view>
-    </view>
-    <view class='total'>
-      <text class='num'>共3件商品</text>
-      <view class='price'>合计：￥<text>297.00</text></view>
-    </view>
-    <view class='btns'>
-      <text class='cancel'>取消订单</text>
-      <text class='confirm'>立即付款</text>
-    </view>
-  </view>
-  
-  <view class='item'>
-    <view class='head'>
-      <text class='date'>2018-11-12 21:00:45</text>
-      <text class='state'>等待付款</text>
-    </view>
-    <view class='products'>
-      <view class='product'>
-        <image class='img' src='/images/test/template.png'></image>
-        <view class='right'>
-          <view class='top'>
-            <view class='title'>夏季男士短袖t恤纯棉大男装圆领宽松韩版潮流半袖男体恤上衣服</view>
-            <view class='info'>
-              <text>99%纯棉</text>
-              <text>L码</text>
-              <text>个性化定制</text>
-            </view>
-          </view>
-          <view class='bottom'>
-            <text class='price'>￥99.00</text>
-            <text class='num'>x2</text>
-          </view>
-        </view>
-      </view>
-      <view class='product'>
-        <image class='img' src='/images/test/template.png'></image>
-        <view class='right'>
-          <view class='top'>
-            <view class='title'>夏季男士短袖t恤纯棉大男装圆领宽松韩版潮流半袖男体恤上衣服</view>
-            <view class='info'>
-              <text>99%纯棉</text>
-              <text>L码</text>
-              <text>个性化定制</text>
-            </view>
-          </view>
-          <view class='bottom'>
-            <text class='price'>￥99.00</text>
-            <text class='num'>x2</text>
-          </view>
-        </view>
-      </view>
-    </view>
-    <view class='total'>
-      <text class='num'>共3件商品</text>
-      <view class='price'>合计：￥<text>297.00</text></view>
-    </view>
-    <view class='btns'>
-      <text class='cancel'>取消订单</text>
-      <text class='confirm'>立即付款</text>
+      <text class='cancel' wx:if='{{item.status==0}}' bindtap='cancelOrder' data-id='{{item.id}}'>取消订单</text>
+      <navigator class='confirm' wx:if='{{item.status==0}}' url='/pages/mine/order/detail/detail?id={{item.id}}&scene=1'>立即付款</navigator>
+      <button open-type='contact' class='cancel' wx:if='{{item.status==1}}'>联系客服</button>
+      <text class='confirm' wx:if='{{item.status==1}}' bindtap='remindSend' data-id='{{item.id}}'>提醒发货</text>
+      <navigator class='cancel' wx:if='{{item.status==2|| item.status==5}}' url='/pages/mine/order/detail/detail?id={{item.id}}'>申请售后</navigator>
+      <navigator class='cancel' wx:if='{{item.status==2|| item.status==5}}' url='/pages/mine/order/express/express?id={{item.id}}'>查看物流</navigator>
+      <text class='confirm' wx:if='{{item.status==2}}' bindtap='comfireTake' data-id='{{item.id}}'>确认收货</text>
+      <navigator class='confirm' wx:if='{{(item.status==5||item.status==6)&&item.is_comment==0}}' url='/pages/mine/order/discuss/discuss?id={{item.id}}&scene=1'>评价</navigator>
     </view>
   </view>
 </view>
 
-<view class='end'>
+<view class='end' wx:if='{{end}}'>
   <text>-- END --</text>
 </view>
