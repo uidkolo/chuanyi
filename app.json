@@ -1,7 +1,7 @@
 {
   "pages": [
-    "pages/works/works",
     "pages/index/index",
+    "pages/works/works",
     "pages/index/design/design",
     "pages/index/detail/detail",
     "pages/mine/mine",
@@ -30,7 +30,8 @@
     "pages/works/design/design",
     "pages/works/myWorks/order/order",
     "pages/works/myWorks/incomeDetail/incomeDetail",
-    "pages/works/search/search"
+    "pages/works/search/search",
+    "pages/message/message"
   ],
   "window": {
     "backgroundColor": "#f5f5f5",
@@ -54,6 +55,12 @@
         "iconPath": "/images/icon/nav_03.png",
         "selectedIconPath": "/images/icon/nav_03_1.png",
         "text": "作品馆"
+      },
+      {
+        "pagePath": "pages/message/message",
+        "iconPath": "/images/icon/nav_05.png",
+        "selectedIconPath": "/images/icon/nav_05_1.png",
+        "text": "消息"
       },
       {
         "pagePath": "pages/mine/mine",

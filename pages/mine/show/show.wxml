@@ -8,7 +8,7 @@
 </view>
 
 <view class='list'>
-  <view class='item' wx:for='{{comments}}' wx:key='{{index}}'>
+  <view class='item' wx:for='{{shows}}' wx:key='{{index}}'>
     <view class='top'>
       <image class='avatar' src='{{item.user.avatar}}'></image>
       <text class='name'>{{item.user.nick_name}}</text>
@@ -26,12 +26,14 @@
     <view class='bottom'>
       <text class='view'>浏览{{item.see_count}}次</text>
       <view class='right'>
-        <view class='right-item'>
-          <image src='/images/mine/icon_discuss.png'></image>
+        <view class='right-item {{item.commented==1?"active":""}}' bindtap='showComment' data-id='{{item.id}}' data-index='{{index}}' data-count='{{item.comment_count}}'>
+          <image src='/images/works/discuss.png' wx:if='{{item.commented==0}}'></image>
+          <image src='/images/works/discuss_active.png' wx:if='{{item.commented==1}}'></image>
           <text class='right-item-value'>{{item.comment_count}}</text>
         </view>
-        <view class='right-item'>
-          <image src='/images/mine/icon_agree.png'></image>
+        <view class='right-item {{item.liked==1?"active":""}}' bindtap='likeOrNotWorks' data-id='{{item.id}}' data-index='{{index}}'>
+          <image src='/images/works/like.png' wx:if='{{item.liked==0}}'></image>
+          <image src='/images/works/like_active.png' wx:if='{{item.liked==1}}'></image>
           <text class='right-item-value'>{{item.like_count}}</text>
         </view>
       </view>
@@ -41,4 +43,62 @@
 
 <view class='end' wx:if='{{end}}'>
   <text>-- END --</text>
+</view>
+
+<view class='mask' wx:if='{{commentMask}}'>
+  <view class='comment'>
+    <view class='comment-head'>
+      <text>{{currentCommentCount}}条评论</text>
+      <image class='comment-close' src='/images/icon/icon_close.png' bindtap='closeComment'></image>
+    </view>
+    <scroll-view class='comment-list' scroll-y bindscrolltolower='getComment'>
+      <view class='scroll-content'>
+        <view class='comment-item' wx:for='{{comments}}' wx:key='{{index}}'>
+          <view class='comment-item-main'>
+            <view class='comment-item-left' bindtap='bindReply' data-id='{{item.id}}' data-user='{{item.user_info.nick_name}}' data-userid='{{item.user_info.id}}' data-index='{{index}}'>
+              <image class='comment-avatar' src='{{item.user_info.avatar}}'></image>
+              <view class='comment-item-left-right'>
+                <view class='comment-name'>{{item.user_info.nick_name}}</view>
+                <view class='comment-content'>
+                  <text>{{item.content}}</text>
+                  <view class='comment-time'>{{item.time}}</view>
+                </view>
+              </view>
+            </view>
+            <view class='comment-item-right {{item.liked==1?"active":""}}' bindtap='likeComment' data-id='{{item.id}}' data-index='{{index}}'>
+              <image class='comment-item-right-icon' src='/images/works/like.png' wx:if='{{item.liked==0}}'></image>
+              <image class='comment-item-right-icon' src='/images/works/like_active.png' wx:if='{{item.liked==1}}'></image>
+              <text>{{item.like_count}}</text>
+            </view>
+          </view>
+          <view class='comment-item-sub' wx:for='{{item.replys}}' wx:for-item='item2' wx:for-index='index2' wx:key='{{index2}}'>
+            <view class='comment-item-sub-item'>
+              <view class='comment-item-sub-left' bindtap='bindReply' data-id='{{item2.id}}' data-user='{{item2.user_info.nick_name}}' data-userid='{{item2.user_info.id}}' data-index='{{index}}'>
+                <view class='comment-item-sub-left-top'>
+                  <image class='comment-sub-avatar' src='{{item2.user_info.avatar}}'></image>
+                  <text class='comment-name'>{{item2.user_info.nick_name}}</text>
+                </view>
+                <view class='comment-content'>
+                  <text>回复<text class='comment-at'>@{{item2.to_user.nick_name}}: </text>{{item2.content}}</text>
+                  <text class='comment-time'>{{item2.time}}</text>
+                </view>
+              </view>
+              <view class='comment-item-right {{item2.liked==1?"active":""}}' bindtap='likeReply' data-index='{{index}}' data-index2='{{index2}}' data-id='{{item2.id}}'>
+                <image class='comment-item-right-icon' src='/images/works/like.png' wx:if='{{item2.liked==0}}'></image>
+                <image class='comment-item-right-icon' src='/images/works/like_active.png' wx:if='{{item2.liked==1}}'></image>
+                <text>{{item2.like_count}}</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </scroll-view>
+    <view class='comment-input-box'>
+      <text class='comment-input-at' wx:if='{{commentType==1}}'>@{{atName}}</text>
+      <input cursor-spacing='10' value='{{commentContent}}' class='comment-input' placeholder='评论内容' placeholder-class='placeholder' bindinput='input' data-key='commentContent' wx:if='{{commentType==0}}'></input>
+      <input cursor-spacing='10' value='{{replyContent}}' focus='{{applyFocus}}' class='comment-input' placeholder='回复内容' placeholder-class='placeholder' bindinput='input' data-key='replyContent' wx:if='{{commentType==1}}'></input>
+      <text class='comment-btn' bindtap='comment' wx:if='{{commentType==0}}'>评论</text>
+      <text class='comment-btn' bindtap='reply' wx:if='{{commentType==1}}'>回复</text>
+    </view>
+  </view>
 </view>

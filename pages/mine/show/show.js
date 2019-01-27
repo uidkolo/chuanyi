@@ -8,9 +8,15 @@ Page({
     kind: '全部类目',
     kindId: '',
     end: false,
-    comments: [],
+    shows: [],
     pageNo: 1,
-    totalPage: 1
+    totalPage: 1,
+    comments: [],
+    commentPageNo: 1,
+    commentTotalPage: 1,
+    commentMask: false,
+    commentType: 0, //0:评论 1:回复
+    applyFocus: false
   },
 
   /**
@@ -18,7 +24,7 @@ Page({
    */
   onLoad: function (options) {
     this.getKinds()
-    this.getComments()
+    this.getShows()
   },
   // 获取分类
   getKinds() {
@@ -34,14 +40,14 @@ Page({
     this.setData({
       kindId: parseInt(e.detail.value) + 1,
       kind: this.data.kinds[e.detail.value].name,
-      comments: [],
+      shows: [],
       pageNo: 1,
       totalPage: 1
     })
     this.getComments()
   },
   // 获取买家秀列表
-  getComments(){
+  getShows(){
     if (this.data.pageNo <= this.data.totalPage) {
       wx.showLoading({
         title: '正在加载',
@@ -53,10 +59,10 @@ Page({
         page: this.data.pageNo
       }).then(data => {
         wx.hideLoading()
-        let comments = data.comments
-        this.data.comments = this.data.comments.concat(comments)
+        let shows = data.comments
+        this.data.shows = this.data.shows.concat(shows)
         this.setData({
-          comments: this.data.comments,
+          shows: this.data.shows,
           pageNo: this.data.pageNo + 1,
           totalPage: data.total
         })
@@ -72,7 +78,7 @@ Page({
   preview(e){
     let index = e.currentTarget.dataset.index
     let index2 = e.currentTarget.dataset.index2
-    let arr = this.data.comments[index].imgs
+    let arr = this.data.shows[index].imgs
     wx.previewImage({
       urls: arr,
       current: arr[index2]
@@ -87,31 +93,211 @@ Page({
       token: wx.getStorageSync('auth_token'),
       comment_id: id
     }).then(()=>{
-      this.data.comments[index].see_count++
+      this.data.shows[index].see_count++
       this.setData({
-        comments: this.data.comments
+        shows: this.data.shows
       })
     })
   },
   // 点赞或取消点赞
   likeOrNotWorks(e) {
-    let url = '/api/works_site/likeOrNotWorks'
+    let url = '/api/comment/likeOrNot'
+    getApp().post(url, {
+      token: wx.getStorageSync('auth_token'),
+      comment_id: e.currentTarget.dataset.id
+    }).then(() => {
+      let type = this.data.shows[e.currentTarget.dataset.index].liked //0：点赞 1：取消
+      wx.showToast({
+        title: type == 0 ? '点赞成功' : '取消成功',
+      })
+      this.data.shows[e.currentTarget.dataset.index].liked = type == 0 ? 1 : 0
+      if (type == 0) {
+        this.data.shows[e.currentTarget.dataset.index].like_count++
+      } else {
+        this.data.shows[e.currentTarget.dataset.index].like_count--
+      }
+      this.setData({
+        shows: this.data.shows
+      })
+    })
+  },
+  // 获取评论列表
+  getComment() {
+    if (this.data.commentPageNo <= this.data.commentTotalPage) {
+      wx.showLoading({
+        title: '正在加载',
+      })
+      let url = '/api/show_comment/commentsList'
+      getApp().post(url, {
+        token: wx.getStorageSync('auth_token'),
+        show_id: this.data.currentDesigntId,
+        page: this.data.commentPageNo
+      }).then(data => {
+        wx.hideLoading()
+        let comments = data.list
+        this.data.comments = this.data.comments.concat(comments)
+        this.setData({
+          comments: this.data.comments,
+          commentPageNo: this.data.commentPageNo + 1,
+          commentTotalPage: data.total
+        })
+        if (this.data.commentPageNo - 1 == this.data.commentTotalPage || data.total == 0) {
+          this.setData({
+            end: true
+          })
+        }
+      })
+    }
+  },
+  // 查看评论
+  showComment(e) {
+    this.setData({
+      commentMask: true,
+      commentType: 0,
+      currentDesignIndex: e.currentTarget.dataset.index,
+      currentDesigntId: e.currentTarget.dataset.id,
+      currentCommentCount: e.currentTarget.dataset.count,
+      pageNo: 1,
+      totalPage: 1,
+      comments: [],
+      commentPageNo: 1,
+      commentTotalPage: 1
+    })
+    this.getComment()
+  },
+  // 关闭
+  closeComment(e) {
+    this.setData({
+      commentType: 0,
+      commentMask: false
+    })
+  },
+  //input
+  input(e) {
+    this.setData({
+      [e.currentTarget.dataset.key]: e.detail.value
+    })
+  },
+  //评论
+  comment() {
+    if (!this.data.commentContent) {
+      wx.showToast({
+        title: '请输入内容',
+        image: '/images/tip.png'
+      })
+    } else {
+      let url = '/api/show_comment/comment'
+      wx.showLoading({
+        title: '正在评论',
+      })
+      getApp().post(url, {
+        token: wx.getStorageSync('auth_token'),
+        show_id: this.data.currentDesigntId,
+        content: this.data.commentContent
+      }).then(data => {
+        wx.hideLoading()
+        this.data.comments.unshift(data.comment)
+        this.data.shows[this.data.currentDesignIndex].comment_count++
+        this.data.currentCommentCount++
+        this.data.shows[this.data.currentDesignIndex].commented = 1
+        this.setData({
+          currentCommentCount: this.data.currentCommentCount,
+          shows: this.data.shows,
+          commentContent: '',
+          comments: this.data.comments
+        })
+      })
+    }
+  },
+  // 开始回复
+  bindReply(e) {
+    this.setData({
+      applyFocus: true,
+      commentType: 1,
+      atName: e.currentTarget.dataset.user,
+      atId: e.currentTarget.dataset.userid,
+      currentCommentIndex: e.currentTarget.dataset.index,
+      currentCommentId: e.currentTarget.dataset.id
+    })
+  },
+  // 回复
+  reply() {
+    if (!this.data.replyContent) {
+      wx.showToast({
+        title: '请输入内容',
+        image: '/images/tip.png'
+      })
+    } else {
+      let url = '/api/show_comment/commentReply'
+      wx.showLoading({
+        title: '正在回复',
+      })
+      getApp().post(url, {
+        token: wx.getStorageSync('auth_token'),
+        show_id: this.data.currentDesigntId,
+        to_comment: this.data.currentCommentId,
+        content: this.data.replyContent,
+        at_user: this.data.atId
+      }).then(data => {
+        wx.hideLoading()
+        console.log(this.data.currentCommentIndex)
+        this.data.comments[this.data.currentCommentIndex].replys.unshift(data.reply)
+        this.data.shows[this.data.currentDesignIndex].comment_count++
+        this.data.currentCommentCount++
+        this.data.shows[this.data.currentDesignIndex].commented = 1
+        this.setData({
+          currentCommentCount: this.data.currentCommentCount,
+          shows: this.data.shows,
+          replyContent: '',
+          comments: this.data.comments
+        })
+      })
+    }
+  },
+  // 评论点赞或取消
+  likeComment(e) {
+    let url = '/api/show_comment/likeOrNotComment'
     getApp().post(url, {
       token: wx.getStorageSync('auth_token'),
       object_id: e.currentTarget.dataset.id
     }).then(() => {
-      let type = this.data.designs[e.currentTarget.dataset.index].liked //0：点赞 1：取消
+      let type = this.data.comments[e.currentTarget.dataset.index].liked //0：点赞 1：取消
       wx.showToast({
         title: type == 0 ? '点赞成功' : '取消成功',
       })
-      this.data.designs[e.currentTarget.dataset.index].liked = type == 0 ? 1 : 0
+      this.data.comments[e.currentTarget.dataset.index].liked = type == 0 ? 1 : 0
       if (type == 0) {
-        this.data.designs[e.currentTarget.dataset.index].like_count++
+        this.data.comments[e.currentTarget.dataset.index].like_count++
       } else {
-        this.data.designs[e.currentTarget.dataset.index].like_count--
+        this.data.comments[e.currentTarget.dataset.index].like_count--
       }
       this.setData({
-        designs: this.data.designs
+        comments: this.data.comments
+      })
+    })
+  },
+  // 回复点赞或取消
+  likeReply(e) {
+    let url = '/api/show_comment/likeOrNotReply'
+    getApp().post(url, {
+      token: wx.getStorageSync('auth_token'),
+      object_id: e.currentTarget.dataset.id
+    }).then(() => {
+      let index = e.currentTarget.dataset.index
+      let index2 = e.currentTarget.dataset.index2
+      let id = e.currentTarget.dataset.id
+      let type = this.data.comments[index].replys[index2].liked //0：点赞 1：取消
+      wx.showToast({
+        title: type == 0 ? '点赞成功' : '取消成功',
+      })
+      this.data.comments[index].replys[index2].liked = type == 0 ? 1 : 0
+      if (type == 0) {
+        this.data.comments[index].replys[index2].like_count++
+      } else {
+        this.data.comments[index].replys[index2].like_count--
+      }
+      this.setData({
+        comments: this.data.comments
       })
     })
   },
@@ -154,7 +340,7 @@ Page({
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-    this.getComments()
+    this.getShows()
   },
 
   /**

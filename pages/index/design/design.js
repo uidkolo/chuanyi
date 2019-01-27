@@ -58,7 +58,7 @@ Page({
     sizeValue: 50, //大小slider的值
     rotateValue: 0, //角度slider的值
     disabled: true,
-    designProgress: 0 ,//设计进度
+    designProgress: 0, //设计进度
     uploadMask: false
   },
 
@@ -704,45 +704,84 @@ Page({
     })
     const fodderFront = this.data.designFodders.front_thumb
     const fodderBack = this.data.designFodders.back_thumb
-    this.createDesign(fodderFront,25,10).then(frontDesignUrl => {
-      this.createDesign(fodderBack, 25,10).then(backDesignUrl => {
-        this.setData({
-          designCanvasW: 0,
-          designCanvasH: 0,
-          frontDesignUrl: frontDesignUrl,
-          backDesignUrl: backDesignUrl
-        })
-        // 生成预览图
-        const frontBg = this.data.colors[this.data.currentColorIndex].front_thumb
-        const frontFodder = this.data.designFodders['front_thumb']
-        const backBg = this.data.colors[this.data.currentColorIndex].back_thumb
-        const backFodder = this.data.designFodders['back_thumb']
-        this.createViewImg(frontBg, frontFodder, 10,5).then(frontView => {
-          this.createViewImg(backBg, backFodder, 10,5).then(backView => {
-            this.setData({
-              viewCanvasW: 0,
-              viewCanvasH: 0,
-              frontViewUrl: frontView,
-              backViewUrl: backView
-            })
-            wx.hideLoading()
-            // 保存设计
-            this.saveDesign().then(id => {
-              wx.navigateTo({
-                url: `/pages/index/detail/detail?id=${id}`,
-              })
+    if (fodderFront.type == 'photo') { // 相册
+      this.createDesign(fodderFront, 0, 25).then(frontDesignUrl => {
+        this.createDesign(fodderBack, 0, 25).then(backDesignUrl => {
+          this.setData({
+            designCanvasW: 0,
+            designCanvasH: 0,
+            frontDesignUrl: frontDesignUrl,
+            backDesignUrl: backDesignUrl
+          })
+          // 生成预览图
+          const frontBg = this.data.colors[this.data.currentColorIndex].front_thumb
+          const frontFodder = this.data.designFodders['front_thumb']
+          const backBg = this.data.colors[this.data.currentColorIndex].back_thumb
+          const backFodder = this.data.designFodders['back_thumb']
+          this.createViewImg(frontBg, frontFodder, 10, 15).then(frontView => {
+            this.createViewImg(backBg, backFodder, 10, 15).then(backView => {
               this.setData({
-                uploadMask: false,
-                designProgress: 0
+                viewCanvasW: 0,
+                viewCanvasH: 0,
+                frontViewUrl: frontView,
+                backViewUrl: backView
+              })
+              wx.hideLoading()
+              // 保存设计
+              this.saveDesign().then(id => {
+                wx.navigateTo({
+                  url: `/pages/index/detail/detail?id=${id}`,
+                })
+                this.setData({
+                  uploadMask: false,
+                  designProgress: 0
+                })
               })
             })
           })
         })
       })
-    })
+    } else { //素材/字体
+      this.createDesign(fodderFront, 25, 10).then(frontDesignUrl => {
+        this.createDesign(fodderBack, 25, 10).then(backDesignUrl => {
+          this.setData({
+            designCanvasW: 0,
+            designCanvasH: 0,
+            frontDesignUrl: frontDesignUrl,
+            backDesignUrl: backDesignUrl
+          })
+          // 生成预览图
+          const frontBg = this.data.colors[this.data.currentColorIndex].front_thumb
+          const frontFodder = this.data.designFodders['front_thumb']
+          const backBg = this.data.colors[this.data.currentColorIndex].back_thumb
+          const backFodder = this.data.designFodders['back_thumb']
+          this.createViewImg(frontBg, frontFodder, 10, 5).then(frontView => {
+            this.createViewImg(backBg, backFodder, 10, 5).then(backView => {
+              this.setData({
+                viewCanvasW: 0,
+                viewCanvasH: 0,
+                frontViewUrl: frontView,
+                backViewUrl: backView
+              })
+              wx.hideLoading()
+              // 保存设计
+              this.saveDesign().then(id => {
+                wx.navigateTo({
+                  url: `/pages/index/detail/detail?id=${id}`,
+                })
+                this.setData({
+                  uploadMask: false,
+                  designProgress: 0
+                })
+              })
+            })
+          })
+        })
+      })
+    }
   },
   // 生成设计图
-  createDesign(fooder, progressD, progressU ) {
+  createDesign(fooder, progressD, progressU) {
     return new Promise((resolve, reject) => {
       var designCanvas = wx.createCanvasContext('canvas-design')
       if (fooder.type == 'img' || fooder.type == 'font') { //素材
@@ -783,14 +822,13 @@ Page({
         let designProgress = this.data.designProgress
         downloadTask.onProgressUpdate((res) => {
           this.setData({
-            designProgress: designProgress + Math.ceil(progressD*(res.progress)/100)
+            designProgress: designProgress + Math.ceil(progressD * (res.progress) / 100)
           })
         })
       } else if (fooder.type == "photo") { //相册
-        // let width = 30000 / 9
-        // let height = 40000 / 9
-        let width = 3000 / 9
-        let height = 4000 / 9
+        var designCanvas = wx.createCanvasContext('canvas-design')
+        let width = 30000 / 9
+        let height = 40000 / 9
         let fodderW = width * (fooder.w / 90)
         let fodderH = height * (fooder.h / 120)
         let fodderX = width * (fooder.x / 90)
@@ -811,29 +849,7 @@ Page({
             quality: 1,
             success: res => {
               // 上传图片
-              this.uploadImg(res.tempFilePath).then(url => {
-                resolve(url)
-              })
-            }
-          })
-        })
-      } else { //素材为空
-        let width = 30000 / 9
-        let height = 40000 / 9
-        this.setData({
-          designCanvasW: width,
-          designCanvasH: height
-        })
-        designCanvas.clearRect(0, 0, width, height) //清空画布
-        designCanvas.draw(false, () => {
-          wx.canvasToTempFilePath({
-            destWidth: width,
-            destHeight: height,
-            canvasId: 'canvas-design',
-            quality: 1,
-            success: res => {
-              // 上传图片
-              this.uploadImg(res.tempFilePath).then(url => {
+              this.uploadImg(res.tempFilePath, progressU).then(url => {
                 resolve(url)
               })
             }
@@ -884,7 +900,7 @@ Page({
     })
   },
   //上传图片
-  uploadImg: function (file, progressU) {
+  uploadImg: function(file, progressU) {
     return new Promise((resolve, reject) => {
       var nowTime = util.formatTime(new Date());
       var uploadTask = uploadImage(file, 'images/' + nowTime + '/',

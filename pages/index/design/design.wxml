@@ -59,7 +59,7 @@
   <scroll-view class='fodder-default' scroll-x>
     <image mode='aspectFit' class='item' wx:for='{{defaultFooders}}' wx:key='index' src='{{item.thumb}}' bindtap='pickerFodder' data-index='{{index}}' data-type='0'></image>
   </scroll-view>
-  <view class='btn' bindtap='confirmDesign'>完成设计</view>
+  <view class='btn' bindtap='confirmDesign' wx:if='{{designFodders.front_thumb.x && designFodders.back_thumb.x}}'>完成设计</view>
 </view>
 
 

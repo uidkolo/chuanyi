@@ -361,8 +361,6 @@ Page({
   createDesign(fooder, progressD, progressU) {
     return new Promise((resolve, reject) => {
       var designCanvas = wx.createCanvasContext('canvas-design')
-      // let width = 30000 / 9
-      // let height = 40000 / 9
       let width = 30000 / 9
       let height = 40000 / 9
       let fodderW = width * (fooder.w / 90)
