@@ -32,7 +32,7 @@
     </view>
     <view class='info'>
       <view class='left'>
-        <text class='left-item'>{{item.date}}</text>
+        <text class='left-item'>{{item.create_time}}</text>
       </view>
       <view class='right'>
         <view class='right-item'>

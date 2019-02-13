@@ -11,7 +11,7 @@
   <view class='hot'>
     <view class='module-title'>热搜</view>
     <view class='hot-list'>
-      <text class='hot-item' wx:for='{{hots}}' wx:key='{{index}}'>{{item}}</text>
+      <text class='hot-item' wx:for='{{hots}}' wx:key='{{index}}'  bindtap='tabHot' data-key='{{item}}'>{{item}}</text>
     </view>
   </view>
 </view>

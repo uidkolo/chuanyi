@@ -6,7 +6,7 @@ page{
   position: relative;
 }
 .works-img{
-  height: 750rpx;
+  height: 850rpx;
 }
 .works-img-item{
   display: flex;
@@ -19,8 +19,8 @@ page{
   height: 60rpx;
 }
 .works-img-item-img{
-  height: 600rpx;
-  width: 467rpx;
+  height: 850rpx;
+  width: 662rpx;
 }
 .works-sidebar-item-icon{
   width: 60rpx;

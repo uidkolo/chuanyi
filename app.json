@@ -1,5 +1,6 @@
 {
   "pages": [
+    "pages/message/message",
     "pages/index/index",
     "pages/works/works",
     "pages/index/design/design",
@@ -31,7 +32,7 @@
     "pages/works/myWorks/order/order",
     "pages/works/myWorks/incomeDetail/incomeDetail",
     "pages/works/search/search",
-    "pages/message/message"
+    "pages/message/system/system"
   ],
   "window": {
     "backgroundColor": "#f5f5f5",

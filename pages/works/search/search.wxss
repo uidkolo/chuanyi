@@ -165,6 +165,7 @@ page{
   align-items: center;
   color: #999999;
   font-size: 24rpx;
+  padding: 40rpx 0;
 }
 .none-img{
   width: 128rpx;

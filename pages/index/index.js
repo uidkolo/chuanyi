@@ -32,6 +32,7 @@ Page({
     if(options.scene==2){ // =>赠送红包入口
 
     }
+    this.getBanners() //获取banner
   },
   // swiper
   swiper(event){

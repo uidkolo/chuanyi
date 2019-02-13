@@ -21,6 +21,13 @@ Page({
     this.getKinds()
     this.getRecommends()
   },
+  // 热搜
+  tabHot(e){
+    this.setData({
+      keyword: e.currentTarget.dataset.key
+    })
+    this.search()
+  },
   // 搜索
   search() {
     if (!this.data.keyword) {

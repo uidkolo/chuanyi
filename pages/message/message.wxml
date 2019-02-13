@@ -1,2 +1,38 @@
-<!--pages/message/message.wxml-->
-<text>pages/message/message.wxml</text>
+<view class='box'>
+  <navigator class='item' url='/pages/message/system/system'>
+    <view class='item-icon item-icon-system'>
+      <image class='item-icon-img' src='/images/message/icon_at.png'></image>
+    </view>
+    <view class='item-right'>
+      <text>系统消息</text>
+      <image class='item-right-icon' src='/images/mine/more.png'></image>
+    </view>
+  </navigator>
+  <navigator class='item'>
+    <view class='item-icon item-icon-at'>
+      <image class='item-icon-img' src='/images/message/icon_at.png'></image>
+    </view>
+    <view class='item-right'>
+      <text>@我的评论</text>
+      <image class='item-right-icon' src='/images/mine/more.png'></image>
+    </view>
+  </navigator>
+  <navigator class='item'>
+    <view class='item-icon item-icon-all'>
+      <image class='item-icon-img' src='/images/message/icon_at.png'></image>
+    </view>
+    <view class='item-right'>
+      <text>所有评论</text>
+      <image class='item-right-icon' src='/images/mine/more.png'></image>
+    </view>
+  </navigator>
+  <navigator class='item'>
+    <view class='item-icon item-icon-attention'>
+      <image class='item-icon-img' src='/images/message/icon_at.png'></image>
+    </view>
+    <view class='item-right item-right-last'>
+      <text>关注的最新动态</text>
+      <image class='item-right-icon' src='/images/mine/more.png'></image>
+    </view>
+  </navigator>
+</view>

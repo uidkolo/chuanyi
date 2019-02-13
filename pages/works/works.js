@@ -23,7 +23,7 @@ Page({
     this.getDesigns()
   },
   // 滑动
-  bindanimationfinish(e){
+  bindanimationfinish(e) {
     this.getDesigns()
   },
   // 获取作品
@@ -56,12 +56,12 @@ Page({
         wx.navigateTo({
           url: '/pages/works/applyJoin/applyJoin',
         })
-      } else if(data.status ==1){ //审核中
+      } else if (data.status == 1) { //审核中
         wx.showToast({
           title: '审核中',
           image: '/images/tip.png'
         })
-      }else if(data.status==2){ // 通过=> 我的作品
+      } else if (data.status == 2) { // 通过=> 我的作品
         wx.navigateTo({
           url: '/pages/works/myWorks/myWorks',
         })
@@ -73,20 +73,44 @@ Page({
     })
   },
   // 关注或取关
-  followOrCancel(e){
-    let url = '/api/works_site/followOrCancel'
-    getApp().post(url, {
-      token: wx.getStorageSync('auth_token'),
-      designer_id: e.currentTarget.dataset.id
-    }).then(()=>{
-      wx.showToast({
-        title: this.data.designs[e.currentTarget.dataset.index].designer.is_follow == 0 ? '关注成功' : '取关成功',
+  followOrCancel(e) {
+    if (this.data.designs[e.currentTarget.dataset.index].designer.is_follow == 1) {
+      wx.showModal({
+        content: '确认取消关注？',
+        success: res => {
+          if (res.confirm) {
+            let url = '/api/works_site/followOrCancel'
+            getApp().post(url, {
+              token: wx.getStorageSync('auth_token'),
+              designer_id: e.currentTarget.dataset.id
+            }).then(() => {
+              wx.showToast({
+                title: this.data.designs[e.currentTarget.dataset.index].designer.is_follow == 0 ? '关注成功' : '取关成功',
+              })
+              this.data.designs[e.currentTarget.dataset.index].designer.is_follow = this.data.designs[e.currentTarget.dataset.index].designer.is_follow == 0 ? 1 : 0
+              this.setData({
+                designs: this.data.designs
+              })
+            })
+          }
+        }
       })
-      this.data.designs[e.currentTarget.dataset.index].designer.is_follow = this.data.designs[e.currentTarget.dataset.index].designer.is_follow==0?1:0
-      this.setData({
-        designs: this.data.designs
+    } else {
+      let url = '/api/works_site/followOrCancel'
+      getApp().post(url, {
+        token: wx.getStorageSync('auth_token'),
+        designer_id: e.currentTarget.dataset.id
+      }).then(() => {
+        wx.showToast({
+          title: this.data.designs[e.currentTarget.dataset.index].designer.is_follow == 0 ? '关注成功' : '取关成功',
+        })
+        this.data.designs[e.currentTarget.dataset.index].designer.is_follow = this.data.designs[e.currentTarget.dataset.index].designer.is_follow == 0 ? 1 : 0
+        this.setData({
+          designs: this.data.designs
+        })
       })
-    })
+    }
+
   },
   // 点赞或取消点赞
   likeOrNotWorks(e) {
@@ -100,9 +124,9 @@ Page({
         title: type == 0 ? '点赞成功' : '取消成功',
       })
       this.data.designs[e.currentTarget.dataset.index].liked = type == 0 ? 1 : 0
-      if(type==0){
+      if (type == 0) {
         this.data.designs[e.currentTarget.dataset.index].like_count++
-      }else{
+      } else {
         this.data.designs[e.currentTarget.dataset.index].like_count--
       }
       this.setData({
@@ -133,7 +157,7 @@ Page({
     })
   },
   // 获取评论列表
-  getComment(){
+  getComment() {
     if (this.data.commentPageNo <= this.data.commentTotalPage) {
       wx.showLoading({
         title: '正在加载',
@@ -184,20 +208,20 @@ Page({
     })
   },
   //input
-  input(e){
+  input(e) {
     this.setData({
       [e.currentTarget.dataset.key]: e.detail.value
     })
   },
   //评论
-  comment(){
-    if(!this.data.commentContent){
+  comment() {
+    if (!this.data.commentContent) {
       wx.showToast({
         title: '请输入内容',
         image: '/images/tip.png'
       })
-    }else{
-      let url ='/api/design_comment/comment'
+    } else {
+      let url = '/api/design_comment/comment'
       wx.showLoading({
         title: '正在评论',
       })
@@ -205,12 +229,12 @@ Page({
         token: wx.getStorageSync('auth_token'),
         design_id: this.data.currentDesigntId,
         content: this.data.commentContent
-      }).then(data=>{
+      }).then(data => {
         wx.hideLoading()
         this.data.comments.unshift(data.comment)
-        this.data.designs[this.data.currentDesignIndex].comment_count ++
-        this.data.currentCommentCount++
-        this.data.designs[this.data.currentDesignIndex].commented = 1
+        this.data.designs[this.data.currentDesignIndex].comment_count++
+          this.data.currentCommentCount++
+          this.data.designs[this.data.currentDesignIndex].commented = 1
         this.setData({
           currentCommentCount: this.data.currentCommentCount,
           designs: this.data.designs,
@@ -221,7 +245,7 @@ Page({
     }
   },
   // 开始回复
-  bindReply(e){
+  bindReply(e) {
     this.setData({
       applyFocus: true,
       commentType: 1,
@@ -232,7 +256,7 @@ Page({
     })
   },
   // 回复
-  reply(){
+  reply() {
     if (!this.data.replyContent) {
       wx.showToast({
         title: '请输入内容',
@@ -254,8 +278,8 @@ Page({
         console.log(this.data.currentCommentIndex)
         this.data.comments[this.data.currentCommentIndex].replys.unshift(data.reply)
         this.data.designs[this.data.currentDesignIndex].comment_count++
-        this.data.currentCommentCount++
-        this.data.designs[this.data.currentDesignIndex].commented = 1
+          this.data.currentCommentCount++
+          this.data.designs[this.data.currentDesignIndex].commented = 1
         this.setData({
           currentCommentCount: this.data.currentCommentCount,
           designs: this.data.designs,
@@ -266,7 +290,7 @@ Page({
     }
   },
   // 评论点赞或取消
-  likeComment(e){
+  likeComment(e) {
     let url = '/api/design_comment/likeOrNotComment'
     getApp().post(url, {
       token: wx.getStorageSync('auth_token'),

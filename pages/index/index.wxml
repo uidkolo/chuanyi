@@ -1,8 +1,8 @@
 <swiper class='swiper' indicator-dots indicator-color='#ebebeb' indicator-active-color='#f7c900' circular previous-margin='65rpx' next-margin='65rpx' bindchange='swiper'>
-  <swiper-item wx:for='{{list}}' wx:key='index'>
+  <swiper-item wx:for='{{banners}}' wx:key='index'>
     <navigator class='item {{index==currentIndex?"active":""}}'>
-      <image src='/images/test/01.jpg'></image>
-      <view class='title'>"为所爱，做心衣"</view>
+      <image src='{{item.image}}'></image>
+      <view class='title'>{{item.title}}</view>
     </navigator>
   </swiper-item>
 </swiper>

@@ -6,6 +6,8 @@ Page({
    * 页面的初始数据
    */
   data: {
+    fabricText:'选择面料',
+    sizeText: '选择尺寸',
     number: 1,
     cartNum: 0,
     currentContentIndex: 0
@@ -84,13 +86,15 @@ Page({
   pickerFabric(e) {
     this.setData({
       fabricId: e.currentTarget.dataset.id,
-      price: e.currentTarget.dataset.price
+      price: e.currentTarget.dataset.price,
+      fabricText: e.currentTarget.dataset.name
     })
   },
   // 选择规格
   pickerSize(e) {
     this.setData({
-      size: e.currentTarget.dataset.size
+      size: e.currentTarget.dataset.size,
+      sizeText: e.currentTarget.dataset.size
     })
   },
   // 数量减

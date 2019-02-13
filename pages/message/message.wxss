@@ -1,1 +1,56 @@
-/* pages/message/message.wxss */
+page{
+  background: #F5F5F5;
+}
+.box{
+  padding-top: 20rpx;
+}
+.item{
+  display: flex;
+  align-items: center;
+  height: 100rpx;
+  background: #fff;
+}
+.item-icon{
+  width: 60rpx;
+  height: 60rpx;
+  border-radius: 60rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin: 0 30rpx;
+}
+.item-icon-system{
+  background: #F7C900;
+}
+.item-icon-at{
+  background: #43BF8B;
+}
+.item-icon-all{
+  background: #7791D4;
+}
+.item-icon-attention{
+ background: #FF8400; 
+}
+.item-icon-img{
+  width: 32rpx;
+  height: 32rpx;
+}
+.item-right{
+  height: 100rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-grow: 1;
+  padding-right: 30rpx;
+  font-size: 30rpx;
+  color: #333333;
+  border-bottom: 1rpx solid rgba(0,0,0,0.1);
+}
+.item-right-last{
+  border-bottom: none;
+}
+.item-right-icon{
+  width: 14rpx;
+  height: 24rpx;
+}

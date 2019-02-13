@@ -151,13 +151,13 @@
             <text>￥</text>{{price}}
           </block>
         </view>
-        <view>选择面料、尺寸</view>
+        <view>{{fabricText}}、{{sizeText}}</view>
       </view>
     </view>
     <view class='picker-item'>
       <view class='label'>面料</view>
       <view class='content'>
-        <view class='item {{item.id==fabricId?"active":""}}' wx:for='{{info.fabrics}}' wx:key='index' bindtap='pickerFabric' data-id='{{item.id}}' data-price='{{item.price}}'>{{item.name}}</view>
+        <view class='item {{item.id==fabricId?"active":""}}' wx:for='{{info.fabrics}}' wx:key='index' bindtap='pickerFabric' data-id='{{item.id}}' data-name='{{item.name}}' data-price='{{item.price}}'>{{item.name}}</view>
       </view>
     </view>
     <view class='picker-item'>
