@@ -64,17 +64,13 @@ Page({
             })
           },
           fail: () => { //支付失败=>跳转至我的订单
-            wx.showLoading({
-              title: '正在取消',
-            })
             let url = '/api/order/wxPayFailCallback'
             getApp().post(url, {
               token: wx.getStorageSync('auth_token'),
               order_id: data.order_id
             }).then(() => {
-              wx.hideLoading()
-              wx.redirectTo({
-                url: '/pages/mine/order/order?index=0',
+              wx.showToast({
+                title: '支付失败',
               })
             })
           }
@@ -219,6 +215,10 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function() {
-
+    return {
+      title: wx.getStorageSync('shareInfo').word,
+      path: '/pages/index/index?shop=' + wx.getStorageSync('shop'),
+      imageUrl: wx.getStorageSync('shareInfo').cover
+    }
   }
 })

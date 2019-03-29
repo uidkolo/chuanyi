@@ -1,54 +1,77 @@
-<swiper class='works' vertical bindanimationfinish='bindanimationfinish'>
-  <swiper-item class='works-item' wx:for='{{designs}}' wx:key='{{index}}'>
-    <swiper class='works-img' indicator-dots indicator-active-color='#F7C900'>
-      <swiper-item class='works-img-item'>
-        <image class='works-img-item-img' src='{{item.front_thumb}}'></image>
-        <image class='works-img-shadow' src='/images/design/shadow.png'></image>
-      </swiper-item>
-      <swiper-item class='works-img-item'>
-        <image class='works-img-item-img' src='{{item.back_thumb}}'></image>
-        <image class='works-img-shadow' src='/images/design/shadow.png'></image>
-      </swiper-item>
-    </swiper>
-    <view class='works-bottom'>
-      <!-- 侧边按钮组 -->
-      <view class='works-sidebar'>
-        <navigator class='works-sidebar-item' url='/pages/works/search/search'>
-          <image class='works-sidebar-item-icon' src='/images/works/search.png'></image>
-        </navigator>
-        <view class='works-sidebar-item {{item.liked==1?"active":""}}'>
-          <image class='works-sidebar-item-icon' src='/images/works/like.png' wx:if='{{item.liked==0}}' bindtap='likeOrNotWorks' data-id='{{item.id}}' data-index='{{index}}'></image>
-          <image class='works-sidebar-item-icon' src='/images/works/like_active.png' wx:else bindtap='likeOrNotWorks' data-id='{{item.id}}' data-index='{{index}}'></image>
-          <text>{{item.like_count}}</text>
-        </view>
-        <view class='works-sidebar-item {{item.commented==1?"active":""}}' bindtap='showComment' data-id='{{item.id}}' data-index='{{index}}' data-count='{{item.comment_count}}'>
-          <image class='works-sidebar-item-icon' src='/images/works/discuss.png' wx:if='{{item.commented==0}}'></image>
-          <image class='works-sidebar-item-icon' src='/images/works/discuss_active.png' wx:else></image>
-          <text>{{item.comment_count}}</text>
-        </view>
-        <view class='works-sidebar-item {{item.collected==1?"active":""}}'>
-          <image class='works-sidebar-item-icon' src='/images/works/save.png' wx:if='{{item.collected==0}}' bindtap='addOrCancelFavroite' data-id='{{item.id}}' data-index='{{index}}'></image>
-          <image class='works-sidebar-item-icon' src='/images/works/save_active.png' wx:else bindtap='addOrCancelFavroite' data-id='{{item.id}}' data-index='{{index}}'></image>
-          <text>{{item.collected}}</text>
-        </view>
-        <view class='works-sidebar-item works-sidebar-designer' bindtap='toMyWork'>
-          <image class='works-sidebar-item-designer-icon' src='/images/works/designer.png'></image>
-          <image class='works-sidebar-item-designer-icon-link' src='/images/works/link.png'></image>
-        </view>
+<view class='mask' wx:if='{{mask}}'>
+  <view class='mask-tip'>
+    <view class='cross'>
+      <image class='cross-icon' src='/images/works/cross.png'></image>
+      <image class='cross-hand' src='/images/works/hand.png'></image>
+      <view class='cross-content'>
+        <text>左右划</text>
+        <text>切换正反面</text>
       </view>
-
-      <view class='works-info'>
-        <view class='works-info-name'># {{item.clothes_name}} #</view>
-        <view class='works-info-info'>
-          <navigator url='/pages/works/userIndex/userIndex?id={{item.designer.designer_id}}' class='works-info-info-user'>
-            <image class='works-info-head' src='/images/test/01.jpg'></image>
-            <text class='works-info-name'>{{item.designer.nick_name}}</text>
+    </view>
+    <view class='column'>
+      <image class='column-icon' src='/images/works/column.png'></image>
+      <image class='column-hand' src='/images/works/hand.png'></image>
+      <view class='column-content'>
+        <text>上下划</text>
+        <text>查看其他作品</text>
+      </view>
+    </view>
+    <view class='mask-close' bindtap='closeMask'>知道了</view>
+  </view>
+</view>
+<swiper class='works' vertical bindanimationfinish='bindanimationfinish' duration='200'>
+  <swiper-item wx:for='{{designs}}' wx:key='{{index}}'>
+    <view class='works-item'>
+      <swiper class='works-img'>
+        <swiper-item class='works-img-item'>
+          <image class='works-img-item-img' src='{{item.front_thumb}}'></image>
+          <image class='works-img-shadow' src='/images/design/shadow.png'></image>
+        </swiper-item>
+        <swiper-item class='works-img-item'>
+          <image class='works-img-item-img' src='{{item.back_thumb}}'></image>
+          <image class='works-img-shadow' src='/images/design/shadow.png'></image>
+        </swiper-item>
+      </swiper>
+      <view class='works-bottom'>
+        <!-- 侧边按钮组 -->
+        <view class='works-sidebar'>
+          <navigator class='works-sidebar-item' url='/pages/works/search/search'>
+            <image class='works-sidebar-item-icon' src='/images/works/search.png'></image>
           </navigator>
-          <text class='works-info-btn' wx:if='{{item.designer.is_self==0&&item.designer.is_follow==0}}' bindtap='followOrCancel' data-index='{{index}}' data-id='{{item.designer.designer_id}}'>+ 关注</text>
-          <text class='works-info-btn-active' wx:if='{{item.designer.is_self==0&&item.designer.is_follow==1}}' bindtap='followOrCancel' data-index='{{index}}' data-id='{{item.designer.designer_id}}'>已关注</text>
+          <view class='works-sidebar-item {{item.liked==1?"active":""}}'>
+            <image class='works-sidebar-item-icon' src='/images/works/like.png' wx:if='{{item.liked==0}}' bindtap='likeOrNotWorks' data-id='{{item.id}}' data-index='{{index}}'></image>
+            <image class='works-sidebar-item-icon' src='/images/works/like_active.png' wx:else bindtap='likeOrNotWorks' data-id='{{item.id}}' data-index='{{index}}'></image>
+            <text>{{item.like_count}}</text>
+          </view>
+          <view class='works-sidebar-item {{item.commented==1?"active":""}}' bindtap='showComment' data-id='{{item.id}}' data-index='{{index}}' data-count='{{item.comment_count}}'>
+            <image class='works-sidebar-item-icon' src='/images/works/discuss.png' wx:if='{{item.commented==0}}'></image>
+            <image class='works-sidebar-item-icon' src='/images/works/discuss_active.png' wx:else></image>
+            <text>{{item.comment_count}}</text>
+          </view>
+          <view class='works-sidebar-item {{item.collected==1?"active":""}}'>
+            <image class='works-sidebar-item-icon' src='/images/works/save.png' wx:if='{{item.collected==0}}' bindtap='addOrCancelFavroite' data-id='{{item.id}}' data-index='{{index}}'></image>
+            <image class='works-sidebar-item-icon' src='/images/works/save_active.png' wx:else bindtap='addOrCancelFavroite' data-id='{{item.id}}' data-index='{{index}}'></image>
+            <text>{{item.collected}}</text>
+          </view>
+          <view class='works-sidebar-item works-sidebar-designer' bindtap='toMyWork'>
+            <image class='works-sidebar-item-designer-icon' src='/images/works/designer.png'></image>
+            <image class='works-sidebar-item-designer-icon-link' src='/images/works/link.png'></image>
+          </view>
         </view>
+
+        <view class='works-info'>
+          <view class='works-info-name'># {{item.clothes_name}} #</view>
+          <view class='works-info-info'>
+            <navigator url='/pages/works/userIndex/userIndex?id={{item.designer.designer_id}}' class='works-info-info-user'>
+              <image class='works-info-head' src='{{item.designer.avatar}}'></image>
+              <text class='works-info-name'>{{item.designer.nick_name}}</text>
+            </navigator>
+            <text class='works-info-btn' wx:if='{{item.designer.is_self==0&&item.designer.is_follow==0}}' bindtap='followOrCancel' data-index='{{index}}' data-id='{{item.designer.designer_id}}'>+ 关注</text>
+            <text class='works-info-btn-active' wx:if='{{item.designer.is_self==0&&item.designer.is_follow==1}}' bindtap='followOrCancel' data-index='{{index}}' data-id='{{item.designer.designer_id}}'>已关注</text>
+          </view>
+        </view>
+        <navigator class='works-btn' url='/pages/index/detail/detail?id={{item.id}}'>定制</navigator>
       </view>
-      <navigator class='works-btn' url='/pages/index/detail/detail?id={{item.id}}'>定制</navigator>
     </view>
   </swiper-item>
 </swiper>

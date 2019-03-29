@@ -1,0 +1,33 @@
+<view class='container'>
+  <image class='logo' src='/images/index/logo.png'></image>
+  <image class='red-img' wx:if='{{!showRed}}' src='/images/pay/red.png'></image>
+  <view class='red' wx:if='{{showRed}}'>
+    <view class='red-content'>
+      <view class='red-top'>
+        <view>恭喜您获得</view>
+        <view class='red-num'>{{money}}个串币</view>
+      </view>
+      <view class='red-center'>
+        <view>已放入你的账户中</view>
+        <view>请在{{time}}前使用</view>
+      </view>
+      <navigator class='red-btn' open-type='switchTab' url='/pages/index/index'>立即使用</navigator>
+    </view>
+    <image class='red-bg' src='/images/index/red_bg.png'></image>
+  </view>
+
+  <view class='list recommend'>
+    <view class='module-title'>
+      <text class='module-title-line'></text>
+      <text>为您推荐</text>
+      <text class='module-title-line'></text>
+    </view>
+    <view class='list-content'>
+      <navigator class='list-item' wx:for='{{recommends}}' wx:key='{{index}}' url='/pages/index/detail/detail?id={{item.design_id}}'>
+        <view class='list-item-img-box'>
+          <image class='list-item-img' src='{{item.front_thumb}}'></image>
+        </view>
+      </navigator>
+    </view>
+  </view>
+</view>

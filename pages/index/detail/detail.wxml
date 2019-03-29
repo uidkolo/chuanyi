@@ -2,9 +2,11 @@
 <swiper class='swiper' indicator-dots indicator-active-color='#f8db16'>
   <swiper-item class='swiper-item'>
     <image class='swiper-img' src='{{info.design.front_thumb}}'></image>
+    <image class='works-img-shadow' src='/images/design/shadow.png'></image>
   </swiper-item>
   <swiper-item class='swiper-item'>
     <image class='swiper-img' src='{{info.design.back_thumb}}'></image>
+    <image class='works-img-shadow' src='/images/design/shadow.png'></image>
   </swiper-item>
 </swiper>
 
@@ -106,7 +108,7 @@
         <text class='content-tip-dot'>.</text>
         <text>关于退换货</text>
       </view>
-      <view class='content-tip-content'>在商品完好不影响二次销售的情况下，支持签收之日起的7天内无理由退货，退货运费由买家承担。</view>
+      <view class='content-tip-content'>定制服装非衣服质量问题不支持退换货，敬请谅解。</view>
     </view>
   </view>
 </view>

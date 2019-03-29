@@ -6,7 +6,8 @@ Page({
    */
   data: {
     addMask: false,
-    edit: false
+    edit: false,
+    mobileFocus: false
   },
 
   /**
@@ -122,6 +123,10 @@ Page({
           })
           // 重新加载地址列表
           this.getAdds()
+        }).catch(()=>{
+          this.setData({
+            mobileFocus: true
+          })
         })
       } else { //更新
         let url = '/api/Address/updateAddress'
@@ -194,6 +199,31 @@ Page({
       })
     }
   },
+  // 导入微信地址
+  addWechat(){
+    wx.chooseAddress({
+      success: res=>{
+        console.log(res)
+        let url = '/api/Address/addAddress'
+        getApp().post(url, {
+          token: wx.getStorageSync('auth_token'),
+          recipients: res.userName,
+          mobile: res.telNumber,
+          province: res.provinceName,
+          city: res.cityName,
+          area: res.countyName,
+          detail: res.detailInfo
+        }).then(() => {
+          // 重新加载地址列表
+          this.getAdds()
+        }).catch(() => {
+          this.setData({
+            mobileFocus: true
+          })
+        })
+      }
+    })
+  },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
@@ -240,6 +270,10 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function() {
-
+    return {
+      title: wx.getStorageSync('shareInfo').word,
+      path: '/pages/index/index?shop=' + wx.getStorageSync('shop'),
+      imageUrl: wx.getStorageSync('shareInfo').cover
+    }
   }
 })

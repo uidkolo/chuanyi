@@ -139,7 +139,8 @@ Page({
         token: wx.getStorageSync('auth_token'),
         address_id: this.data.address.id,
         goods: JSON.stringify(this.data.goods),
-        red_id: this.data.moneyInfo.red_id
+        red_id: this.data.moneyInfo.red_id,
+        shop: wx.getStorageSync('shop')
       }).then(data=>{
         if (data.need_wx_pay=='yes'){ //需要微信支付=> 调用微信支付
           wx.requestPayment({
@@ -219,6 +220,10 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function() {
-
+    return {
+      title: wx.getStorageSync('shareInfo').word,
+      path: '/pages/index/index?shop=' + wx.getStorageSync('shop'),
+      imageUrl: wx.getStorageSync('shareInfo').cover
+    }
   }
 })

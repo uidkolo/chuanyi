@@ -29,7 +29,7 @@
           <image src='/images/mine/icon_share.png'></image>
           <text>来自{{item.from_user}}分享</text>
         </view>
-        <button class='btn' open-type='share' data-id='{{item.id}}' wx:if='{{tabIndex==0}}'>转赠</button>
+        <button class='btn' open-type='share' data-id='{{item.id}}' data-money='{{item.money}}' data-time='{{item.overdue_time}}' wx:if='{{tabIndex==0}}'>转赠</button>
       </view>
     </view>
   </view>

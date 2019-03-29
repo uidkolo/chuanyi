@@ -20,6 +20,9 @@
 
 <view class='bottom'>
   <image class='title' src='/images/pay/red_title.png'></image>
-  <image class='red' src='/images/pay/red.png'></image>
-  <button class='btn' open-type='share'>立即分享给好友</button>
+  <view class='red'>
+    <text>邀请4个好友一起瓜分</text>
+    <image class='red-img' src='/images/pay/red.png'></image>
+  </view>
+  <button class='btn' open-type='share'>立即分享到微信群</button>
 </view>

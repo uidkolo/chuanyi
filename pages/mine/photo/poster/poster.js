@@ -58,7 +58,7 @@ Page({
             canvas.drawImage(res.tempFilePath, 71.5 * ratio, 57.5 * ratio, 202 * ratio, 260 * ratio)
             canvas.setFontSize(12 * ratio)
             canvas.setFillStyle('#E5BF00')
-            canvas.fillText('/  串衣：让服装设计更简单  做自己的服装设计师  /', 35 * ratio, 22 * ratio)
+            canvas.fillText('/ 串衣：设计专属，为爱定制 /', 90 * ratio, 22 * ratio)
             wx.downloadFile({
               url: wx.getStorageSync('userInfo').avatar,
               success: res => {

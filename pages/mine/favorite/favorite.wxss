@@ -44,7 +44,7 @@
   margin-right: 20rpx;
 }
 .list .item .img image{
-  width: 250rpx;
+  width: 195rpx;
   height: 250rpx;
 }
 .list .item .right{

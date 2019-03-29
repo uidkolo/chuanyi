@@ -3,10 +3,11 @@
   <view class='item-content'>
     <input class='item-input' placeholder='真实姓名' placeholder-class='placeholder' bindinput='input' data-key='name'></input>
     <input type='number' class='item-input' placeholder='身份证号码' placeholder-class='placeholder' bindinput='input' data-key='identity_number'></input>
-    <input type='number' class='item-input' placeholder='手机号码' placeholder-class='placeholder' bindinput='input' data-key='mobile'></input>
-    <view class='item-code'>
+    <input type='number' class='item-input' placeholder='手机号码' placeholder-class='placeholder' bindinput='input' data-key='mobile' value='{{mobile}}' disabled='{{haveMobile}}'></input>
+    <view class='item-code' wx:if='{{!haveMobile}}'>
       <input type='number' class='item-code-input' placeholder='验证码' placeholder-class='placeholder' bindinput='input' data-key='code'></input>
-      <view class='item-code-btn'>获取验证码</view>
+      <view class='item-code-btn' bindtap='getCode' wx:if='{{!codeStatus}}'>获取验证码</view>
+      <view class='item-code-btn' wx:else>{{timer}}s</view>
     </view>
   </view>
 </view>
@@ -58,7 +59,7 @@
 <view class='tip'>
   <icon class='tip-icon' type='success' color='#E5E5E5' size='18'></icon>
   <text>阅读并同意</text>
-  <text class='tip-color'>《串衣原创协议》</text>
+  <navigator class='tip-color' url='/pages/works/applyJoin/protocol/protocol'>《串衣原创协议》</navigator>
 </view>
 <view class='item'>
   <view class='btn' bindtap='apply'>提交认证</view>

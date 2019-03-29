@@ -42,7 +42,7 @@
       <navigator class='confirm' wx:if='{{item.status==0}}' url='/pages/mine/order/detail/detail?id={{item.id}}&scene=1'>立即付款</navigator>
       <button open-type='contact' class='cancel' wx:if='{{item.status==1}}'>联系客服</button>
       <text class='confirm' wx:if='{{item.status==1}}' bindtap='remindSend' data-id='{{item.id}}'>提醒发货</text>
-      <navigator class='cancel' wx:if='{{item.status==2|| item.status==5}}' url='/pages/mine/order/detail/detail?id={{item.id}}'>申请售后</navigator>
+      <navigator class='cancel' wx:if='{{item.status==2}}' url='/pages/mine/order/detail/detail?id={{item.id}}'>申请售后</navigator>
       <navigator class='cancel' wx:if='{{item.status==2|| item.status==5}}' url='/pages/mine/order/express/express?id={{item.id}}'>查看物流</navigator>
       <text class='confirm' wx:if='{{item.status==2}}' bindtap='comfireTake' data-id='{{item.id}}'>确认收货</text>
       <navigator class='confirm' wx:if='{{(item.status==5||item.status==6)&&item.is_comment==0}}' url='/pages/mine/order/discuss/discuss?id={{item.id}}&scene=1'>评价</navigator>

@@ -23,6 +23,7 @@
 </view>
 
 <view class='btn' bindtap='add'>添加新地址</view>
+<view class='btn-wechat' bindtap='addWechat'>导入微信地址</view>
 
 <view class='mask' wx:if='{{addMask}}'>
   <view class='add-from'>
@@ -41,7 +42,7 @@
         <text add-label>*</text>手机
       </view>
       <view class='add-content'>
-        <input value='{{mobile}}' cursor-spacing='20' class='add-input' placeholder='请输入手机' placeholder-class='placeholder' bindinput='input' data-key='mobile'></input>
+        <input value='{{mobile}}' type='number' focus='{{mobileFocus}}' cursor-spacing='20' class='add-input' placeholder='请输入手机' placeholder-class='placeholder' bindinput='input' data-key='mobile'></input>
       </view>
     </view>
 

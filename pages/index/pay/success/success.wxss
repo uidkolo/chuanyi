@@ -53,6 +53,24 @@ page{
   height: 58rpx;
 }
 .bottom .red{
+  width: 602rpx;
+  height: 392rpx;
+  font-size: 24rpx;
+  text-align: center;
+  position: relative;
+}
+.bottom .red text{
+  position: absolute;
+  z-index: 2;
+  width: 602rpx;
+  bottom: 100rpx;
+  left: 0;
+  color: rgba(255,255,255,0.5);
+}
+.bottom .red-img{
+  position: absolute;
+  top: 0;
+  left: 0;
   height: 392rpx;
   width: 602rpx;
   margin-top: 30rpx;

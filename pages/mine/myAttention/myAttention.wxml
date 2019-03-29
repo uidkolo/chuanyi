@@ -1,0 +1,16 @@
+<view class='list'>
+  <navigator class='item' wx:for='{{list}}' wx:key='{{index}}' url='/pages/works/userIndex/userIndex?id={{item.designer_id}}'>
+    <image class='avatar' src='{{item.avatar}}'></image>
+    <view class='info'>
+      <view class='name'>{{item.nick_name}}</view>
+      <view class='count'>作品 {{item.design_count}}</view>
+    </view>
+    <view class='status'>
+      <image class='status-icon' src='/images/mine/icon_yes.png'></image>
+      <text>已关注</text>
+    </view>
+  </navigator>
+</view>
+<view class='end' wx:if='{{end}}'>
+  <text>-- END --</text>
+</view>

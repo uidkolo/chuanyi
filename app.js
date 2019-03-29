@@ -1,24 +1,33 @@
 //app.js
 App({
-  onLaunch: function() {
-    this.init()
+  onLaunch: function(options) {
+    if (options.referrerInfo.extraData != undefined) {
+      wx.setStorage({
+        key: 'shop',
+        data: options.referrerInfo.extraData.shop
+      })
+    }
   },
   globalData: {
-
+    designId: null
   },
   // 初始化
-  init() {
+  init(callback) {
     this.login().then(token => {
       this.getUserInfo(token).then(userInfo => {
-        if (userInfo == undefined) {
+        if (userInfo == undefined) { //新用户
           wx.redirectTo({
             url: '/pages/login/login',
           })
-        } else {
+        } else { //老用户
           wx.setStorage({
             key: 'userInfo',
             data: userInfo
           })
+        }
+        this.getShareInfo()
+        if(callback){
+          callback()
         }
       })
     })
@@ -72,6 +81,15 @@ App({
       })
     })
   },
+  // 获取分享配置信息
+  getShareInfo(){
+    let url = '/api/message/shareData'
+    this.post(url,{
+      token: wx.getStorageSync('auth_token')
+    }).then(data=>{
+      wx.setStorageSync('shareInfo', data)
+    })
+  },
   post(url, data) {
     return new Promise((resolve, reject) => {
       wx.request({
@@ -89,10 +107,30 @@ App({
               resolve()
             }
           } else {
-            wx.showToast({
-              title: res.data.message,
-              image: '/images/tip.png'
-            })
+            if (res.data.message.indexOf('重新登录') != -1) {
+              wx.showModal({
+                title: '错误提示',
+                content: res.data.message,
+                success: res => {
+                  if (res.confirm) {
+                    wx.redirectTo({
+                      url: '/pages/login/login',
+                    })
+                  }
+                }
+              })
+            } else {
+              wx.showModal({
+                title: '错误提示',
+                content: res.data.message,
+                success: res => {
+                  if (res.confirm) {
+                    reject()
+                  }
+                }
+              })
+            }
+            wx.hideLoading()
           }
         }
       })
@@ -111,10 +149,30 @@ App({
               resolve()
             }
           } else {
-            wx.showToast({
-              title: res.data.msg,
-              image: '/images/tip.png'
-            })
+            if (res.data.message.indexOf('重新登录') != -1) {
+              wx.showModal({
+                title: '错误提示',
+                content: res.data.message,
+                success: res => {
+                  if (res.confirm) {
+                    wx.redirectTo({
+                      url: '/pages/login/login',
+                    })
+                  }
+                }
+              })
+            } else {
+              wx.showModal({
+                title: '错误提示',
+                content: res.data.message,
+                success: res => {
+                  if (res.confirm) {
+                    reject()
+                  }
+                }
+              })
+            }
+            wx.hideLoading()
           }
         }
       })

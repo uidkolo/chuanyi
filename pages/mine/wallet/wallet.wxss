@@ -78,7 +78,7 @@ page{
 }
 .list .item .right{
   flex-grow: 1;
-  padding: 20rpx;
+  padding: 20rpx 20rpx 0;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -105,11 +105,12 @@ page{
 .list .item .right .top .date{
   color: #999;
   font-size: 24rpx;
-  margin-top: 20rpx;
+  margin-top: 10rpx;
 }
 .list .item .right .bottom{
+  height: 60rpx;
   border-top: 1rpx dotted #dcdcdc;
-  padding-top: 10rpx;
+  margin-top: 10rpx;
   display: flex;
   align-items: center;
   justify-content: space-between;

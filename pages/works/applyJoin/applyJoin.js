@@ -7,14 +7,21 @@ Page({
    * 页面的初始数据
    */
   data: {
-
+    timer: 60,
+    haveMobile: false
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
-
+      let mobile = wx.getStorageSync('userInfo').mobile
+      if(mobile){
+        this.setData({
+          haveMobile: true,
+          mobile: mobile
+        })
+      }
   },
   // input
   input(e) {
@@ -80,20 +87,74 @@ Page({
         title: '正在提交',
       })
       let url = '/api/Designer/apply'
+      let mobile = wx.getStorageSync('userInfo').mobile
+      if (!mobile) {
+        var data = {
+          token: wx.getStorageSync('auth_token'),
+          name: this.data.name,
+          identity_number: this.data.identity_number,
+          identity_front: this.data.identity_front,
+          identity_back: this.data.identity_back,
+          original_pic: this.data.original_pic,
+          original_design: this.data.original_design,
+          mobile: this.data.mobile,
+          code: this.data.code
+        }
+      }else{
+        var data = {
+          token: wx.getStorageSync('auth_token'),
+          name: this.data.name,
+          identity_number: this.data.identity_number,
+          identity_front: this.data.identity_front,
+          identity_back: this.data.identity_back,
+          original_pic: this.data.original_pic,
+          original_design: this.data.original_design
+        }
+      }
+      getApp().post(url, data).then(data=>{
+        wx.hideLoading()
+        wx.showModal({
+          content: '提交成功！等待平台审核',
+        })
+      })
+    }
+  },
+  // 获取验证码
+  getCode() {
+    if (!this.data.mobile) {
+      wx.showToast({
+        title: '请输入手机号',
+        image: '/images/tip.png'
+      })
+    } else if (this.data.mobile.length != 11) {
+      wx.showToast({
+        title: '手机格式错误',
+        image: '/images/tip.png'
+      })
+    } else {
+      let url = '/api/sms/sendSms'
       getApp().post(url, {
         token: wx.getStorageSync('auth_token'),
-        name: this.data.name,
-        identity_number: this.data.identity_number,
-        identity_front: this.data.identity_front,
-        identity_back: this.data.identity_back,
-        original_pic: this.data.original_pic,
-        original_design: this.data.original_design,
         mobile: this.data.mobile
-      }).then(data=>{
-        wx.hideLoading()
-        wx.showToast({
-          title: '申请成功！',
+      }).then(() => {
+        this.setData({
+          codeStatus: true
         })
+        setTimeout(this.timer, 1000)
+      })
+    }
+  },
+  // 倒计时
+  timer() {
+    if (this.data.timer > 1) {
+      this.setData({
+        timer: this.data.timer - 1
+      })
+      setTimeout(this.timer, 1000)
+    } else {
+      this.setData({
+        codeStatus: false,
+        timer: 60
       })
     }
   },
@@ -143,6 +204,10 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function() {
-
+    return {
+      title: wx.getStorageSync('shareInfo').word,
+      path: '/pages/index/index?shop=' + wx.getStorageSync('shop'),
+      imageUrl: wx.getStorageSync('shareInfo').cover
+    }
   }
 })

@@ -1,8 +1,10 @@
 <view class='item' wx:for='{{messages}}' wx:key='{{index}}'>
   <view class='item-title'>{{item.title}}</view>
-  <image class='item-img' src='{{item.cover}}'></image>
+  <navigator url='/pages/message/system/detail/detail?id={{item.id}}'>
+    <image class='item-img' src='{{item.cover}}'></image>
+  </navigator>
   <view class='item-info'>{{item.info}}</view>
-  <navigator class='item-nav' url=''>
+  <navigator class='item-nav' url='/pages/message/system/detail/detail?id={{item.id}}'>
     <text>阅读全文</text>
     <image class='item-nav-icon' src='/images/mine/more.png'></image>
   </navigator>

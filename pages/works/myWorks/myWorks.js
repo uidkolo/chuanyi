@@ -238,6 +238,16 @@ Page({
       })
     })
   },
+  // 跳转作品馆
+  toWorks(e){
+    if(e.currentTarget.dataset.sell==1){
+      getApp().globalData.designId = e.currentTarget.dataset.id
+      getApp().globalData.isFromDiscuss = false
+      wx.switchTab({
+        url: '/pages/works/works',
+      })
+    }
+  },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
@@ -286,6 +296,10 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function() {
-
+    return {
+      title: wx.getStorageSync('shareInfo').word,
+      path: '/pages/index/index?shop=' + wx.getStorageSync('shop'),
+      imageUrl: wx.getStorageSync('shareInfo').cover
+    }
   }
 })

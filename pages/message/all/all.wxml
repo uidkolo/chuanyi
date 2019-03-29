@@ -1,0 +1,43 @@
+<view class='tab'>
+  <text class='tab-item {{tabIndex==0?"active":""}}' bindtap='tab' data-index='0'>作品馆</text>
+  <text class='tab-item {{tabIndex==1?"active":""}}' bindtap='tab' data-index='1'>买家秀</text>
+</view>
+<view class='list'>
+  <view class='item' wx:for='{{messages}}' wx:key='{{index}}' bindtap='navigator' data-id='{{item.design.id}}'>
+    <view class='info'>
+      <image class='info-avatar' src='{{myInfo.avatar}}'></image>
+      <view class='info-right'>
+        <view class='info-name'>{{myInfo.nick_name}}</view>
+        <view class='info-date'>{{item.create_time}}</view>
+      </view>
+    </view>
+    <view class='my-comment'>
+      {{item.to_comment.length==0?"":"回复"}}
+      <text class='my-comment-name' wx:if='{{item.to_comment.length!=0}}'>@{{item.my_comment.to_user.nick_name}}:</text>{{item.my_comment.content}}
+    </view>
+    <view class='item-bottom'>
+      <view class='to-comment' wx:if='{{item.to_comment.length!=0}}'>
+        <text class='to-comment-name'>@{{item.to_comment.user_info.nick_name}}：</text>{{item.to_comment.content}}
+      </view>
+      <view class='from' wx:if='{{tabIndex==0}}'>
+        <view class='from-image-box'>
+          <image class='from-image' src='{{item.design.front_thumb}}'></image>
+        </view>
+        <view class='from-right'>
+          <view class='from-name'>{{item.design.designer_name}}</view>
+          <view class='from-content'>{{item.design.clothes_name}}</view>
+        </view>
+      </view>
+      <view class='show' wx:if='{{tabIndex==1}}'>
+        <view class='show-content'>{{item.show_info.content}}</view>
+        <view class='show-imgs'>
+          <image class='show-imgs-item' wx:for='{{item.show_info.imgs}}' wx:for-item='item2' wx:for-index='index2' wx:key='{{index2}}' src='{{item2}}'></image>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class='end' wx:if='{{end}}'>
+    <text>-- END --</text>
+  </view>
+</view>

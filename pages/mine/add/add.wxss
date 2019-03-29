@@ -75,6 +75,17 @@ page{
   color: #1a1a1a;
   font-size: 30rpx;
 }
+.btn-wechat{
+  border-radius: 10rpx;
+  height: 92rpx;
+  margin: 40rpx 30rpx 0;
+  text-align: center;
+  line-height: 92rpx;
+  color: #1a1a1a;
+  font-size: 30rpx;
+  background: none;
+  border: 1px solid #F7C900;
+}
 
 .mask{
   display: flex;

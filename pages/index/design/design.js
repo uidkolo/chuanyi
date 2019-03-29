@@ -23,18 +23,10 @@ Page({
     pageNo: 1, //当前页码
     pageSize: 10, //每页条数
     maxPage: 1, //最大页数
-    designFodders: {
-      front_thumb: {},
-      back_thumb: {}
-    }, //画布上的素材
-    startX: 0, //触摸开始点x
-    startY: 0, //触摸开始点y
-    moveX: 0, //触摸移动距离x
-    moveY: 0, //触摸移动距离y
-    fodderX: 5, //素材初始x
-    fodderY: 20, //素材初始y
-    defaultW: 0, //素材宽度
-    defaultH: 0, //素材高度
+    designFodders: { //画布上的素材
+      front_thumb: [],
+      back_thumb: []
+    },
     designCanvasW: 0, //最终设计canvas宽度
     designCanvasH: 0, //最终设计canvas高度
     viewCanvasW: 0, //最终预览图canvas宽度
@@ -45,21 +37,10 @@ Page({
     fontId: '',
     direction: 1,
     word: '',
-    sliderValue: {
-      front_thumb: {
-        sizeValue: 50,
-        rotateValue: 0
-      },
-      back_thumb: {
-        sizeValue: 50,
-        rotateValue: 0
-      }
-    },
-    sizeValue: 50, //大小slider的值
-    rotateValue: 0, //角度slider的值
     disabled: true,
     designProgress: 0, //设计进度
-    uploadMask: false
+    uploadMask: false,
+    currentFodderIndex: 0, //当前操作的素材
   },
 
   /**
@@ -68,8 +49,10 @@ Page({
   onLoad: function(options) {
     this.init()
   },
+
   // 页面初始化
   init() {
+    this.getSystemInfo()
     // 默认加载男装款式列表
     this.clothesList(1).then(clothes => {
       this.setData({
@@ -80,6 +63,16 @@ Page({
     })
     // 默认加载第一页素材
     this.getFodderDefault()
+  },
+  // 获取屏幕比例
+  getSystemInfo() {
+    wx.getSystemInfo({
+      success: info => {
+        this.setData({
+          ratio: info.windowWidth / 375
+        })
+      }
+    })
   },
   // 切换服装类型
   tabType(e) {
@@ -161,11 +154,8 @@ Page({
   tabDirection(e) {
     this.setData({
       currentDirection: e.currentTarget.dataset.label,
-      fodderStep: 0,
-      sizeValue: this.data.sliderValue[e.currentTarget.dataset.label].sizeValue,
-      rotateValue: this.data.sliderValue[e.currentTarget.dataset.label].rotateValue
+      fodderStep: 0
     })
-    this.draw()
   },
   // 点击素材按钮
   showSelectFodder() {
@@ -291,6 +281,10 @@ Page({
   },
   // 选择素材
   pickerFodder(e) {
+    wx.showLoading({
+      title: '请稍等',
+    })
+
     if (e.currentTarget.dataset.type == 0) { //默认素材
       var thumb = this.data.defaultFooders[e.currentTarget.dataset.index].thumb
       var url = this.data.defaultFooders[e.currentTarget.dataset.index].img_url
@@ -298,163 +292,129 @@ Page({
       var thumb = this.data.fodders[this.data.currentFodderPage - 1][e.currentTarget.dataset.index].thumb
       var url = this.data.fodders[this.data.currentFodderPage - 1][e.currentTarget.dataset.index].img_url
     }
-    wx.showLoading({
-      title: '请稍等',
-    })
-    wx.downloadFile({ //下载图片
-      url: thumb,
-      success: file => {
-        wx.hideLoading()
-        wx.getImageInfo({
-          src: file.tempFilePath,
-          success: info => {
-            this.setData({
-              defaultW: 80,
-              defaultH: 80 * (info.height / info.width)
-            })
-            wx.getSystemInfo({ //获取屏幕宽度
-              success: res => {
-                let ratio = res.windowWidth / 375 //比例
-                this.data.designFodders[this.data.currentDirection] = {
-                  type: 'img',
-                  url: url,
-                  thumb: file.tempFilePath,
-                  x: 5 * ratio,
-                  y: (120 - 80 * (info.height / info.width)) / 2 * ratio,
-                  w: 80 * ratio,
-                  h: 80 * (info.height / info.width) * ratio,
-                  rotate: 0
-                }
-                this.setData({
-                  fodderStep: 2,
-                  designFodders: this.data.designFodders
-                })
-                // 渲染画布
-                this.draw()
-              }
-            })
-          }
-        })
-      }
-    })
-  },
-  // 渲染画布
-  draw() {
-    const canvas = wx.createCanvasContext('canvas')
-    var fodder = this.data.designFodders[this.data.currentDirection]
-    wx.getSystemInfo({
-      success: res => {
-        let ratio = res.windowWidth / 375 //比例 
-        canvas.clearRect(0, 0, 90 * ratio, 120 * ratio) //清空画布
-        if (this.data.designFodders[this.data.currentDirection].x != undefined) {
-          canvas.translate(fodder.x + fodder.w / 2, fodder.y + fodder.h / 2)
-          canvas.rotate(fodder.rotate * Math.PI / 180)
-          canvas.drawImage(fodder.thumb, -fodder.w / 2, -fodder.h / 2, fodder.w, fodder.h)
-        }
-        canvas.draw()
-      }
-    })
 
-  },
-  // 触摸开始
-  touchstart(e) {
-    this.setData({
-      startX: e.touches[0].x,
-      startY: e.touches[0].y,
-      sizeValue: this.data.sliderValue[this.data.currentDirection].sizeValue,
-      rotateValue: this.data.sliderValue[this.data.currentDirection].rotateValue
-    })
-    if (this.data.designFodders[this.data.currentDirection].x != undefined) {
-      this.setData({
-        fodderX: this.data.designFodders[this.data.currentDirection].x,
-        fodderY: this.data.designFodders[this.data.currentDirection].y,
-        fodderStep: this.data.designFodders[this.data.currentDirection].type == 'font' ? 3 : 2
-      })
-    }
-  },
-  // 触摸移动
-  touchmove(e) {
-    if (this.data.designFodders[this.data.currentDirection].x != undefined && this.data.fodderStep != 0) {
-      this.data.designFodders[this.data.currentDirection].x = this.data.fodderX + (e.touches[0].x - this.data.startX)
-      this.data.designFodders[this.data.currentDirection].y = this.data.fodderY + (e.touches[0].y - this.data.startY)
-      this.setData({
-        designFodders: this.data.designFodders
-      })
-    }
-    // 重新渲染画布
-    this.draw()
-  },
-  // 素材缩放
-  fodderSize(event) {
-    this.data.sliderValue[this.data.currentDirection].sizeValue = event.detail.value
-    this.setData({
-      sliderValue: this.data.sliderValue
-    })
-    wx.getSystemInfo({
-      success: res => {
-        let ratio = res.windowWidth / 375 //比例
-        this.data.designFodders[this.data.currentDirection].w = this.data.defaultW * ratio * (event.detail.value / 50)
-        this.data.designFodders[this.data.currentDirection].h = this.data.defaultH * ratio * (event.detail.value / 50)
+    wx.getImageInfo({
+      src: thumb,
+      success: info => {
+        let ratio = this.data.ratio
+        let fodder = {
+          type: 'img',
+          url: url,
+          thumb: info.path,
+          x: 30 * ratio,
+          y: (180 - 75 * (info.height / info.width)) / 2 * ratio,
+          w: 75 * ratio,
+          h: 75 * (info.height / info.width) * ratio,
+          scale: 1,
+          rotate: 0
+        }
+
+        if (!this.data.changeFodder && this.data.designFodders[this.data.currentDirection].length < 2) {
+          this.data.designFodders[this.data.currentDirection].push(fodder)
+          this.data.currentFodderIndex = this.data.designFodders[this.data.currentDirection].length - 1
+        } else {
+          this.data.designFodders[this.data.currentDirection][this.data.currentFodderIndex] = fodder
+        }
         this.setData({
+          changeFodder: false,
+          currentFodderIndex: this.data.currentFodderIndex,
+          fodderStep: 2,
           designFodders: this.data.designFodders
         })
-        // 重新渲染画布
-        this.draw()
+        wx.hideLoading()
       }
     })
   },
-  // 素材旋转
-  fodderRotate(event) {
-    this.data.sliderValue[this.data.currentDirection].rotateValue = event.detail.value
+  // 操作素材
+  editFodder(e) {
+    let type = e.currentTarget.dataset.type
+    let index = e.currentTarget.dataset.index
+    if (type == 'font') {
+      this.setData({
+        fodderStep: 4,
+        currentFodderIndex: index
+      })
+    } else {
+      this.setData({
+        fodderStep: 2,
+        currentFodderIndex: index
+      })
+    }
+  },
+  // 移动素材
+  movFodder(e) {
+    let index = e.currentTarget.dataset.index
+    this.data.designFodders[this.data.currentDirection][index].x = e.detail.x
+    this.data.designFodders[this.data.currentDirection][index].y = e.detail.y
     this.setData({
-      sliderValue: this.data.sliderValue
+      currentFodderIndex: index
     })
-    this.data.designFodders[this.data.currentDirection].rotate = event.detail.value
+  },
+  // 素材缩放
+  fodderSize(e) {
+    let ratio = this.data.ratio
+    let fodder = this.data.designFodders[this.data.currentDirection][this.data.currentFodderIndex]
+    let whRatio = fodder.h / fodder.w
+    let scale = e.detail.value / 50
+    fodder.scale = scale
+    fodder.w = 75 * ratio * scale
+    fodder.h = 75 * whRatio * ratio * scale
+    this.data.designFodders[this.data.currentDirection][this.data.currentFodderIndex] = fodder
     this.setData({
       designFodders: this.data.designFodders
     })
-    // 重新渲染画布
-    this.draw()
+  },
+  // 素材旋转
+  fodderRotate(e) {
+    let fodder = this.data.designFodders[this.data.currentDirection][this.data.currentFodderIndex]
+    fodder.rotate = e.detail.value
+
+    this.data.designFodders[this.data.currentDirection][this.data.currentFodderIndex] = fodder
+    this.setData({
+      designFodders: this.data.designFodders
+    })
   },
   // 换一个
   changOne() {
+    this.setData({
+      changeFodder: true
+    })
     this.showSelectFodder()
   },
   // 居中
   alignCenter() {
-    var fodder = this.data.designFodders[this.data.currentDirection]
-    wx.getSystemInfo({
-      success: res => {
-        let ratio = res.windowWidth / 375 //比例
-        fodder.x = 90 * ratio / 2 - fodder.w / 2
-        this.setData({
-          designFodders: this.data.designFodders
-        })
-        this.draw()
-      }
+    let fodder = this.data.designFodders[this.data.currentDirection][this.data.currentFodderIndex]
+    let ratio = this.data.ratio
+    fodder.x = 135 * ratio / 2 - fodder.w / 2
+    this.data.designFodders[this.data.currentDirection][this.data.currentFodderIndex] = fodder
+    this.setData({
+      designFodders: this.data.designFodders
     })
   },
   // 清除
   clear() {
-    this.data.designFodders[this.data.currentDirection] = {}
+    let index = this.data.currentFodderIndex
+    let fodders = this.data.designFodders[this.data.currentDirection]
+    fodders.splice(index, 1)
+    if (fodders.length == 0) {
+      this.setData({
+        fodderStep: 0
+      })
+    } else {
+      this.setData({
+        currentFodderIndex: 0
+      })
+    }
     this.setData({
       designFodders: this.data.designFodders
     })
-    this.draw()
   },
   // 完成
   confirm() {
     this.setData({
-      fodderStep: 0
+      fodderStep: 0,
+      designFodders: this.data.designFodders
     })
-  },
-  // 修改文字方向
-  changeDir() {
-    this.setData({
-      direction: this.data.direction == 1 ? 2 : 1
-    })
-    // 重新生成字体
-    this.getFontImage()
   },
 
   // 选择相册图片
@@ -463,66 +423,56 @@ Page({
       count: 1,
       sizeType: ['original'],
       success: file => {
-        console.log(file)
-        wx.getImageInfo({
-          src: file.tempFilePaths[0],
-          success: info => {
-            this.setData({
-              defaultW: 80,
-              defaultH: 80 * (info.height / info.width)
-            })
-            wx.getSystemInfo({ //获取屏幕宽度
-              success: res => {
-                let ratio = res.windowWidth / 375 //比例
-                this.data.designFodders[this.data.currentDirection] = {
-                  type: 'photo',
-                  url: file.tempFilePaths[0],
-                  thumb: file.tempFilePaths[0],
-                  x: 5 * ratio,
-                  y: (120 - 80 * (info.height / info.width)) / 2 * ratio,
-                  w: 80 * ratio,
-                  h: 80 * (info.height / info.width) * ratio,
-                  rotate: 0
-                }
-                this.setData({
-                  fodderStep: 2,
-                  designFodders: this.data.designFodders
-                })
-                // 渲染画布
-                this.draw()
+        if (file.tempFiles[0].size < 1.2 * 1024 * 1024) {
+          wx.showModal({
+            content: '请上传大于1.2M的素材',
+          })
+        } else {
+          wx.getImageInfo({
+            src: file.tempFilePaths[0],
+            success: info => {
+              let ratio = this.data.ratio
+              let fodder = {
+                type: 'photo',
+                url: info.path,
+                thumb: info.path,
+                x: 30 * ratio,
+                y: (180 - 75 * (info.height / info.width)) / 2 * ratio,
+                w: 75 * ratio,
+                h: 75 * (info.height / info.width) * ratio,
+                scale: 1,
+                rotate: 0
               }
-            })
-          }
-        })
+
+              if (!this.data.changeFodder && this.data.designFodders[this.data.currentDirection].length < 2) {
+                this.data.designFodders[this.data.currentDirection].push(fodder)
+                this.data.currentFodderIndex = this.data.designFodders[this.data.currentDirection].length - 1
+              } else {
+                this.data.designFodders[this.data.currentDirection][this.data.currentFodderIndex] = fodder
+              }
+              this.setData({
+                changeFodder: false,
+                currentFodderIndex: this.data.currentFodderIndex,
+                fodderStep: 2,
+                designFodders: this.data.designFodders
+              })
+              wx.hideLoading()
+            }
+          })
+        }
       }
     })
   },
   // 新增字体
   addFont() {
-    if (this.data.designFodders[this.data.currentDirection].type != 'font') {
-      this.setData({
-        fodderStep: 3,
-        sizeValue: 50,
-        rotateValue: 0
-      })
-    } else {
-      this.setData({
-        fodderStep: 3,
-        sizeValue: this.data.sliderValue[this.data.currentDirection].sizeValue,
-        rotateValue: this.data.sliderValue[this.data.currentDirection].rotateValue
-      })
-    }
-
+    this.setData({
+      fodderStep: 4
+    })
     // 加载字体列表
     this.getFonts().then(fonts => {
-      this.setData({
-        font_id: fonts[0].id
-      })
-    })
-    // 加载颜色库
-    this.getFontColors().then(colors => {
-      this.setData({
-        color: colors[0].color
+      // 加载颜色库
+      this.getFontColors().then(colors => {
+        this.addDefinedFontImage()
       })
     })
   },
@@ -535,7 +485,8 @@ Page({
           success: res => {
             if (res.data.code == 1) {
               this.setData({
-                fonts: res.data.data.fonts
+                fonts: res.data.data.fonts,
+                font_id: res.data.data.fonts[0].id
               })
               resolve(res.data.data.fonts)
             } else {
@@ -560,7 +511,8 @@ Page({
           success: res => {
             if (res.data.code == 1) {
               this.setData({
-                fontColors: res.data.data.colors
+                fontColors: res.data.data.colors,
+                color: res.data.data.colors[0].color
               })
               resolve(res.data.data.colors)
             } else {
@@ -598,22 +550,99 @@ Page({
   pickerFont(e) {
     this.setData({
       font_id: e.currentTarget.dataset.id,
-      fontIndex: e.currentTarget.dataset.index
+      fontIndex: e.currentTarget.dataset.index,
+      word: this.data.designFodders[this.data.currentDirection][this.data.currentFodderIndex].content
     })
-    this.getFontImage()
+    this.changeFontImage()
   },
   // 选择颜色
   pickerFontColor(e) {
     this.setData({
       color: e.currentTarget.dataset.color,
+      word: this.data.designFodders[this.data.currentDirection][this.data.currentFodderIndex].content
     })
-    this.getFontImage()
+    this.changeFontImage()
+  },
+  // 修改文字方向
+  changeDir() {
+    this.setData({
+      direction: this.data.direction == 1 ? 2 : 1,
+      word: this.data.designFodders[this.data.currentDirection][this.data.currentFodderIndex].content
+    })
+    // 重新生成字体
+    this.changeFontImage()
   },
   // 获取字体图片
   getFontImage() {
-    wx.showLoading({
-      title: '请稍等',
-    })
+    if (this.data.word == '') {
+      wx.showModal({
+        content: '请输入文字！',
+      })
+    } else {
+      wx.showLoading({
+        title: '请稍等',
+      })
+      wx.request({
+        url: 'https://cy.nulizhe.com/api/font_image/make',
+        method: 'POST',
+        header: {
+          "content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+        },
+        data: {
+          token: wx.getStorageSync('auth_token'),
+          word: this.data.word,
+          font_id: this.data.font_id,
+          color: this.data.color,
+          direction: this.data.direction
+        },
+        success: res => {
+          if (res.data.code == 1) {
+            let url = res.data.data.font_img
+            wx.getImageInfo({
+              src: url,
+              success: info => {
+                let ratio = this.data.ratio
+                let fodder = {
+                  type: 'font',
+                  content: this.data.word,
+                  url: info.path,
+                  thumb: info.path,
+                  x: 30 * ratio,
+                  y: (180 - 75 * (info.height / info.width)) / 2 * ratio,
+                  w: 75 * ratio,
+                  h: 75 * (info.height / info.width) * ratio,
+                  scale: 1,
+                  rotate: 0
+                }
+
+                if (!this.data.changeFodder && this.data.designFodders[this.data.currentDirection].length < 2) {
+                  this.data.designFodders[this.data.currentDirection].push(fodder)
+                  this.data.currentFodderIndex = this.data.designFodders[this.data.currentDirection].length - 1
+                } else {
+                  this.data.designFodders[this.data.currentDirection][this.data.currentFodderIndex] = fodder
+                }
+                this.setData({
+                  word: '',
+                  changeFodder: false,
+                  currentFodderIndex: this.data.currentFodderIndex,
+                  fodderStep: 4,
+                  designFodders: this.data.designFodders
+                })
+                wx.hideLoading()
+              }
+            })
+          } else {
+            wx.showToast({
+              title: res.data.message,
+              images: '/images/tip.png'
+            })
+          }
+        }
+      })
+    }
+  },
+  // 添加默认字体素材
+  addDefinedFontImage() {
     wx.request({
       url: 'https://cy.nulizhe.com/api/font_image/make',
       method: 'POST',
@@ -622,69 +651,42 @@ Page({
       },
       data: {
         token: wx.getStorageSync('auth_token'),
-        word: this.data.word,
+        word: '串衣',
         font_id: this.data.font_id,
         color: this.data.color,
         direction: this.data.direction
       },
       success: res => {
         if (res.data.code == 1) {
-          wx.downloadFile({ //下载图片
-            url: res.data.data.font_img + '?x-oss-process=style/mini',
-            success: file => {
-              this.data.sliderValue[this.data.currentDirection].sizeValue = 50
-              this.data.sliderValue[this.data.currentDirection].rotateValue = 0
-              this.setData({
-                disabled: false,
-                sliderValue: this.data.sliderValue
-              })
-              wx.hideLoading()
-              wx.getImageInfo({
-                src: file.tempFilePath,
-                success: info => {
-                  // 根据字体方向设置大小
-                  if (this.data.direction == 1) {
-                    this.setData({
-                      defaultW: 80,
-                      defaultH: 80 * (info.height / info.width)
-                    })
-                    var w = 80
-                    var h = 80 * (info.height / info.width)
-                    var x = (90 - w) / 2
-                    var y = (120 - h) / 2
-                  } else {
-                    this.setData({
-                      defaultW: 100 * (info.width / info.height),
-                      defaultH: 100
-                    })
-                    var w = 80 * (info.width / info.height)
-                    var h = 80
-                    var x = (90 - w) / 2
-                    var y = (120 - h) / 2
-                  }
+          let url = res.data.data.font_img
+          wx.getImageInfo({
+            src: url,
+            success: info => {
+              let ratio = this.data.ratio
+              let fodder = {
+                type: 'font',
+                content: '串衣',
+                url: info.path,
+                thumb: info.path,
+                x: 30 * ratio,
+                y: (180 - 75 * (info.height / info.width)) / 2 * ratio,
+                w: 75 * ratio,
+                h: 75 * (info.height / info.width) * ratio,
+                scale: 1,
+                rotate: 0
+              }
 
-                  wx.getSystemInfo({ //获取屏幕宽度
-                    success: sysInfo => {
-                      let ratio = sysInfo.windowWidth / 375 //比例
-                      this.data.designFodders[this.data.currentDirection] = {
-                        type: 'font',
-                        url: res.data.data.font_img,
-                        thumb: file.tempFilePath,
-                        x: x * ratio,
-                        y: y * ratio,
-                        w: w * ratio,
-                        h: h * ratio,
-                        rotate: 0
-                      }
-                      this.setData({
-                        fodderStep: 3,
-                        designFodders: this.data.designFodders
-                      })
-                      // 渲染画布
-                      this.draw()
-                    }
-                  })
-                }
+              if (!this.data.changeFodder && this.data.designFodders[this.data.currentDirection].length < 2) {
+                this.data.designFodders[this.data.currentDirection].push(fodder)
+                this.data.currentFodderIndex = this.data.designFodders[this.data.currentDirection].length - 1
+              } else {
+                this.data.designFodders[this.data.currentDirection][this.data.currentFodderIndex] = fodder
+              }
+              this.setData({
+                word: '',
+                changeFodder: false,
+                currentFodderIndex: this.data.currentFodderIndex,
+                designFodders: this.data.designFodders
               })
             }
           })
@@ -697,210 +699,290 @@ Page({
       }
     })
   },
-  // 完成设计
-  confirmDesign() {
-    this.setData({
-      uploadMask: true
-    })
-    const fodderFront = this.data.designFodders.front_thumb
-    const fodderBack = this.data.designFodders.back_thumb
-    if (fodderFront.type == 'photo') { // 相册
-      this.createDesign(fodderFront, 0, 25).then(frontDesignUrl => {
-        this.createDesign(fodderBack, 0, 25).then(backDesignUrl => {
-          this.setData({
-            designCanvasW: 0,
-            designCanvasH: 0,
-            frontDesignUrl: frontDesignUrl,
-            backDesignUrl: backDesignUrl
-          })
-          // 生成预览图
-          const frontBg = this.data.colors[this.data.currentColorIndex].front_thumb
-          const frontFodder = this.data.designFodders['front_thumb']
-          const backBg = this.data.colors[this.data.currentColorIndex].back_thumb
-          const backFodder = this.data.designFodders['back_thumb']
-          this.createViewImg(frontBg, frontFodder, 10, 15).then(frontView => {
-            this.createViewImg(backBg, backFodder, 10, 15).then(backView => {
-              this.setData({
-                viewCanvasW: 0,
-                viewCanvasH: 0,
-                frontViewUrl: frontView,
-                backViewUrl: backView
-              })
-              wx.hideLoading()
-              // 保存设计
-              this.saveDesign().then(id => {
-                wx.navigateTo({
-                  url: `/pages/index/detail/detail?id=${id}`,
-                })
-                this.setData({
-                  uploadMask: false,
-                  designProgress: 0
-                })
-              })
-            })
-          })
-        })
+  // 修改字体
+  changeFontImage() {
+    if (this.data.word == '') {
+      wx.showModal({
+        content: '请输入文字！',
       })
-    } else { //素材/字体
-      this.createDesign(fodderFront, 25, 10).then(frontDesignUrl => {
-        this.createDesign(fodderBack, 25, 10).then(backDesignUrl => {
-          this.setData({
-            designCanvasW: 0,
-            designCanvasH: 0,
-            frontDesignUrl: frontDesignUrl,
-            backDesignUrl: backDesignUrl
-          })
-          // 生成预览图
-          const frontBg = this.data.colors[this.data.currentColorIndex].front_thumb
-          const frontFodder = this.data.designFodders['front_thumb']
-          const backBg = this.data.colors[this.data.currentColorIndex].back_thumb
-          const backFodder = this.data.designFodders['back_thumb']
-          this.createViewImg(frontBg, frontFodder, 10, 5).then(frontView => {
-            this.createViewImg(backBg, backFodder, 10, 5).then(backView => {
-              this.setData({
-                viewCanvasW: 0,
-                viewCanvasH: 0,
-                frontViewUrl: frontView,
-                backViewUrl: backView
-              })
-              wx.hideLoading()
-              // 保存设计
-              this.saveDesign().then(id => {
-                wx.navigateTo({
-                  url: `/pages/index/detail/detail?id=${id}`,
-                })
+    } else {
+      wx.showLoading({
+        title: '请稍等',
+      })
+      wx.request({
+        url: 'https://cy.nulizhe.com/api/font_image/make',
+        method: 'POST',
+        header: {
+          "content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+        },
+        data: {
+          token: wx.getStorageSync('auth_token'),
+          word: this.data.word,
+          font_id: this.data.font_id,
+          color: this.data.color,
+          direction: this.data.direction
+        },
+        success: res => {
+          if (res.data.code == 1) {
+            let url = res.data.data.font_img
+            wx.getImageInfo({
+              src: url,
+              success: info => {
+                let ratio = this.data.ratio
+                let fodder = {
+                  type: 'font',
+                  content: this.data.word,
+                  url: info.path,
+                  thumb: info.path,
+                  x: 30 * ratio,
+                  y: (180 - 75 * (info.height / info.width)) / 2 * ratio,
+                  w: 75 * ratio,
+                  h: 75 * (info.height / info.width) * ratio,
+                  scale: 1,
+                  rotate: 0
+                }
+                this.data.designFodders[this.data.currentDirection][this.data.currentFodderIndex] = fodder
+
                 this.setData({
-                  uploadMask: false,
-                  designProgress: 0
+                  word: '',
+                  changeFodder: false,
+                  currentFodderIndex: this.data.currentFodderIndex,
+                  fodderStep: 4,
+                  designFodders: this.data.designFodders
                 })
-              })
+                wx.hideLoading()
+              }
             })
-          })
-        })
+          } else {
+            wx.showToast({
+              title: res.data.message,
+              images: '/images/tip.png'
+            })
+          }
+        }
       })
     }
   },
-  // 生成设计图
-  createDesign(fooder, progressD, progressU) {
-    return new Promise((resolve, reject) => {
-      var designCanvas = wx.createCanvasContext('canvas-design')
-      if (fooder.type == 'img' || fooder.type == 'font') { //素材
+  // 阻值冒泡
+  stopBub() {
+    return false
+  },
+  // 完成设计
+  confirmDesign() {
+    var _that = this
+    let fodders = this.data.designFodders
+    if (fodders['front_thumb'].length == 0 && fodders['back_thumb'].length == 0) {
+      wx.showModal({
+        content: '请添加素材',
+      })
+    } else {
+      // 下载素材大图
+      var fodderArr = []
+      for (let key in fodders) {
+        fodders[key].forEach((item, index) => {
+          if (item.type == 'img') {
+            item.dir = key
+            item.index = index
+            fodderArr.push(item)
+          }
+        })
+      }
+
+      this.setData({
+        uploadMask: true,
+        uploadIndex: 0
+      })
+      if (fodderArr.length > 0) {
+        download(this.data.uploadIndex)
+      } else {
+        this.createDesign()
+      }
+
+      function download(index) {
+        console.log('下载大图素材')
         var downloadTask = wx.downloadFile({
-          url: fooder.url,
+          url: fodderArr[index].url,
           success: file => {
-            let width = 30000 / 9
-            let height = 40000 / 9
-            let fodderW = width * (fooder.w / 90)
-            let fodderH = height * (fooder.h / 120)
-            let fodderX = width * (fooder.x / 90)
-            let fodderY = height * (fooder.y / 120)
-            this.setData({
-              designCanvasW: width,
-              designCanvasH: height
-            })
-            designCanvas.clearRect(0, 0, width, height) //清空画布
-            designCanvas.translate(fodderX + fodderW / 2, fodderY + fodderH / 2)
-            designCanvas.rotate(fooder.rotate * Math.PI / 180)
-            designCanvas.drawImage(file.tempFilePath, -fodderW / 2, -fodderH / 2, fodderW, fodderH)
-            designCanvas.draw(false, () => {
-              wx.canvasToTempFilePath({
-                destWidth: width,
-                destHeight: height,
-                canvasId: 'canvas-design',
-                quality: 1,
-                success: res => {
-                  // 上传图片
-                  this.uploadImg(res.tempFilePath, progressU).then(url => {
-                    resolve(url)
-                  })
-                }
+            let dir = fodderArr[index].dir
+            let ind = fodderArr[index].index
+            _that.data.designFodders[dir][ind].url = file.tempFilePath
+
+            if (index < fodderArr.length - 1) {
+              _that.setData({
+                uploadIndex: _that.data.uploadIndex + 1
               })
-            })
+              download(_that.data.uploadIndex)
+            } else { //所有素材下载完=>生成设计图
+              console.log('素材下载完成')
+              _that.createDesign()
+            }
           }
         })
         // 监听下载进度
-        let designProgress = this.data.designProgress
+        var progress = _that.data.designProgress
         downloadTask.onProgressUpdate((res) => {
-          this.setData({
-            designProgress: designProgress + Math.ceil(progressD * (res.progress) / 100)
-          })
-        })
-      } else if (fooder.type == "photo") { //相册
-        var designCanvas = wx.createCanvasContext('canvas-design')
-        let width = 30000 / 9
-        let height = 40000 / 9
-        let fodderW = width * (fooder.w / 90)
-        let fodderH = height * (fooder.h / 120)
-        let fodderX = width * (fooder.x / 90)
-        let fodderY = height * (fooder.y / 120)
-        this.setData({
-          designCanvasW: width,
-          designCanvasH: height
-        })
-        designCanvas.clearRect(0, 0, width, height) //清空画布
-        designCanvas.translate(fodderX + fodderW / 2, fodderY + fodderH / 2)
-        designCanvas.rotate(fooder.rotate * Math.PI / 180)
-        designCanvas.drawImage(fooder.url, -fodderW / 2, -fodderH / 2, fodderW, fodderH)
-        designCanvas.draw(false, () => {
-          wx.canvasToTempFilePath({
-            destWidth: width,
-            destHeight: height,
-            canvasId: 'canvas-design',
-            quality: 1,
-            success: res => {
-              // 上传图片
-              this.uploadImg(res.tempFilePath, progressU).then(url => {
-                resolve(url)
-              })
-            }
+          _that.setData({
+            designProgress: progress + Math.round(15 * (res.progress) / 100)
           })
         })
       }
-    })
+    }
   },
-  // 生成预览图
-  createViewImg(bg, fooder, progressD, progressU) {
-    return new Promise((resolve, reject) => {
-      var viewCanvas = wx.createCanvasContext('canvas-view')
-      var canvasW = 412
-      var canvasH = 530
-      this.setData({
-        viewCanvasW: canvasW,
-        viewCanvasH: canvasH,
+  // 合成设计图
+  createDesign() {
+    console.log('开始生成设计')
+    var _that = this
+    let fodders = this.data.designFodders
+    let front = fodders['front_thumb']
+    let back = fodders['back_thumb']
+    let fodderArr = []
+    for (let key in fodders) {
+      fodders[key].forEach((item, index) => {
+        item.dir = key
+        item.index = index
+        fodderArr.push(item)
       })
-      viewCanvas.clearRect(0, 0, canvasW, canvasH) //清空画布
-      var downloadTask = wx.downloadFile({
-        url: bg,
-        success: fileBg => {
-          viewCanvas.drawImage(fileBg.tempFilePath, 0, 0, canvasW, canvasH) //绘制背景
-          viewCanvas.drawImage(fooder.thumb, 116 + fooder.x * 2, 145 + fooder.y * 2, fooder.w * 2, fooder.h * 2) //绘制素材
-          viewCanvas.draw(false, () => {
+    }
+
+    // 生成缩略图
+    function toViewImg(bg, arr) {
+      return new Promise((resolve, reject) => {
+        console.log('开始生成缩略图')
+        let width = 310
+        let height = 400
+        _that.setData({
+          designCanvasW: width,
+          designCanvasH: height
+        })
+        var context = wx.createCanvasContext('canvas-design')
+        // 生成背景
+        setTimeout(() => {
+          console.log('生成中...')
+          var downloadTask = wx.downloadFile({
+            url: bg,
+            success: file => {
+              context.drawImage(file.tempFilePath, 0, 0, width, height) //绘制背景
+              context.save()
+              context.moveTo(155 - 135 / 2, 110)
+              context.lineTo(155 + 135 / 2, 110)
+              context.lineTo(155 + 135 / 2, 290)
+              context.lineTo(155 - 135 / 2, 290)
+              context.lineTo(155 - 135 / 2, 110)
+              context.clip()
+              context.translate(155, 200)
+              arr.forEach(item => {
+                context.rotate(item.rotate * Math.PI / 180)
+                context.drawImage(item.thumb, 175 / 2 + item.x - 155, 110 + item.y - 200, item.w, item.h)
+              })
+
+              context.draw(false, () => {
+                wx.canvasToTempFilePath({
+                  canvasId: 'canvas-design',
+                  success: res => {
+                    // 上传图片
+                    console.log(res.tempFilePath)
+                    console.log('开始上传')
+                    _that.uploadImg(res.tempFilePath, 8).then(url => {
+                      console.log('上传完成')
+                      resolve(url)
+                    })
+                  }
+                })
+              })
+            }
+          })
+          // 监听下载进度
+          var progress = _that.data.designProgress
+          downloadTask.onProgressUpdate((res) => {
+            _that.setData({
+              designProgress: progress + Math.round(2 * (res.progress) / 100)
+            })
+          })
+        }, 200)
+      })
+    }
+
+    // 生成设计稿
+    function toDesignImg(arr, progress) {
+      return new Promise((resolve, reject) => {
+        console.log('开始生成设计搞')
+        let width = 30000 / 13.5
+        let height = 40000 / 13.5
+        let ratio = width / 135
+        _that.setData({
+          designCanvasW: width,
+          designCanvasH: height
+        })
+
+        var context = wx.createCanvasContext('canvas-design')
+
+        setTimeout(() => {
+          console.log('生成中...')
+          context.translate(width / 2, height / 2)
+          arr.forEach(item => {
+            context.rotate(item.rotate * Math.PI / 180)
+            context.drawImage(item.url, item.x * ratio - width / 2, item.y * ratio - height / 2, item.w * ratio, item.h * ratio)
+          })
+          context.draw(false, () => {
             wx.canvasToTempFilePath({
-              destWidth: canvasW,
-              destHeight: canvasH,
-              canvasId: 'canvas-view',
-              quality: 1,
+              canvasId: 'canvas-design',
+              destWidth: width,
+              destHeight: height,
               success: res => {
                 // 上传图片
-                this.uploadImg(res.tempFilePath, progressU).then(url => {
+                console.log(res.tempFilePath)
+                console.log('开始上传')
+                _that.uploadImg(res.tempFilePath, progress).then(url => {
+                  console.log('上传完成')
                   resolve(url)
                 })
               }
             })
           })
-        }
+        }, 200)
+
       })
-      // 监听下载进度
-      let designProgress = this.data.designProgress
-      downloadTask.onProgressUpdate((res) => {
-        this.setData({
-          designProgress: designProgress + Math.ceil(progressD * (res.progress) / 100)
+    }
+
+    let fontBg = _that.data.colors[_that.data.currentColorIndex]['front_thumb']
+    let backBg = _that.data.colors[_that.data.currentColorIndex]['back_thumb']
+    toViewImg(fontBg, front).then(frontThumb => {
+      toViewImg(backBg, back).then(backThumb => {
+        let progress = (99 - _that.data.designProgress) / 2
+        toDesignImg(front, progress).then(frontUrl => {
+          toDesignImg(back, progress).then(backUrl => {
+            console.log('frontThumb', frontThumb)
+            console.log('backThumb', backThumb)
+            console.log('frontUrl', frontUrl)
+            console.log('backUrl', backUrl)
+
+            let design = {
+              frontThumb: frontThumb,
+              backThumb: backThumb,
+              frontUrl: frontUrl,
+              backUrl: backUrl
+            }
+
+            this.setData({
+              uploadMask: false,
+              designCanvasW: 0,
+              designCanvasH: 0,
+              designProgress: 0
+            })
+
+            _that.saveDesign(design).then(id => {
+              wx.redirectTo({
+                url: `/pages/index/detail/detail?id=${id}`,
+              })
+            })
+
+          })
         })
       })
     })
   },
   //上传图片
-  uploadImg: function(file, progressU) {
+  uploadImg(file, progress) {
     return new Promise((resolve, reject) => {
       var nowTime = util.formatTime(new Date());
       var uploadTask = uploadImage(file, 'images/' + nowTime + '/',
@@ -911,11 +993,11 @@ Page({
           console.log("======上传失败======", result);
         }
       )
-      let designProgress = this.data.designProgress
       // 监听上传进度
+      let designProgress = this.data.designProgress
       uploadTask.onProgressUpdate((res) => {
         this.setData({
-          designProgress: designProgress + Math.ceil(progressU * (res.progress) / 100)
+          designProgress: designProgress + Math.round(progress * (res.progress) / 100)
         })
       })
     })
@@ -928,7 +1010,7 @@ Page({
     })
   },
   // 保存设计
-  saveDesign() {
+  saveDesign(design) {
     return new Promise((resolve, reject) => {
       wx.request({
         url: 'https://cy.nulizhe.com/api/Design/saveDesign',
@@ -938,10 +1020,10 @@ Page({
         },
         data: {
           token: wx.getStorageSync('auth_token'),
-          front: this.data.frontDesignUrl,
-          front_thumb: this.data.frontViewUrl,
-          back: this.data.backDesignUrl,
-          back_thumb: this.data.backViewUrl,
+          front: design.frontUrl,
+          front_thumb: design.frontThumb,
+          back: design.backUrl,
+          back_thumb: design.backThumb,
           clothes_id: this.data.clothes_id,
           color: this.data.colors[this.data.currentColorIndex].color,
           color_name: this.data.colors[this.data.currentColorIndex].color_name
@@ -1005,6 +1087,10 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function() {
-
+    return {
+      title: wx.getStorageSync('shareInfo').word,
+      path: '/pages/index/index?shop=' + wx.getStorageSync('shop'),
+      imageUrl: wx.getStorageSync('shareInfo').cover
+    }
   }
 })

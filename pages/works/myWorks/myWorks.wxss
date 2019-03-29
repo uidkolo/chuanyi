@@ -185,7 +185,7 @@ page{
   top: 274rpx;
   left: 0;
   width: 100%;
-  padding: 20rpx 30rpx;
+  padding: 30rpx 30rpx 10rpx;
   display: flex;
   z-index: 2;
   align-items: center;

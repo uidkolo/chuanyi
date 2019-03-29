@@ -9,7 +9,8 @@ Page({
     tabIndex: '',
     designs: [],
     pageNo: 1,
-    totalPage: 1
+    totalPage: 1,
+    null: false
   },
 
   /**
@@ -37,9 +38,14 @@ Page({
           pageNo: this.data.pageNo + 1,
           totalPage: data.total
         })
-        if (this.data.pageNo - 1 == this.data.totalPage || data.total == 0) {
+        if (this.data.pageNo > this.data.totalPage) {
           this.setData({
             end: true
+          })
+        }
+        if (this.data.totalPage == 0) {
+          this.setData({
+            null: true
           })
         }
       })
@@ -91,6 +97,10 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function () {
-
+    return {
+      title: wx.getStorageSync('shareInfo').word,
+      path: '/pages/index/index?shop=' + wx.getStorageSync('shop'),
+      imageUrl: wx.getStorageSync('shareInfo').cover
+    }
   }
 })

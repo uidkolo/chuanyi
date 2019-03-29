@@ -1,0 +1,43 @@
+<view class='container'>
+  <view class='item'>
+    <text class='label'>昵称</text>
+    <view class='value'>
+      <text>{{name}}</text>
+      <image class='icon' src='/images/mine/more.png'></image>
+    </view>
+  </view>
+  <view class='item'>
+    <text class='label'>头像</text>
+    <view class='value'>
+      <image class='avatar' src='{{avatar}}'></image>
+      <image class='icon' src='/images/mine/more.png'></image>
+    </view>
+  </view>
+   <view class='item' bindtap='bindMobile'>
+    <text class='label'>绑定手机</text>
+    <view class='value'>
+      <text>{{mobile==""?"未绑定":mobile}}</text>
+      <image class='icon' src='/images/mine/more.png'></image>
+    </view>
+  </view>
+</view>
+
+<view class='mask' wx:if='{{mask}}'>
+  <view class='shade'>
+    <view class='shade-title'>绑定手机</view>
+    <view class='shade-content'>
+      <view class='shade-content-item'>
+        <input class='shade-input' type='number' placeholder='手机号码' placeholder-class='placeholder' bindinput='input' data-key='mobileValue'></input>
+      </view>
+      <view class='shade-content-item'>
+        <input class='shade-input' type='number' placeholder='验证码' placeholder-class='placeholder' bindinput='input' data-key='code'></input>
+        <view wx:if='{{!codeStatus}}' class='shade-content-item-btn' bindtap='getCode'>获取验证码</view>
+        <view wx:else class='shade-content-item-btn'>{{timer}}s</view>
+      </view>
+    </view>
+    <view class='shade-btns'>
+      <view class='shade-btn-cancel' bindtap='cancel'>取消</view>
+      <view class='shade-btn-confirm' bindtap='confirm'>绑定</view>
+    </view>
+  </view>
+</view>

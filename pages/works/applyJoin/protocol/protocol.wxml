@@ -1,0 +1,5 @@
+<import src="/wxParse/wxParse.wxml" />
+<view class='content'>
+  <template is="wxParse" data="{{wxParseData:detail.nodes}}" />
+</view>
+<navigator class='btn' open-type='navigateBack'>我已认真阅读</navigator>

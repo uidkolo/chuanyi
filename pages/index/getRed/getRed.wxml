@@ -1,0 +1,26 @@
+<view class='page'>
+  <view class='red'>
+    <image class='red-bg-01' src='/images/index/red_01.png'></image>
+    <view class='red-content'>
+      <view class='red-info'>
+        <view class='red-info-title'>恭喜你获得</view>
+        <view class='red-info-num'>
+          <text class='red-info-num-value'>{{info.money}}</text>串币</view>
+        <view class='red-info-time'>有效日期：{{info.start}}-{{info.end}}</view>
+      </view>
+      <navigator class='red-btn' open-type='switchTab' url='/pages/index/index'>立即使用</navigator>
+      <view class='red-user'>
+        <view class='red-user-item' wx:for='{{progress}}' wx:key='{{index}}'>
+          <image class='red-user-item-avatar' src='{{item.avatar}}'></image>
+          <text>{{item.money}}{{item.money!="?"?"串币":""}}</text>
+        </view>
+      </view>
+    </view>
+    <image class='red-bg-02' src='/images/index/red_02.png'></image>
+    <view class='red-tip'>串衣定制</view>
+  </view>
+  <view class='slogan'><text class='slogan-line'></text>设计专属，为爱定制<text class='slogan-line'></text></view>
+  <view class='video'>
+    <video src='{{vidioSrc}}' autoplay></video>
+  </view>
+</view>

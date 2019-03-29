@@ -1,186 +1,218 @@
-<!-- 设计区域 -->
-<view class='top'>
-  <view class='top-left'>
-    <view class='item {{type==1?"active":""}}' bindtap='tabType' data-type='1'>
-      <text>男</text><text>装</text>
-    </view>
-    <view class='item {{type==2?"active":""}}' bindtap='tabType' data-type='2'>
-      <text>女</text><text>装</text>
-    </view>
-    <view class='item {{type==3?"active":""}}' bindtap='tabType' data-type='3'>
-      <text>童</text><text>装</text>
-    </view>
-  </view>
-  <view class='top-center'>
-    <view class='canvas-box'>
-      <canvas  class='canvas {{designFodders[currentDirection].x&&fodderStep!=0?"not-null":""}}' canvas-id='canvas'  disable-scroll bindtouchstart='touchstart' bindtouchmove='touchmove'></canvas>
-      <image class='img' src='{{colors[currentColorIndex][currentDirection]}}'></image>
-    </view>
-    <view class='shadow'>
-      <image src='/images/design/shadow.png'></image>
-    </view>
-  </view>
-  <view class='top-right'>
-    <text class='item' wx:for='{{colors}}' wx:key='index' style='background:{{item.color}}' bindtap='tabColor' data-index='{{index}}'></text>
-  </view>
-</view>
-
-<!-- 选项区域 -->
-<view class='center'>
-  <view class='direction'>
-    <text class='item front {{currentDirection=="front_thumb"?"active":""}}' bindtap='tabDirection' data-label='front_thumb'>正面</text>
-    <text class='item back {{currentDirection=="back_thumb"?"active":""}}'  bindtap='tabDirection' data-label='back_thumb'>反面</text>
-  </view>
-  <view class='style'>
-    <scroll-view scroll-x>
-      <image class='item' wx:for='{{clothes}}' wx:key='index' src='{{item.thumb}}' bindtap='getCothes' data-id='{{item.id}}'></image>
-    </scroll-view>
-  </view>
-</view>
-
-<!-- 底部 -->
-<view class='bottom' wx:if='{{fodderStep==0}}'>
-  <!-- 选项 -->
-  <view class='select'>
-    <view class='item' bindtap='showSelectFodder'>
-      <image class='icon' src='/images/icon/icon_fodder.png'></image>
-      <text>素材</text>
-    </view>
-    <view class='item' bindtap='choicePhoto'>
-      <image class='icon' src='/images/icon/icon_photo.png'></image>
-      <text>相册</text>
-    </view>
-    <view class='item' bindtap='addFont'>
-      <image class='icon' src='/images/icon/icon_text.png'></image>
-      <text>文字</text>
-    </view>
-  </view>
-  <!-- 默认素材区域 -->
-  <scroll-view class='fodder-default' scroll-x>
-    <image mode='aspectFit' class='item' wx:for='{{defaultFooders}}' wx:key='index' src='{{item.thumb}}' bindtap='pickerFodder' data-index='{{index}}' data-type='0'></image>
-  </scroll-view>
-  <view class='btn' bindtap='confirmDesign' wx:if='{{designFodders.front_thumb.x && designFodders.back_thumb.x}}'>完成设计</view>
-</view>
-
-
-<!-- 素材 -->
-<view class='fodder-box' wx:if='{{fodderStep>0}}'>
-  <view class='fodder-header'wx:if='{{fodderStep==1}}'>
-    <picker range='{{fodderTypes}}' range-key='name' bindchange='selectFodder'>
-      <view class='item'>
-        <text>{{fodderTypeName}}</text>
-        <image class='icon' src='/images/icon/icon_picker.png'></image>
-      </view>
-    </picker>
-    <view class='item' bindtap='nextPage'>
-      <image class='icon' src='/images/icon/icon_fresh.png'></image>
-      <text>换一批</text>
-    </view>
-    <view class='item' bindtap='backSelectFodder'>
-      <image class='icon' src='/images/icon/icon_back.png'></image>
-      <text>返回</text>
-    </view>
-  </view>
-  <view class='fodder-list' wx:if='{{fodderStep==1}}'>
-    <image mode='aspectFit' class='item' wx:for='{{fodders[currentFodderPage-1]}}' wx:key='index' src='{{item.thumb}}' bindtap='pickerFodder' data-index='{{index}}' data-type='1'></image>
-  </view>
-  <!-- 素材操作 -->
-  <view class='fodder-edit' wx:if='{{fodderStep==2}}'>
-    <view class='edit'>
-      <view class='item'>
-        <text class='label'>大小</text>
-        <slider activeColor='#f7c900' value='{{sizeValue}}'min='25' bindchange='fodderSize'></slider>
-      </view>
-      <view class='item'>
-        <text class='label'>旋转</text>
-        <slider activeColor='#f7c900' value='{{rotateValue}}' min='0' max='360' bindchange='fodderRotate'></slider>
-      </view>
-    </view>
-    <view class='edit-bottom'>
-      <view class='item change' bindtap='changOne'>换一个</view>
-      <view class='item change' bindtap='alignCenter'>居中</view>
-      <view class='item cancel' bindtap='clear'>清除</view>
-      <view class='item confire' bindtap='confirm'>完成</view>
-    </view>
-  </view>
-  <!-- 素材操作 -->
-  <view class='fodder-edit' wx:if='{{fodderStep==3}}'>
-    <view class='edit'>
-      <view class='item text-item'>
-        <text class='label'>编辑文字</text>
-        <view class='text-input'>
-          <input placeholder='不超过10个字' value='{{word}}' bindinput='input' data-key='word'></input>
-          <view class='text-btn' bindtap='getFontImage'>确定</view>
+<view class='page'>
+  <view class='container'>
+    <!-- 设计区域 -->
+    <view class='top' wx:if='{{fodderStep!=2&&fodderStep!=4}}'>
+      <view class='top-left'>
+        <view class='item {{type==1?"active":""}}' bindtap='tabType' data-type='1'>
+          <text>男</text>
+          <text>装</text>
+        </view>
+        <view class='item {{type==2?"active":""}}' bindtap='tabType' data-type='2'>
+          <text>女</text>
+          <text>装</text>
+        </view>
+        <view class='item {{type==3?"active":""}}' bindtap='tabType' data-type='3'>
+          <text>童</text>
+          <text>装</text>
         </view>
       </view>
-      <view class='item'>
-        <text class='label'>大小</text>
-        <slider disabled='{{disabled}}' activeColor='#f7c900' value='{{sizeValue}}' min='25' bindchange='fodderSize'></slider>
+      <view class='top-center'>
+        <view class='canvas-box'>
+          <view class='design-container'>
+            <image class='design-fodder-item' wx:for='{{designFodders[currentDirection]}}' wx:key='{{index}}' src='{{item.thumb}}' style='top:{{item.y/1.5}}px; left: {{item.x/1.5}}px; width:{{item.w/1.5}}px; height:{{item.h/1.5}}px; transform:rotate({{item.rotate}}deg);'
+              bindtap='editFodder' data-index='{{index}}' data-type='{{item.type}}'></image>
+          </view>
+          <image class='img' src='{{colors[currentColorIndex][currentDirection]}}'></image>
+        </view>
+        <view class='shadow'>
+          <image src='/images/design/shadow.png'></image>
+        </view>
       </view>
-      <view class='item'>
-        <text class='label'>旋转</text>
-        <slider disabled='{{disabled}}' activeColor='#f7c900' value='{{rotateValue}}' min='0' max='360' bindchange='fodderRotate'></slider>
-      </view>
-    </view>
-    <view class='edit-bottom'>
-      <view class='text-btn' bindtap='changeFont'>
-        <image src='/images/design/icon_font.png'></image>
-        <text>字体</text>
-      </view>
-      <view class='text-btn' bindtap='changeFontColor'>
-        <image src='/images/design/icon_color.png'></image>
-        <text>颜色</text>
-      </view>
-      <view class='text-btn' bindtap='changeDir'>
-        <image src='/images/design/icon_direction.png'></image>
-        <text>方向</text>
-      </view>
-      <view class='text-btn' bindtap='alignCenter'>
-        <image src='/images/design/icon_center.png'></image>
-        <text>居中</text>
-      </view>
-      <view class='text-btn' bindtap='clear'>
-        <image src='/images/design/icon_clear.png'></image>
-        <text>清除</text>
-      </view>
-      <view class='text-btn' bindtap='confirm'>
-        <image src='/images/design/icon_confirm.png'></image>
-        <text>完成</text>
+      <view class='top-right'>
+        <text class='item' wx:for='{{colors}}' wx:key='index' style='background:{{item.color}}' bindtap='tabColor' data-index='{{index}}'></text>
       </view>
     </view>
-  </view>
-</view>
 
-<!-- 字体列表 -->
-<view class='mask' bindtap='closeMask' wx:if='{{fontMask}}'>
-  <view class='fonts'>
-    <view class='font-item' wx:for='{{fonts}}' wx:key='index' bindtap='pickerFont' data-id='{{item.id}}' data-index='{{index}}'>
-      <image src='{{item.font_img}}'></image>
-      <icon wx:if='{{fontIndex==index}}' type='success_no_circle' color='#f8db16' size='16'></icon>
+    <!-- 选项区域 -->
+    <view class='center' wx:if='{{fodderStep!=2&&fodderStep!=4}}'>
+      <view class='direction'>
+        <text class='item front {{currentDirection=="front_thumb"?"active":""}}' bindtap='tabDirection' data-label='front_thumb'>正面</text>
+        <text class='item back {{currentDirection=="back_thumb"?"active":""}}' bindtap='tabDirection' data-label='back_thumb'>反面</text>
+      </view>
+      <view class='style'>
+        <scroll-view scroll-x>
+          <image class='item' wx:for='{{clothes}}' wx:key='index' src='{{item.thumb}}' bindtap='getCothes' data-id='{{item.id}}'></image>
+        </scroll-view>
+      </view>
     </view>
-  </view>
-</view>
 
-<!-- 颜色列表 -->
-<view class='mask' bindtap='closeMask' wx:if='{{fontColorMask}}'>
-  <scroll-view class='fontColors' scroll-x>
-    <view class='fontColor-item' style='background:{{item.color}}' wx:for='{{fontColors}}' wx:key='index' bindtap='pickerFontColor' data-color='{{item.color}}' data-index='{{index}}'>
+    <view class='design-area' wx:if='{{fodderStep ==2||fodderStep ==4}}' bindtap='confirm'>
+      <view class='design-area-box'>
+        <movable-area class='design-area-container' catchtap='stopBub'>
+          <movable-view direction='all' class='movable' bindchange='movFodder' wx:for='{{designFodders[currentDirection]}}' wx:key='{{index}}' x='{{item.x}}' y='{{item.y}}' style='width:{{item.w}}px; height:{{item.h}}px;' data-index='{{index}}' animation='{{1==0}}'>
+            <image class='fodder-item {{currentFodderIndex==index?"border":""}}' bindtap='editFodder' data-index='{{index}}' data-type='{{item.type}}' src='{{item.thumb}}' style='transform:rotate({{item.rotate}}deg);'></image>
+          </movable-view>
+        </movable-area>
+        <image class='design-area-box-img' src='{{colors[currentColorIndex][currentDirection]}}'></image>
+      </view>
+      <image class='design-area-shadow' src='/images/design/shadow.png'></image>
     </view>
-  </scroll-view>
-</view>
 
-<!-- 最终生成的画布 -->
-<view class='design-canvas-box'>
-  <!-- 设计图 -->
-  <canvas class='canvas-design' canvas-id='canvas-design' style='width:{{designCanvasW}}px;height:{{designCanvasH}}px'></canvas>
-  <!-- 预览图 -->
-  <canvas class='canvas-view' canvas-id='canvas-view' style='width:{{viewCanvasW}}px;height:{{viewCanvasH}}px'></canvas>
-</view>
+    <!-- 底部 -->
+    <view class='bottom' wx:if='{{fodderStep==0}}'>
+      <!-- 选项 -->
+      <view class='select'>
+        <view class='item' bindtap='showSelectFodder'>
+          <image class='icon' src='/images/icon/icon_fodder.png'></image>
+          <text>素材</text>
+        </view>
+        <view class='item' bindtap='choicePhoto'>
+          <image class='icon' src='/images/icon/icon_photo.png'></image>
+          <text>相册</text>
+        </view>
+        <view class='item' bindtap='addFont'>
+          <image class='icon' src='/images/icon/icon_text.png'></image>
+          <text>文字</text>
+        </view>
+      </view>
+      <!-- 默认素材区域 -->
+      <scroll-view class='fodder-default' scroll-x>
+        <image mode='aspectFit' class='item' wx:for='{{defaultFooders}}' wx:key='index' src='{{item.thumb}}' bindtap='pickerFodder' data-index='{{index}}' data-type='0'></image>
+      </scroll-view>
+      <view class='btn' bindtap='confirmDesign'>完成设计</view>
+    </view>
 
-<view class='mask' wx:if='{{uploadMask}}'>
-  <view class='uploadProgress'>
-    <view class='uploadProgress-title'>生成设计需要较长时间，请耐心等待</view>
-    <view>正在生成{{uploadTip}}<text class='uploadProgress-num'>{{designProgress}}</text>%</view>
-    <progress percent='{{designProgress}}' activeColor='#F7C900' border-radius='16'></progress>
+
+    <!-- 素材 -->
+    <view class='fodder-box' wx:if='{{fodderStep>0}}'>
+      <view class='fodder-header' wx:if='{{fodderStep==1}}'>
+        <picker range='{{fodderTypes}}' range-key='name' bindchange='selectFodder'>
+          <view class='item'>
+            <text>{{fodderTypeName}}</text>
+            <image class='icon' src='/images/icon/icon_picker.png'></image>
+          </view>
+        </picker>
+        <view class='item' bindtap='nextPage'>
+          <image class='icon' src='/images/icon/icon_fresh.png'></image>
+          <text>换一批</text>
+        </view>
+        <view class='item' bindtap='backSelectFodder'>
+          <image class='icon' src='/images/icon/icon_back.png'></image>
+          <text>返回</text>
+        </view>
+      </view>
+      <view class='fodder-list' wx:if='{{fodderStep==1}}'>
+        <image mode='aspectFit' class='item' wx:for='{{fodders[currentFodderPage-1]}}' wx:key='index' src='{{item.thumb}}' bindtap='pickerFodder' data-index='{{index}}' data-type='1'></image>
+      </view>
+      <!-- 素材操作 -->
+      <view class='fodder-edit' wx:if='{{fodderStep==2}}'>
+        <view class='edit'>
+          <view class='item'>
+            <text class='label'>大小</text>
+            <slider activeColor='#f7c900' value='{{designFodders[currentDirection][currentFodderIndex].scale*50}}' min='5' bindchanging='fodderSize'></slider>
+          </view>
+          <view class='item'>
+            <text class='label'>旋转</text>
+            <slider activeColor='#f7c900' value='{{designFodders[currentDirection][currentFodderIndex].rotate}}' min='0' max='360' bindchanging='fodderRotate'></slider>
+          </view>
+        </view>
+        <view class='edit-bottom'>
+          <view class='item change' bindtap='changOne'>换一个</view>
+          <view class='item change' bindtap='alignCenter'>居中</view>
+          <view class='item cancel' bindtap='clear'>删除</view>
+          <view class='item confire' bindtap='confirm'>完成</view>
+        </view>
+      </view>
+      <!-- 新增文字 -->
+      <view class='fodder-edit' wx:if='{{fodderStep==3}}'>
+        <view class='edit'>
+          <view class='item text-item'>
+            <view class='back' bindtap='backSelectFodder'>
+              <text>返回</text>
+            </view>
+            <view class='text-input'>
+              <input placeholder='不超过10个字' value='{{word}}' bindinput='input' data-key='word'></input>
+              <view class='text-btn' bindtap='getFontImage'>确定</view>
+            </view>
+          </view>
+        </view>
+      </view>
+      <!-- 编辑文字 -->
+      <view class='fodder-edit' wx:if='{{fodderStep==4}}'>
+        <view class='edit'>
+          <view class='item text-item'>
+            <text class='label'>编辑文字</text>
+            <view class='text-input'>
+              <input placeholder='不超过10个字' value='{{designFodders[currentDirection][currentFodderIndex].content}}' bindinput='input' data-key='word'></input>
+              <view class='text-btn' bindtap='changeFontImage'>确定</view>
+            </view>
+          </view>
+          <view class='item'>
+            <text class='label'>大小</text>
+            <slider activeColor='#f7c900' value='{{designFodders[currentDirection][currentFodderIndex].scale*50}}' min='5' bindchanging='fodderSize'></slider>
+          </view>
+          <view class='item'>
+            <text class='label'>旋转</text>
+            <slider activeColor='#f7c900' value='{{designFodders[currentDirection][currentFodderIndex].rotate}}' min='0' max='360' bindchanging='fodderRotate'></slider>
+          </view>
+        </view>
+        <view class='edit-bottom'>
+          <view class='text-btn' bindtap='changeFont'>
+            <image src='/images/design/icon_font.png'></image>
+            <text>字体</text>
+          </view>
+          <view class='text-btn' bindtap='changeFontColor'>
+            <image src='/images/design/icon_color.png'></image>
+            <text>颜色</text>
+          </view>
+          <view class='text-btn' bindtap='changeDir'>
+            <image src='/images/design/icon_direction.png'></image>
+            <text>方向</text>
+          </view>
+          <view class='text-btn' bindtap='alignCenter'>
+            <image src='/images/design/icon_center.png'></image>
+            <text>居中</text>
+          </view>
+          <view class='text-btn' bindtap='clear'>
+            <image src='/images/design/icon_clear.png'></image>
+            <text>清除</text>
+          </view>
+          <view class='item confire' bindtap='confirm'>完成</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 字体列表 -->
+    <view class='mask' bindtap='closeMask' wx:if='{{fontMask}}'>
+      <view class='fonts'>
+        <view class='font-item' wx:for='{{fonts}}' wx:key='index' bindtap='pickerFont' data-id='{{item.id}}' data-index='{{index}}'>
+          <image src='{{item.font_img}}'></image>
+          <icon wx:if='{{fontIndex==index}}' type='success_no_circle' color='#f8db16' size='16'></icon>
+        </view>
+      </view>
+    </view>
+
+    <!-- 颜色列表 -->
+    <view class='mask' bindtap='closeMask' wx:if='{{fontColorMask}}'>
+      <scroll-view class='fontColors' scroll-x>
+        <view class='fontColor-item' style='background:{{item.color}}' wx:for='{{fontColors}}' wx:key='index' bindtap='pickerFontColor' data-color='{{item.color}}' data-index='{{index}}'>
+        </view>
+      </scroll-view>
+    </view>
+
+    <!-- 最终生成的画布 -->
+    <view class='design-canvas-box'>
+      <!-- 设计图 -->
+      <canvas class='canvas-design' canvas-id='canvas-design' style='width:{{designCanvasW}}px;height:{{designCanvasH}}px'></canvas>
+    </view>
+
+    <view class='mask' wx:if='{{uploadMask}}'>
+      <view class='uploadProgress'>
+        <view class='uploadProgress-title'>生成设计需要较长时间，请耐心等待</view>
+        <view>正在生成{{uploadTip}}
+          <text class='uploadProgress-num'>{{designProgress}}</text>%</view>
+        <progress percent='{{designProgress}}' activeColor='#F7C900' border-radius='16'></progress>
+      </view>
+    </view>
   </view>
 </view>

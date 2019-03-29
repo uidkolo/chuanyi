@@ -30,7 +30,6 @@ Page({
       }).then(data => {
         wx.hideLoading()
         this.data.messages = this.data.messages.concat(data.list)
-        console.log(data.list)
         this.setData({
           totalPage: data.total,
           pageNo: this.data.pageNo+1,
@@ -90,6 +89,10 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function() {
-
+    return {
+      title: wx.getStorageSync('shareInfo').word,
+      path: '/pages/index/index?shop=' + wx.getStorageSync('shop'),
+      imageUrl: wx.getStorageSync('shareInfo').cover
+    }
   }
 })

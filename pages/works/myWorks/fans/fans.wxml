@@ -1,0 +1,17 @@
+<view class='seven'>
+  <view class='seven-title'>最近7天新增{{seven_days_count}}个粉丝</view>
+  <view class='fans-item' wx:for='{{seven_days_fans}}' wx:key='{{index}}'>
+    <image class='fans-avatar' src='{{item.avatar}}'></image>
+    <text class='fans-name'>{{item.nick_name}}</text>
+  </view>
+</view>
+
+<view class='list'>
+  <view class='fans-item' wx:for='{{list}}' wx:key='{{index}}'>
+    <view class='item-left'>
+      <image class='fans-avatar' src='{{item.avatar}}'></image>
+      <text class='fans-name'>{{item.nick_name}}</text>
+    </view>
+    <view class='fans-date'>{{item.date}}</view>
+  </view>
+</view>

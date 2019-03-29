@@ -6,7 +6,7 @@
         <text class='nickname'>{{info.nick_name}}</text>
       </view>
       <view class='user-num'>
-        粉丝 {{info.fans}}
+        <navigator url='/pages/works/myWorks/fans/fans'>粉丝 {{info.fans}}</navigator>
         <text class='user-num-line'></text>收藏 {{info.works_collected}}
       </view>
     </view>
@@ -21,8 +21,8 @@
   </view>
 </view>
 
-<view class='sub-tab-box'>
-  <view class='sub-tab' wx:if='{{tabIndex==0}}'>
+<view class='sub-tab-box' wx:if='{{tabIndex==0}}'>
+  <view class='sub-tab'>
     <view class='sub-tab-item {{filter==0?"active":""}}' bindtap='subTab' data-index='0'>全部</view>
     <view class='sub-tab-item {{filter==2?"active":""}}' bindtap='subTab' data-index='2'>未上架</view>
     <view class='sub-tab-item {{filter==3?"active":""}}' bindtap='subTab' data-index='3'>待审核</view>
@@ -71,14 +71,14 @@
       <view class='item-top-btn' wx:if='{{item.is_sell==1}}' bindtap='upOrDown' data-id='{{item.id}}' data-val='0'>下架</view>
       <view class='item-top-btn' wx:if='{{item.is_sell==0}}' bindtap='upOrDown' data-id='{{item.id}}' data-val='1'>上架</view>
     </view>
-    <view class='imgs'>
+    <view class='imgs' bindtap='toWorks' data-sell='{{item.is_sell}}' data-id='{{item.id}}'>
       <view class='img front'>
         <view class='icon'>
           <text>正</text>
         </view>
         <image src='{{item.front_thumb}}'></image>
       </view>
-      <view class='img back'>
+      <view class='img back' bindtap='toWorks' data-sell='{{item.is_sell}}' data-id='{{item.id}}'>
         <view class='icon'>
           <text>背</text>
         </view>
@@ -180,7 +180,7 @@
         <image class='icon' src='/images/works/order_03.png'></image>
         <text>已完成</text>
       </navigator>
-      <navigator class='item' url='/pages/mine/afterSaleList/afterSaleList'>
+      <navigator class='item' url='/pages/works/myWorks/afterSaleList/afterSaleList'>
         <text wx:if='{{income.return_goods_count>0}}' class='num'>{{income.return_goods_count}}</text>
         <image class='icon' src='/images/works/order_04.png'></image>
         <text>退款/售后</text>

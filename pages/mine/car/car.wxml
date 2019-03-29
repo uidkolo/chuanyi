@@ -54,6 +54,6 @@
   <view class='null'>
     <image class='null-icon' src='/images/icon/icon_car.png'></image>
     <view class='null-tip'>购物车空空如也，快来挑好货呗~</view>
-    <view class='null-btn'>去作品馆逛逛</view>
+    <navigator class='null-btn' open-type='switchTab' url='/pages/works/works'>去作品馆逛逛</navigator>
   </view>
 </block>

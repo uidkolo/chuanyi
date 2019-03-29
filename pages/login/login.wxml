@@ -1,4 +1,4 @@
-<image class='logo' src='/images/icon/logo.png'></image>
+<image class='logo' src='/images/index/logo.png'></image>
 <view class='title'><text class='dot'></text>授权获取您的信息（昵称和头像）</view>
 <button open-type='getUserInfo' class='login' bindgetuserinfo='bindGetUserInfo'>
   <image src='/images/icon/icon_wechat.png'></image>

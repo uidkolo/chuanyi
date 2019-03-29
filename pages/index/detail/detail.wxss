@@ -4,18 +4,24 @@ page{
 }
 
 .swiper{
-  height: 610rpx;
+  height: 750rpx;
+  background: #fff;
 }
 .swiper-item{
-  height: 610rpx;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
 }
+.works-img-shadow{
+  width: 500rpx;
+  height: 73rpx;
+}
 .swiper-img{
-  width: 412rpx;
-  height: 530rpx;
+  width: 500rpx;
+  height: 646rpx;
   margin: 0 auto;
+  flex-shrink: 0;
 }
 
 .info{
@@ -339,4 +345,9 @@ page{
   font-size: 26rpx;
   color: #666;
   line-height: 1.8;
+}
+.content-detail image{
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
 }

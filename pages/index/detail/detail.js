@@ -6,7 +6,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    fabricText:'选择面料',
+    fabricText: '选择面料',
     sizeText: '选择尺寸',
     number: 1,
     cartNum: 0,
@@ -17,28 +17,42 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
-    // 获取购物车数量
-    this.getCartNum()
-
-    // 获取商品信息
-    this.getGoodInfo(options.id).then(info => {
-      info.max_money = parseFloat(info.max_money / 100).toFixed(2)
-      info.min_money = parseFloat(info.min_money / 100).toFixed(2)
-      info.fabrics.forEach(item=>{
-        item.price = parseFloat(item.price / 100).toFixed(2)
-      })
+    if (options.scene) {
       this.setData({
-        info: info
+        id: options.scene
       })
-      WxParse.wxParse('detail', 'html', info.clothes.detail, this, 20)
+    }
+    if (options.id) {
+      this.setData({
+        id: options.id
+      })
+    }
+
+    // 登录验证
+    getApp().init(() => {
+      // 获取购物车数量
+      this.getCartNum()
+
+      // 获取商品信息
+      this.getGoodInfo(this.data.id).then(info => {
+        info.max_money = parseFloat(info.max_money / 100).toFixed(2)
+        info.min_money = parseFloat(info.min_money / 100).toFixed(2)
+        info.fabrics.forEach(item => {
+          item.price = parseFloat(item.price / 100).toFixed(2)
+        })
+        this.setData({
+          info: info
+        })
+        WxParse.wxParse('detail', 'html', info.clothes.detail, this, 20)
+      })
     })
   },
   // 获取购物车数量
-  getCartNum(){
+  getCartNum() {
     let url = '/api/cart/getCartTotal'
-    getApp().post(url,{
+    getApp().post(url, {
       token: wx.getStorageSync('auth_token')
-    }).then(data=>{
+    }).then(data => {
       this.setData({
         cartNum: data.cart_total
       })
@@ -134,12 +148,12 @@ Page({
         design_pic: this.data.info.design.id
       }).then(data => {
         console.log(data)
-        if (data.is_new=='yes'){
+        if (data.is_new == 'yes') {
           this.setData({
             cartNum: this.data.cartNum + 1,
             infoMask: false
           })
-        }else{
+        } else {
           this.setData({
             infoMask: false
           })
@@ -177,7 +191,7 @@ Page({
     }
   },
   // 切换详情区域
-  tabContent(e){
+  tabContent(e) {
     this.setData({
       currentContentIndex: e.currentTarget.dataset.index
     })
@@ -228,6 +242,10 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function() {
-
+    return {
+      title: this.data.info.design.clothes_name,
+      path: `/pages/index/detail/detail?id=${this.data.id}`,
+      imageUrl: this.data.info.design.front_thumb
+    }
   }
 })

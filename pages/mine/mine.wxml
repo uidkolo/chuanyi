@@ -1,23 +1,21 @@
 <view class='top'>
   <view class='left'>
-    <image class='avatar' src='{{avatar}}'></image>
+    <navigator url='/pages/mine/set/set'><image class='avatar' src='{{avatar}}'></image></navigator>
     <view class='info'>
       <text class='name'>{{nickname}}</text>
       <view class='id'>
-        <text class='content'>我的关注 | 26</text>
-        <!-- <text class='copy'>复制</text> -->
+        <view class='content'>
+          <navigator url='/pages/mine/myAttention/myAttention' class='nav'>我的关注</navigator>  | {{attentionNum}}
+        </view>
       </view>
     </view>
   </view>
-  <view class='right'>
-    <text class='btn'>绑定手机号</text>
-  </view>
 </view>
 
-<view class='news'>
+<navigator class='news' url='/pages/message/system/detail/detail?id={{messages[0].id}}' hover-class='none'>
   <image class='icon' src='/images/mine/news.png'></image>
-  <text class='content'>春节放假通知，2月1日~2月15日的订单延后发货</text>
-</view>
+  <view class='content'>{{messages[0].title}}</view>
+</navigator>
 
 <view class='order'>
   <navigator class='more' url='/pages/mine/order/order'>
@@ -53,20 +51,25 @@
   </view>
 </view>
 
-<navigator class='ad'>
+<view class='ad' bindtap='toMyWork' wx:if='{{auditStatus==0||auditStatus==1||auditStatus==3}}'>
   <image src='/images/mine/ad.png'></image>
-</navigator>
+</view>
+<view class='ad2' bindtap='toMyWork' wx:if='{{auditStatus==2}}'>
+  <image src='/images/mine/ad2.png'></image>
+</view>
 
 <view class='link'>
   <navigator class='item' url='/pages/mine/wallet/wallet'>
+    <text class='link-num' wx:if='{{unSeeRedNum>0}}'>{{unSeeRedNum}}</text>
     <image class='icon' src='/images/mine/link_01.png'></image>
     <text>串币</text>
   </navigator>
-  <navigator class='item' url='/pages/mine/show/show'>
+  <!-- <navigator class='item' url='/pages/mine/show/show'>
     <image class='icon' src='/images/mine/link_02.png'></image>
     <text>买家秀</text>
-  </navigator>
+  </navigator> -->
   <navigator class='item' url='/pages/mine/photo/photo'>
+    <text class='link-num' wx:if='{{unSeeDesignNum>0}}'>{{unSeeDesignNum}}</text>
     <image class='icon' src='/images/mine/link_03.png'></image>
     <text>作品相册</text>
   </navigator>
@@ -94,10 +97,10 @@
     <image class='icon' src='/images/mine/link_09.png'></image>
     <text>关注我们</text>
   </view> -->
-  <!-- <navigator class='item'>
+  <button class='item share' open-type='share'>
     <image class='icon' src='/images/mine/link_10.png'></image>
-    <text>邀请好友</text>
-  </navigator> -->
+    <text class='yellow'>邀新送串币</text>
+  </button>
 </view>
 
 <!-- <view class='mask' wx:if='{{attentionMask}}'>

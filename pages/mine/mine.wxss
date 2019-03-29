@@ -30,6 +30,13 @@ page{
   font-size: 26rpx;
   margin-top: 20rpx;
 }
+.top .id .content{
+  display: flex;
+  align-items: center;
+}
+.top .id .content .nav{
+  margin-right: 10rpx;
+}
 .top .id .copy{
   display: inline-block;
   font-size: 20rpx;
@@ -72,6 +79,13 @@ page{
   width: 28rpx;
   height: 24rpx;
   margin: 0 20rpx 0 30rpx;
+  flex-shrink: 0;
+}
+.news .content{
+  padding-right: 20rpx;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .order{
@@ -126,12 +140,17 @@ page{
   margin-bottom: 10rpx;
 }
 
-.ad{
+.ad,.ad2{
   display: block;
   margin: 30rpx;
 }
 .ad image{
   height: 150rpx;
+  width: 100%;
+  border-radius: 8rpx;
+}
+.ad2 image{
+  height: 100rpx;
   width: 100%;
   border-radius: 8rpx;
 }
@@ -152,10 +171,36 @@ page{
   font-size: 24rpx;
   color: #666;
   margin-top: 30rpx;
+  position: relative;
+  line-height: 1.5;
+}
+.link .item.share{
+  background: none;
+  padding: 0;
+  margin: 30rpx 0 0;
+  line-height: 1.5;
+}
+.link .item.share::after{
+  border: none;
+}
+.link-num{
+  position: absolute;
+  top: -10rpx;
+  right: 10rpx;
+  font-size: 20rpx;
+  color: #F7B200;
+  height: 28rpx;
+  line-height: 28rpx;
+  border-radius: 28rpx;
+  padding: 0 10rpx;
+  border: 1rpx solid #F7B200;
 }
 .link .item .icon{
   width: 80rpx;
   height: 80rpx;
+}
+.yellow{
+  color: #F7B200;
 }
 
 /* .attention{

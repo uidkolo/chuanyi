@@ -25,6 +25,12 @@
   </view>
 </view>
 
-<view class='end'>
+<view class='null' wx:if='{{null}}'>
+  <image class='null-icon' src='/images/mine/poster_null.png'></image>
+  <text>你还没有设计作品噢~</text>
+  <navigator class='null-btn' url='/pages/index/design/design'>开始设计</navigator>
+</view>
+
+<view class='end' wx:if='{{designs.length>0 && end}}'>
   <text>-- END --</text>
 </view>

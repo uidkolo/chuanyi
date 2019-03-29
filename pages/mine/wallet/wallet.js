@@ -109,9 +109,18 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function (e) {
-    return{
-      title: '收到好友的串币红包',
-      path: `/pages/index/index?scene=2&id=${e.target.dataset.id}`
+    if(e.from=="menu"){
+      return {
+        title: wx.getStorageSync('shareInfo').word,
+        path: '/pages/index/index?shop=' + wx.getStorageSync('shop'),
+        imageUrl: wx.getStorageSync('shareInfo').cover
+      }
+    }else{
+      return {
+        title: '收到好友的串币红包',
+        path: `/pages/index/getWallet/getWallet?money=${e.target.dataset.money}&id=${e.target.dataset.id}&time=${e.target.dataset.time}`,
+        imageUrl: '/images/pay/red.png'
+      }
     }
   }
 })

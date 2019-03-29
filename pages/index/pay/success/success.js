@@ -77,6 +77,10 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function () {
-
+    return {
+      title: '一起瓜分，看谁手气最好！',
+      path: `/pages/index/getRed/getRed?id=${this.data.redId}`,
+      imageUrl: '/images/pay/pull.png'
+    }
   }
 })

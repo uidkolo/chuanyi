@@ -1,3 +1,57 @@
+page{
+  height: 100%;
+}
+.page{
+  min-height: 100%;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container{
+  width: 100%;
+}
+
+.design-canvas-box{
+  position: absolute;
+  bottom: -100000%;
+  left: -100%;
+}
+.design-area{
+  background: #f5f5f5;
+  height: 870rpx;
+  border-bottom: 1px solid #dcdcdc;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.design-area-box{
+  width: 620rpx;
+  height: 800rpx;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.design-area-shadow{
+  height: 90rpx;
+  width: 620rpx;
+}
+.design-area-box-img{
+  width: 620rpx;
+  height: 800rpx;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.design-fodder-item{
+  position: absolute;
+}
+
+
 .top{
   background: #f5f5f5;
   height: 620rpx;
@@ -44,6 +98,8 @@
   position: absolute;
   width: 413rpx;
   height: 530rpx;
+  left: 0;
+  top: 0;
 }
 .top-center .shadow image{
   width: 413rpx;
@@ -52,13 +108,27 @@
 .top-center .not-null{
   border: 1px solid #a5a5a5;
 }
-.top-center .canvas-box .canvas{
-  /* position: absolute;
-  top: 140rpx;
-  left: 135rpx; */
+.top-center .canvas-box .design-container{
   width: 180rpx;
   height: 240rpx;
   z-index: 9;
+  overflow: hidden;
+  position: relative;
+}
+.design-area-container{
+  width: 270rpx;
+  height: 360rpx;
+  border: 1px solid #ccc;
+  position: relative;
+  z-index: 9;
+  overflow: hidden;
+}
+.fodder-item{
+  width: 100%;
+  height: 100%;
+}
+.fodder-item.border{
+  border: 1px dotted #ccc;
 }
 
 
@@ -208,7 +278,7 @@
 .fodder-box .fodder-list{
   display: flex;
   flex-wrap: wrap;
-  margin-top: 30rpx;
+  margin-top: 40rpx;
 }
 .fodder-box .fodder-list .item{
   width: 106rpx;
@@ -248,6 +318,24 @@
   color: #333;
   flex-shrink: 0;
   margin-right: 40rpx;
+}
+.fodder-edit .edit .item .back{
+  height:56rpx;
+  width:120rpx;
+  border-radius:10rpx;
+  color:#333333;
+  font-size:26rpx;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border:1px solid #dcdcdc;
+  line-height:1;
+  margin-right: 20rpx;
+}
+.fodder-edit .edit .item .back .icon{
+  width: 30rpx;
+  height: 30rpx;
+  margin-right: 10rpx;
 }
 .fodder-edit .edit .item .text-input{
   display: flex;
@@ -339,7 +427,6 @@
 }
 .fontColors{
   background: #fff;
-  height: 80rpx;
   padding: 40rpx 0;
   position: absolute;
   width: 100%;

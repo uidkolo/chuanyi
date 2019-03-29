@@ -1,14 +1,14 @@
 <view class='box'>
   <navigator class='item' url='/pages/message/system/system'>
     <view class='item-icon item-icon-system'>
-      <image class='item-icon-img' src='/images/message/icon_at.png'></image>
+      <image class='item-icon-img' src='/images/message/icon_message.png'></image>
     </view>
     <view class='item-right'>
       <text>系统消息</text>
       <image class='item-right-icon' src='/images/mine/more.png'></image>
     </view>
   </navigator>
-  <navigator class='item'>
+  <navigator class='item' url='/pages/message/atMe/atMe'>
     <view class='item-icon item-icon-at'>
       <image class='item-icon-img' src='/images/message/icon_at.png'></image>
     </view>
@@ -17,18 +17,18 @@
       <image class='item-right-icon' src='/images/mine/more.png'></image>
     </view>
   </navigator>
-  <navigator class='item'>
+  <navigator class='item' url='/pages/message/all/all'>
     <view class='item-icon item-icon-all'>
-      <image class='item-icon-img' src='/images/message/icon_at.png'></image>
+      <image class='item-icon-img' src='/images/message/icon_discuss.png'></image>
     </view>
     <view class='item-right'>
       <text>所有评论</text>
       <image class='item-right-icon' src='/images/mine/more.png'></image>
     </view>
   </navigator>
-  <navigator class='item'>
+  <navigator class='item' url='/pages/message/attention/attention'>
     <view class='item-icon item-icon-attention'>
-      <image class='item-icon-img' src='/images/message/icon_at.png'></image>
+      <image class='item-icon-img' src='/images/message/icon_about.png'></image>
     </view>
     <view class='item-right item-right-last'>
       <text>关注的最新动态</text>

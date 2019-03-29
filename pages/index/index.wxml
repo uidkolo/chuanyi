@@ -1,16 +1,27 @@
-<swiper class='swiper' indicator-dots indicator-color='#ebebeb' indicator-active-color='#f7c900' circular previous-margin='65rpx' next-margin='65rpx' bindchange='swiper'>
-  <swiper-item wx:for='{{banners}}' wx:key='index'>
-    <navigator class='item {{index==currentIndex?"active":""}}'>
-      <image src='{{item.image}}'></image>
-      <view class='title'>{{item.title}}</view>
-    </navigator>
-  </swiper-item>
-</swiper>
-
-<view class='btn-box'>
-  <navigator class='btn' url='/pages/index/design/design'>开始设计</navigator>
+<view class='tips-box' animation='{{animation}}'>
+  <view class='tips'>
+    <view class='tips-item'>
+      <image class='tips-avatar' src='{{currentOrder.avatar}}'></image>
+      <text class='tips-name'>{{currentOrder.nick_name}}</text>
+      <text class='tips-content'>刚刚定制了{{currentOrder.kind}}</text>
+    </view>
+  </view>
 </view>
+<view class='container'>
+  <swiper class='swiper' indicator-dots indicator-color='#ebebeb' indicator-active-color='#f7c900' circular previous-margin='65rpx' next-margin='65rpx' bindchange='swiper'>
+    <swiper-item wx:for='{{banners}}' wx:key='index'>
+      <navigator class='item {{index==currentIndex?"active":""}}'>
+        <image src='{{item.image}}'></image>
+        <view class='title'>{{item.title}}</view>
+      </navigator>
+    </swiper-item>
+  </swiper>
 
-<button class='service' open-type='contact'>
-  <image src='/images/icon/icon_service.png'></image>
-</button>
+  <view class='btn-box'>
+    <navigator class='btn' url='/pages/index/design/design'>开始设计</navigator>
+  </view>
+
+  <button class='service' open-type='contact'>
+    <image src='/images/icon/icon_service.png'></image>
+  </button>
+</view>

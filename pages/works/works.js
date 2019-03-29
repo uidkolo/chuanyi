@@ -13,18 +13,29 @@ Page({
     commentTotalPage: 1,
     commentMask: false,
     commentType: 0, //0:评论 1:回复
-    applyFocus: false
+    applyFocus: false,
+    mask: true,
+    designId: '',
+    currentDesignIndex: 0
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
+    if(options.id){
+      this.setData({
+        designId:options.id
+      })
+    }
     this.getDesigns()
   },
   // 滑动
   bindanimationfinish(e) {
     this.getDesigns()
+    this.setData({
+      currentDesignIndex: e.detail.current
+    })
   },
   // 获取作品
   getDesigns() {
@@ -33,6 +44,7 @@ Page({
       getApp().post(url, {
         token: wx.getStorageSync('auth_token'),
         page: this.data.pageNo,
+        design_id: this.data.designId,
         limit: 5
       }).then(data => {
         wx.hideLoading()
@@ -336,6 +348,12 @@ Page({
       })
     })
   },
+  // 关闭弹层
+  closeMask(){
+    this.setData({
+      mask: false
+    })
+  },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
@@ -347,7 +365,25 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function() {
-
+    let designId = getApp().globalData.designId
+    let isFromDiscuss = getApp().globalData.isFromDiscuss
+    getApp().globalData.designId = null
+    getApp().globalData.isFromDiscuss = false
+    if (designId!=null){
+      this.setData({
+        designs: [],
+        pageNo: 1,
+        designId: designId,
+        currentDesigntId: designId,
+        commentMask: isFromDiscuss,
+        comments: [],
+        commentPageNo: 1
+      })
+      this.getDesigns()
+      if (isFromDiscuss!=null){
+        this.getComment()
+      }
+    }
   },
 
   /**
@@ -382,6 +418,10 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function() {
-
+    return {
+      title: this.data.designs[this.data.currentDesignIndex].clothes_name,
+      path: `/pages/works/works?id=${this.data.designs[this.data.currentDesignIndex].id}`,
+      imageUrl: this.data.designs[this.data.currentDesignIndex].front_thumb
+    }
   }
 })
