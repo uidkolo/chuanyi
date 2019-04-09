@@ -1,17 +1,17 @@
 <view class='form'>
-  <input class='input' placeholder='请输入企业名称' placeholder-class='placeholder' bindinput='input' data-key='company'></input>
-  <input class='input' placeholder='请输入企业负责人' placeholder-class='placeholder' bindinput='input' data-key='leading_official'></input>
-  <input class='input' type='number' placeholder='请输入联系电话' placeholder-class='placeholder' bindinput='input' data-key='tel'></input>
+  <input class='input' placeholder='请输入企业名称' placeholder-class='placeholder' value='{{company}}' bindinput='input' data-key='company'></input>
+  <input class='input' placeholder='请输入企业负责人' placeholder-class='placeholder' value='{{leading_official}}' bindinput='input' data-key='leading_official'></input>
+  <input class='input' type='number' placeholder='请输入联系电话' placeholder-class='placeholder' bindinput='input' data-key='tel' value='{{tel}}'></input>
   <picker mode='region' bindchange='pickerAdd'>
     <view class='picker'>
-      <text>所在省市</text>
+      <text>{{!add?"所在省市":add}}</text>
       <image class='picker-icon' src='/images/mine/icon_picker.png'></image>
     </view>
   </picker>
-  <input class='input' placeholder='输入企业详细地址' placeholder-class='placeholder' bindinput='input' data-key='address'></input>
+  <input class='input' placeholder='输入企业详细地址' placeholder-class='placeholder' bindinput='input' data-key='address' value='{{address}}'></input>
   <picker range='{{industrys}}' range-key='name' bindchange='pickerIndustry'>
     <view class='picker'>
-      <text>所属行业</text>
+      <text>{{!industry?"所属行业":industryValue}}</text>
       <image class='picker-icon' src='/images/mine/icon_picker.png'></image>
     </view>
   </picker>

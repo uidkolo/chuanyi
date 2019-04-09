@@ -47,14 +47,16 @@ Page({
     this.setData({
       province: value[0],
       city: value[1],
-      area: value[2]
+      area: value[2],
+      add: `${value[0]} ${value[1]} ${value[2]}`
     })
   },
   //选择行业
   pickerIndustry(e) {
     let value = e.detail.value
     this.setData({
-      industry: parseInt(value) + 1
+      industry: parseInt(value) + 1,
+      industryValue: this.data.industrys[parseInt(value)].name
     })
   },
   // 选择图片

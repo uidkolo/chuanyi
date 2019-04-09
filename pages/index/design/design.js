@@ -423,42 +423,83 @@ Page({
       count: 1,
       sizeType: ['original'],
       success: file => {
-        if (file.tempFiles[0].size < 1.2 * 1024 * 1024) {
+        if (file.tempFiles[0].size < 0.8 * 1024 * 1024) {
           wx.showModal({
-            content: '请上传大于1.2M的素材',
+            content: '请上传大于0.8M的素材',
           })
         } else {
-          wx.getImageInfo({
-            src: file.tempFilePaths[0],
-            success: info => {
-              let ratio = this.data.ratio
-              let fodder = {
-                type: 'photo',
-                url: info.path,
-                thumb: info.path,
-                x: 30 * ratio,
-                y: (180 - 75 * (info.height / info.width)) / 2 * ratio,
-                w: 75 * ratio,
-                h: 75 * (info.height / info.width) * ratio,
-                scale: 1,
-                rotate: 0
-              }
+          if (file.tempFiles[0].size < 2 * 1024 * 1024) {
+            wx.showModal({
+              content: '像素不够，印刷不清晰',
+              success: res => {
+                if (res.confirm) {
+                  wx.getImageInfo({
+                    src: file.tempFilePaths[0],
+                    success: info => {
+                      let ratio = this.data.ratio
+                      let fodder = {
+                        type: 'photo',
+                        url: info.path,
+                        thumb: info.path,
+                        x: 30 * ratio,
+                        y: (180 - 75 * (info.height / info.width)) / 2 * ratio,
+                        w: 75 * ratio,
+                        h: 75 * (info.height / info.width) * ratio,
+                        scale: 1,
+                        rotate: 0
+                      }
 
-              if (!this.data.changeFodder && this.data.designFodders[this.data.currentDirection].length < 2) {
-                this.data.designFodders[this.data.currentDirection].push(fodder)
-                this.data.currentFodderIndex = this.data.designFodders[this.data.currentDirection].length - 1
-              } else {
-                this.data.designFodders[this.data.currentDirection][this.data.currentFodderIndex] = fodder
+                      if (!this.data.changeFodder && this.data.designFodders[this.data.currentDirection].length < 2) {
+                        this.data.designFodders[this.data.currentDirection].push(fodder)
+                        this.data.currentFodderIndex = this.data.designFodders[this.data.currentDirection].length - 1
+                      } else {
+                        this.data.designFodders[this.data.currentDirection][this.data.currentFodderIndex] = fodder
+                      }
+                      this.setData({
+                        changeFodder: false,
+                        currentFodderIndex: this.data.currentFodderIndex,
+                        fodderStep: 2,
+                        designFodders: this.data.designFodders
+                      })
+                      wx.hideLoading()
+                    }
+                  })
+                }
               }
-              this.setData({
-                changeFodder: false,
-                currentFodderIndex: this.data.currentFodderIndex,
-                fodderStep: 2,
-                designFodders: this.data.designFodders
-              })
-              wx.hideLoading()
-            }
-          })
+            })
+          }else{
+            wx.getImageInfo({
+              src: file.tempFilePaths[0],
+              success: info => {
+                let ratio = this.data.ratio
+                let fodder = {
+                  type: 'photo',
+                  url: info.path,
+                  thumb: info.path,
+                  x: 30 * ratio,
+                  y: (180 - 75 * (info.height / info.width)) / 2 * ratio,
+                  w: 75 * ratio,
+                  h: 75 * (info.height / info.width) * ratio,
+                  scale: 1,
+                  rotate: 0
+                }
+
+                if (!this.data.changeFodder && this.data.designFodders[this.data.currentDirection].length < 2) {
+                  this.data.designFodders[this.data.currentDirection].push(fodder)
+                  this.data.currentFodderIndex = this.data.designFodders[this.data.currentDirection].length - 1
+                } else {
+                  this.data.designFodders[this.data.currentDirection][this.data.currentFodderIndex] = fodder
+                }
+                this.setData({
+                  changeFodder: false,
+                  currentFodderIndex: this.data.currentFodderIndex,
+                  fodderStep: 2,
+                  designFodders: this.data.designFodders
+                })
+                wx.hideLoading()
+              }
+            })
+          }
         }
       }
     })

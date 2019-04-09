@@ -12,7 +12,7 @@
   </view>
 </view>
 
-<view class='item'>
+<!-- <view class='item'>
   <view class='item-title'>上传身份证照片</view>
   <view class='item-content'>
     <view class='item-upload'>
@@ -54,7 +54,7 @@
       </view>
     </view>
   </view>
-</view>
+</view> -->
 
 <view class='tip'>
   <icon class='tip-icon' type='success' color='#E5E5E5' size='18'></icon>
