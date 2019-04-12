@@ -10,7 +10,8 @@ Page({
     sizeText: '选择尺寸',
     number: 1,
     cartNum: 0,
-    currentContentIndex: 0
+    currentContentIndex: 0,
+    init: true
   },
 
   /**
@@ -27,25 +28,6 @@ Page({
         id: options.id
       })
     }
-
-    // 登录验证
-    getApp().init(() => {
-      // 获取购物车数量
-      this.getCartNum()
-
-      // 获取商品信息
-      this.getGoodInfo(this.data.id).then(info => {
-        info.max_money = parseFloat(info.max_money / 100).toFixed(2)
-        info.min_money = parseFloat(info.min_money / 100).toFixed(2)
-        info.fabrics.forEach(item => {
-          item.price = parseFloat(item.price / 100).toFixed(2)
-        })
-        this.setData({
-          info: info
-        })
-        WxParse.wxParse('detail', 'html', info.clothes.detail, this, 20)
-      })
-    })
   },
   // 获取购物车数量
   getCartNum() {
@@ -61,26 +43,18 @@ Page({
   // 获取商品信息
   getGoodInfo(id) {
     return new Promise((resolve, reject) => {
-      wx.request({
-        url: 'https://cy.nulizhe.com/api/Order/goodsInfo',
-        method: 'POST',
-        header: {
-          "content-type": "application/x-www-form-urlencoded; charset=UTF-8"
-        },
-        data: {
-          token: wx.getStorageSync('auth_token'),
-          design_id: id
-        },
-        success: res => {
-          if (res.data.code == 1) {
-            resolve(res.data.data)
-          } else {
-            wx.showToast({
-              title: res.data.message,
-              image: '/images/tip.png'
-            })
-          }
-        }
+      let url = '/api/Order/goodsInfo'
+      getApp().post(url,{
+        token: wx.getStorageSync('auth_token'),
+        design_id: id
+      }).then(data=>{
+        let info = data
+        info.max_money = parseFloat(info.max_money / 100).toFixed(2)
+        info.min_money = parseFloat(info.min_money / 100).toFixed(2)
+        info.fabrics.forEach(item => {
+          item.price = parseFloat(item.price / 100).toFixed(2)
+        })
+        resolve(info)
       })
     })
   },
@@ -207,7 +181,24 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function() {
+    if(this.data.init){
+      // 登录验证
+      getApp().init(() => {
+        this.setData({
+          init: false
+        })
+        // 获取购物车数量
+        this.getCartNum()
 
+        // 获取商品信息
+        this.getGoodInfo(this.data.id).then(info => {
+          this.setData({
+            info: info
+          })
+          WxParse.wxParse('detail', 'html', info.clothes.detail, this, 20)
+        })
+      })
+    }
   },
 
   /**

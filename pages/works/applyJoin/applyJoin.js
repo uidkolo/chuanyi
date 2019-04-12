@@ -15,13 +15,13 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
-      let mobile = wx.getStorageSync('userInfo').mobile
-      if(mobile){
-        this.setData({
-          haveMobile: true,
-          mobile: mobile
-        })
-      }
+    let mobile = wx.getStorageSync('userInfo').mobile
+    if (mobile) {
+      this.setData({
+        haveMobile: true,
+        mobile: mobile
+      })
+    }
   },
   // input
   input(e) {
@@ -30,9 +30,9 @@ Page({
     })
   },
   //uploadImg
-  uploadImg(e){
+  uploadImg(e) {
     wx.chooseImage({
-      success: (res)=> {
+      success: (res) => {
         this.upload(res.tempFilePaths[0]).then(url => {
           this.setData({
             [e.currentTarget.dataset.key]: url
@@ -42,47 +42,37 @@ Page({
     })
   },
   //上传图片
-  upload: function (file) {
+  upload: function(file) {
     return new Promise((resolve, reject) => {
       var nowTime = util.formatTime(new Date());
       uploadImage(file, 'images/' + nowTime + '/',
-        function (result) {
+        function(result) {
           resolve(result)
         },
-        function (result) {
+        function(result) {
           console.log("======上传失败======", result);
         }
       )
     })
   },
   // 提交申请
-  apply(){
-    if (!this.data.name){
+  apply() {
+    if (!this.data.name) {
       wx.showToast({
         title: '请输入姓名',
         image: '/images/tip.png'
       })
-    } else if (!this.data.identity_number){
+    } else if (!this.data.identity_number) {
       wx.showToast({
         title: '请输入身份证号',
         image: '/images/tip.png'
       })
-    } else if (!this.data.mobile){
+    } else if (!this.data.mobile) {
       wx.showToast({
         title: '请输入手机号',
         image: '/images/tip.png'
       })
-    } else if (!this.data.identity_front || !this.data.identity_back){
-      wx.showToast({
-        title: '请上传身份证',
-        image: '/images/tip.png'
-      })
-    } else if (!this.data.original_pic || !this.data.original_design){
-      wx.showToast({
-        title: '请上传原创稿',
-        image: '/images/tip.png'
-      })
-    } else{
+    } else {
       wx.showLoading({
         title: '正在提交',
       })
@@ -100,7 +90,7 @@ Page({
           mobile: this.data.mobile,
           code: this.data.code
         }
-      }else{
+      } else {
         var data = {
           token: wx.getStorageSync('auth_token'),
           name: this.data.name,
@@ -111,7 +101,7 @@ Page({
           original_design: this.data.original_design
         }
       }
-      getApp().post(url, data).then(data=>{
+      getApp().post(url, data).then(data => {
         wx.hideLoading()
         wx.showModal({
           content: '提交成功！等待平台审核',

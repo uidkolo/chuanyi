@@ -16,7 +16,7 @@ App({
     this.login().then(token => {
       this.getUserInfo(token).then(userInfo => {
         if (userInfo == undefined) { //新用户
-          wx.redirectTo({
+          wx.navigateTo({
             url: '/pages/login/login',
           })
         } else { //老用户
@@ -24,10 +24,10 @@ App({
             key: 'userInfo',
             data: userInfo
           })
-        }
-        this.getShareInfo()
-        if(callback){
-          callback()
+          this.getShareInfo()
+          if (callback) {
+            callback()
+          }
         }
       })
     })
@@ -35,18 +35,11 @@ App({
   // 获取用户信息
   getUserInfo(token) {
     return new Promise((resolve, reject) => {
-      wx.request({
-        url: 'https://cy.nulizhe.com/api/User/getUserInfo',
-        method: 'POST',
-        header: {
-          "content-type": "application/x-www-form-urlencoded; charset=UTF-8"
-        },
-        data: {
-          token: token
-        },
-        success(res) {
-          resolve(res.data.data)
-        }
+      let url = '/api/User/getUserInfo'
+      this.post(url,{
+        token: token
+      }).then(data=>{
+        resolve(data)
       })
     })
   },
@@ -55,27 +48,13 @@ App({
     return new Promise((resolve, reject) => {
       wx.login({
         success: res => {
-          wx.request({
-            url: 'https://cy.nulizhe.com/Api/User/loginCheck',
-            method: 'POST',
-            header: {
-              "content-type": "application/x-www-form-urlencoded; charset=UTF-8"
-            },
-            data: {
-              code: res.code
-            },
-            success: res => {
-              if (res.data.code == 1) {
-                wx.setStorageSync('openId', res.data.data.openid)
-                wx.setStorageSync('auth_token', res.data.data.auth_token)
-                resolve(res.data.data.auth_token)
-              } else {
-                wx.showToast({
-                  title: res.data.message,
-                  image: '/images/tip.png'
-                })
-              }
-            }
+          let url = '/Api/User/loginCheck'
+          this.post(url, {
+            code: res.code
+          }).then(data=>{
+            wx.setStorageSync('openId', data.openid)
+            wx.setStorageSync('auth_token', data.auth_token)
+            resolve(data.auth_token)
           })
         }
       })

@@ -6,7 +6,8 @@ Page({
    */
   data: {
     currentIndex: 0,
-    currentOrderIndex: 0
+    currentOrderIndex: 0,
+    init: true
   },
 
   /**
@@ -21,11 +22,6 @@ Page({
     if (options.scene) {
       wx.setStorageSync('shop', options.scene)
     }
-    // 登录验证
-    getApp().init(()=>{
-      this.getBanners() //获取banner
-      this.getOrderInfo() //获取订单信息
-    })
   },
   // swiper
   swiper(event) {
@@ -90,7 +86,16 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function (options) {
-
+    if(this.data.init){
+      // 登录验证
+      getApp().init(() => {
+        this.setData({
+          init: false
+        })
+        this.getBanners() //获取banner
+        this.getOrderInfo() //获取订单信息
+      })
+    }
   },
 
   /**

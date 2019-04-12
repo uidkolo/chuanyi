@@ -24,7 +24,6 @@ Page({
       token: wx.getStorageSync('auth_token'),
       order_id: orderId
     }).then(data=>{
-      console.log(data)
       this.setData({
         redId: data.red_info.red_id,
         redName: data.red_info.name

@@ -5,6 +5,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    init: true,
     progress:[
       {
         avatar: '',
@@ -42,14 +43,7 @@ Page({
         time: getApp().globalData.shareRed.time,
         id: getApp().globalData.shareRed.id
       })
-    }
-    // 登录验证
-    getApp().init(() => {
-      // 领取红包
-      this.getRed(this.data.id)
-    })
-
-    this.getVidio()
+    }  
   },
   //领取红包
   getRed(id) {
@@ -102,7 +96,17 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function() {
-
+    if(this.data.init){
+      // 登录验证
+      getApp().init(() => {
+        this.setData({
+          init: false
+        })
+        // 领取红包
+        this.getRed(this.data.id)
+        this.getVidio()
+      })
+    }
   },
 
   /**
